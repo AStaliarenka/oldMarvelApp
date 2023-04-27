@@ -13,11 +13,13 @@ class RandomChar extends Component {
     }
 
     state = {
-        name: null,
-        description: null,
-        thumbnail: undefined,
-        homepage: undefined,
-        wiki: undefined
+        char: {
+            name: null,
+            description: null,
+            thumbnail: undefined,
+            homepage: undefined,
+            wiki: undefined
+        }
     };
 
     onCharLoaded = (char: any) => {
@@ -33,7 +35,7 @@ class RandomChar extends Component {
             .getCharacterById(id)
             .then((res) => {
                 if (res) {
-                    this.setState(res);
+                    this.onCharLoaded(res);
                 }
             })
             .catch((e) => {
@@ -42,7 +44,7 @@ class RandomChar extends Component {
     }
 
     render() {
-        const {name, description, thumbnail, homepage, wiki} = this.state;
+        const {char: {name, description, thumbnail, homepage, wiki}} = this.state;
 
         return (
             <div className="randomchar">
