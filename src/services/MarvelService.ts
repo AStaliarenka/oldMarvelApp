@@ -18,16 +18,15 @@ class MarvelService {
 		let url = `${this._apiBase}characters?${this._apiKeyParam}`;
 
 		if (additionalParams) {
-			const keys = Object.keys(additionalParams);
+			const keys = Object.keys(additionalParams) as Array<keyof typeof additionalParams>;
 
 			if (keys.length) {
 				keys.forEach((key) => {
-					// TODO: fix ts problem
-					// @ts-ignore
 					url += `&${key}=${additionalParams[key]}`;
 				});
 			}
 		}
+
 		return this.getResource(url);
 	}
 
