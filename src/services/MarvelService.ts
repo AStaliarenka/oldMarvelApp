@@ -48,7 +48,7 @@ class MarvelService {
 	private _transformCharacterData(character: Character) {
 		return {
 			name: character.name,
-			description: character.description,
+			description: character.description || 'no description about character',
 			thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : '',
 			homepage: character.urls ? (character.urls[0].url || '/#') : '/#',
 			wiki: character.urls ? (character.urls[1].url || '/#') : '/#',
