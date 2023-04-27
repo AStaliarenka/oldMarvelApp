@@ -13,10 +13,10 @@ const RandomChar = () => {
                         As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate...
                     </p>
                     <div className="randomchar__btns">
-                        <a href="#" className="button button__main">
+                        <a href="/#" className="button button__main">
                             <div className="inner">homepage</div>
                         </a>
-                        <a href="#" className="button button__secondary">
+                        <a href="/#" className="button button__secondary">
                             <div className="inner">Wiki</div>
                         </a>
                     </div>
