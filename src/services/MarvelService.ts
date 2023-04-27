@@ -1,5 +1,9 @@
 import keys from "./keys";
 
+import { marvelAPI } from "./marvelApi";
+
+import { Character } from "marvel-ts/dist/types";
+
 class MarvelService {
 	private _apiBase = 'https://gateway.marvel.com:443/v1/public/';
 	private _apiKeyParam = `apikey=${keys.public}`;
@@ -30,8 +34,25 @@ class MarvelService {
 		return this.getResource(url);
 	}
 
-	public getCharacterById = (id: number) => {
-		return this.getResource(`${this._apiBase}characters/${id}?${this._apiKeyParam}`);
+	public getCharacterById = async (id: number) => {
+		const res = await marvelAPI.getCharacterById(id);
+
+		if (res.code === 200 && res.data?.results) {
+			return this._transformCharacterData(res.data.results[0]);
+		}
+		else if (res.code === 404) {
+			throw new Error(res.status);
+		}
+	}
+
+	private _transformCharacterData(character: Character) {
+		return {
+			name: character.name,
+			description: character.description,
+			thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : '',
+			homepage: character.urls ? (character.urls[0].url || '/#') : '/#',
+			wiki: character.urls ? (character.urls[1].url || '/#') : '/#',
+		};
 	}
 }
 

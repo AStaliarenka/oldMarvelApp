@@ -20,20 +20,24 @@ class RandomChar extends Component {
         wiki: undefined
     };
 
-    marvelService = new MarvelService();
+    onCharLoaded = (char: any) => {
+        this.setState({char});
+    }
+
+    private marvelService = new MarvelService();
 
     private updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        marvelService
+
+        this.marvelService
             .getCharacterById(id)
             .then((res) => {
-                this.setState({
-                    name: res.data.results[0].name,
-                    description: res.data.results[0].description,
-                    thumbnail: res.data.results[0].thumbnail.path + '.' + res.data.results[0].thumbnail.extension,
-                    homepage: res.data.results[0].urls[0].url,
-                    wiki: res.data.results[0].urls[1].url
-                })
+                if (res) {
+                    this.setState(res);
+                }
+            })
+            .catch((e) => {
+                console.log(e);
             });
     }
 

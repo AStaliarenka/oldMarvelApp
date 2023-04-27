@@ -1,4 +1,4 @@
 import { MarvelAPI } from "marvel-ts";
 import keys from "./keys";
 
-export const marvelService = new MarvelAPI(keys.public);
+export const marvelAPI = new MarvelAPI(keys.public);
