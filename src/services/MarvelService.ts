@@ -1,7 +1,10 @@
 import keys from "./keys";
 
 class MarvelService {
-	getResource = async (url: string) => {
+	private _apiBase = 'https://gateway.marvel.com:443/v1/public/';
+	private _apiKeyParam = `apikey=${keys.public}`;
+
+	public getResource = async (url: string) => {
 		const res = await fetch(url);
 
 		if (!res.ok) {
@@ -11,8 +14,25 @@ class MarvelService {
 		return res.json();
 	}
 
-	getAllCharacters = () => {
-		return this.getResource(`https://gateway.marvel.com:443/v1/public/characters?apikey=${keys.public}`);
+	public getAllCharacters = (additionalParams?: {limit?: number, offset?: number}) => {
+		let url = `${this._apiBase}characters?${this._apiKeyParam}`;
+
+		if (additionalParams) {
+			const keys = Object.keys(additionalParams);
+
+			if (keys.length) {
+				keys.forEach((key) => {
+					// TODO: fix ts problem
+					// @ts-ignore
+					url += `&${key}=${additionalParams[key]}`;
+				});
+			}
+		}
+		return this.getResource(url);
+	}
+
+	public getCharacterById = (id: number) => {
+		return this.getResource(`${this._apiBase}characters/${id}?${this._apiKeyParam}`);
 	}
 }
 
