@@ -1,4 +1,4 @@
-const publicKey = '1d18ec33ec67fa73cd178c7411bdf75a';
+import keys from "./keys";
 
 class MarvelService {
 	getResource = async (url: string) => {
@@ -12,7 +12,7 @@ class MarvelService {
 	}
 
 	getAllCharacters = () => {
-		return this.getResource(`https://gateway.marvel.com:443/v1/public/characters?apikey=${publicKey}`);
+		return this.getResource(`https://gateway.marvel.com:443/v1/public/characters?apikey=${keys.public}`);
 	}
 }
 
