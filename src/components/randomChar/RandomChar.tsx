@@ -3,6 +3,7 @@ import { Component } from 'react';
 import MarvelService from '../../services/MarvelService';
 
 import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/errorMessage';
 
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
@@ -17,7 +18,8 @@ interface charState {
 
 interface randomCharState {
     char: charState,
-    loading: true
+    loading: boolean,
+    error: boolean
 }
 
 class RandomChar extends Component {
@@ -35,17 +37,29 @@ class RandomChar extends Component {
             homepage: undefined,
             wiki: undefined
         },
-        loading: true
+        loading: true,
+        error: false
     };
 
     onCharLoaded = (char: any) => {
-        this.setState({char, loading: false});
+        this.setState({
+            char,
+            loading: false
+        });
+    }
+
+    onError = () => {
+        this.setState({
+            loading: false,
+            error: true
+        });
     }
 
     private marvelService = new MarvelService();
 
     private updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+        // const id = 100; /* TEST: char with id=100 is not exist */
 
         this.marvelService
             .getCharacterById(id)
@@ -55,16 +69,21 @@ class RandomChar extends Component {
                 }
             })
             .catch((e) => {
-                console.log(e);
+                this.onError();
             });
     }
 
     render() {
-        const {char, loading} = this.state;
+        const {char, loading, error} = this.state;
+        const errorMessage = error ? <ErrorMessage/> : null;
+        const spinner = loading ? <Spinner/> : null;
+        const content = !(error || loading) ? <View char = {char}/> : null;
 
         return (
             <div className="randomchar">
-                {loading ? <Spinner/> : <View char = {char}/>}
+                {errorMessage}
+                {spinner}
+                {content}
                 <div className="randomchar__static">
                     <p className="randomchar__title">
                         Random character for today!<br/>
