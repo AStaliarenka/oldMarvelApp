@@ -23,11 +23,7 @@ interface randomCharState {
 }
 
 class RandomChar extends Component {
-    // TODO: fix load data
-    constructor(props: any) {
-        super(props);
-        this.updateChar();
-    }
+    private timerId: NodeJS.Timer | undefined = undefined;
 
     state: randomCharState = {
         char: {
@@ -41,14 +37,14 @@ class RandomChar extends Component {
         error: false
     };
 
-    onCharLoaded = (char: any) => {
+    private onCharLoaded = (char: any) => {
         this.setState({
             char,
             loading: false
         });
     }
 
-    onError = (e: Error | string) => {
+    private onError = (e: Error | string) => {
         console.log(e);
         this.setState({
             loading: false,
@@ -72,6 +68,17 @@ class RandomChar extends Component {
             .catch((e) => {
                 this.onError(e);
             });
+    }
+
+    componentDidMount(): void {
+        this.updateChar();
+        // const interval = 10000; /* ms */
+        const interval = 5000000; /* TEST */
+        this.timerId = setInterval(this.updateChar, interval);
+    }
+
+    componentWillUnmount(): void {
+        clearInterval(this.timerId);
     }
 
     render() {
