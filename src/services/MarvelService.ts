@@ -40,9 +40,6 @@ class MarvelService {
 		if (res.code === 200 && res.data?.results) {
 			return this._transformCharacterData(res.data.results[0]);
 		}
-		else if (res.code === 404) {
-			throw new Error(res.status);
-		}
 	}
 
 	private _transformCharacterData(character: Character) {

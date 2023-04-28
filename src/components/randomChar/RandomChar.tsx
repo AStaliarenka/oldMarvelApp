@@ -48,7 +48,8 @@ class RandomChar extends Component {
         });
     }
 
-    onError = () => {
+    onError = (e: Error | string) => {
+        console.log(e);
         this.setState({
             loading: false,
             error: true
@@ -69,7 +70,7 @@ class RandomChar extends Component {
                 }
             })
             .catch((e) => {
-                this.onError();
+                this.onError(e);
             });
     }
 
