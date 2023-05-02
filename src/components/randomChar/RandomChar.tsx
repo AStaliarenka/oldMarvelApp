@@ -58,16 +58,20 @@ class RandomChar extends Component {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         // const id = 100; /* TEST: char with id=100 is not exist */
 
+        this.onCharLoading();
+
         this.marvelService
             .getCharacterById(id)
-            .then((res) => {
-                if (res) {
-                    this.onCharLoaded(res);
-                }
-            })
+            .then(this.onCharLoaded)
             .catch((e) => {
                 this.onError(e);
             });
+    }
+
+    private onCharLoading = () => {
+        this.setState({
+            loading: true
+        });
     }
 
     componentDidMount(): void {
