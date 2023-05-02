@@ -11,13 +11,17 @@ interface characterInfo {
     name: string,
     id: number
 }
-interface charactersState {
+type charactersState = {
     characters: characterInfo[] | null,
     loading: boolean,
     error: boolean
 }
 
-class CharList extends Component {
+type charListProps = {
+    onCharSelected: (id: number) => void
+}
+
+class CharList extends Component<charListProps, charactersState> {
     state: charactersState = {
         characters: null,
         loading: true,
@@ -35,10 +39,13 @@ class CharList extends Component {
             }
 
             return (
-                <li className="char__item" key={character.id}>
-                    {/* @ts-ignore */}
-                    <img src={character.thumbnail ? character.thumbnail : abyss} alt="character" style={imgStyle}/>
-                    <div className="char__name">{character.name}</div>
+                <li 
+                    className="char__item"
+                    key={character.id}
+                    onClick={() => this.props.onCharSelected(character.id)}>
+                        {/* @ts-ignore */}
+                        <img src={character.thumbnail ? character.thumbnail : abyss} alt="character" style={imgStyle}/>
+                        <div className="char__name">{character.name}</div>
                 </li>
             );
         });
