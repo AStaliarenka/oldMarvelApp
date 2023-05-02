@@ -42,6 +42,23 @@ class MarvelService {
 		}
 	}
 
+	public getCharacters = async (offset: number) => {
+		const res = await marvelAPI.getCharacters({
+			limit: 9,
+			offset
+		});
+
+		if (res.code === 200 && res.data?.results) {
+			return res.data.results.map(character => {
+				return {
+					id: character.id,
+					name: character.name,
+					thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : '',
+				};
+			});
+		}
+	}
+
 	private _transformCharacterData(character: Character) {
 		return {
 			name: character.name,
