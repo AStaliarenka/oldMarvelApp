@@ -1,11 +1,12 @@
 import {Component} from 'react';
+import ErrorMessage from '../errorMessage/errorMessage';
 
 type State = {
 	hasError: boolean;
 }
 
 type Props = {
-	fallback: JSX.Element;
+	fallback?: JSX.Element;
 	children: any
 }
 
@@ -25,7 +26,8 @@ class ErrorBoundary extends Component<Props, State> {
 
 	render() {
 		if (this.state.hasError) {
-			return this.props.fallback;
+
+			return this.props.fallback ? this.props.fallback : <ErrorMessage/>;
 		}
 
 		return this.props.children;
