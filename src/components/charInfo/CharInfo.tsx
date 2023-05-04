@@ -97,10 +97,17 @@ class CharInfo extends Component<charInfoProps, charInfoState> {
 const View = ({char}: {char: character}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
 
+    let imgStyle = {objectFit : 'cover'};
+
+    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+        imgStyle = {objectFit : 'unset'};
+    }
+
     return (
         <>
             <div className="char__basics">
-                <img src={thumbnail} alt="abyss"/>
+                {/* @ts-ignore */}
+                <img src={thumbnail} style={imgStyle} alt="abyss"/>
                 <div>
                     <div className="char__info-name">{name}</div>
                     <div className="char__btns">
@@ -118,9 +125,10 @@ const View = ({char}: {char: character}) => {
             </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
+                {comics && comics.items.length > 0 ? null : 'There is no comics with this character'}
                 {
-                    comics
-                        ? comics.items.map((item, i) => {
+                    comics && comics.items.length
+                        ? comics.items.slice(0, 9).map((item, i) => { /* 9 - is limit of count */
                             return (
                                 <li className="char__comics-item" key={i}>
                                     {item.name}
