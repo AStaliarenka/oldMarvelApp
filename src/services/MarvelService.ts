@@ -4,6 +4,8 @@ import { marvelAPI } from "./marvelApi";
 
 import { Character } from "marvel-ts/dist/types";
 
+import { character as myCharacter } from "../components/interfaces/character";
+
 class MarvelService {
 	private _apiBase = 'https://gateway.marvel.com:443/v1/public/';
 	private _apiKeyParam = `apikey=${keys.public}`;
@@ -59,13 +61,14 @@ class MarvelService {
 		}
 	}
 
-	private _transformCharacterData(character: Character) {
+	private _transformCharacterData(character: Character): myCharacter {
 		return {
-			name: character.name,
+			name: character.name || 'Unknown hero',
 			description: character.description || 'no description about character',
 			thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : '',
 			homepage: character.urls ? (character.urls[0].url || '/#') : '/#',
 			wiki: character.urls ? (character.urls[1].url || '/#') : '/#',
+			comics: character.comics
 		};
 	}
 }
