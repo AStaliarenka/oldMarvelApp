@@ -1,6 +1,10 @@
 import {Component} from 'react';
 
-class ErrorBoundary extends Component {
+type State = {
+	error: boolean;
+}
+
+class ErrorBoundary extends Component<{}, State> {
 	state = {
 		error: false
 	}
