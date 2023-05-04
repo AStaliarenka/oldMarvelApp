@@ -50,7 +50,7 @@ class CharInfo extends Component<charInfoProps, charInfoState> {
 
         this.service.getCharacterById(charId)
             .then(this.onCharLoaded)
-            .catch(this.onError)
+            .catch(this.onError);
     }
 
     private onCharLoaded = (char: any) => {

@@ -32,7 +32,7 @@ class App extends Component<{}, appState> {
                     <RandomChar/>
                     <div className="char__content">
                         <CharList onCharSelected={this.onCharSelected}/>
-                        <ErrorBoundary>
+                        <ErrorBoundary fallback={<p>Something went wrong</p>}>
                             <CharInfo charId={this.state.selectedChar}/>
                         </ErrorBoundary>
                     </div>

@@ -1,27 +1,33 @@
 import {Component} from 'react';
 
 type State = {
-	error: boolean;
+	hasError: boolean;
 }
 
-class ErrorBoundary extends Component<{}, State> {
+type Props = {
+	fallback: JSX.Element;
+	children: any
+}
+
+class ErrorBoundary extends Component<Props, State> {
 	state = {
-		error: false
+		hasError: false
 	}
 
 	componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-		this.setState({
-			error: true
-		})
+		console.log('error', error);
+	}
+
+	static getDerivedStateFromError() {
+		// Update state so the next render will show the fallback UI.
+		return {hasError: true};
 	}
 
 	render() {
-		if (this.state.error) {
-			return <h2>Something went wrong</h2>
+		if (this.state.hasError) {
+			return this.props.fallback;
 		}
 
-		// TODO: delete
-		// @ts-ignore
 		return this.props.children;
 	}
 }
