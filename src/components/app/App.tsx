@@ -25,14 +25,21 @@ class App extends Component<{}, appState> {
     }
 
     render() {
+        const errFallback = <p>Something went wrong</p>;
+
         return (
             <div className="app">
                 <AppHeader/>
                 <main>
-                    <RandomChar/>
+                    
+                    <ErrorBoundary fallback={errFallback}>
+                        <RandomChar/>
+                    </ErrorBoundary>
                     <div className="char__content">
-                        <CharList onCharSelected={this.onCharSelected}/>
-                        <ErrorBoundary fallback={<p>Something went wrong</p>}>
+                        <ErrorBoundary fallback={errFallback}>
+                            <CharList onCharSelected={this.onCharSelected}/>
+                        </ErrorBoundary>
+                        <ErrorBoundary fallback={errFallback}>
                             <CharInfo charId={this.state.selectedChar}/>
                         </ErrorBoundary>
                     </div>
