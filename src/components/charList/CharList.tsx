@@ -16,6 +16,7 @@ type charactersState = {
     loading: boolean;
     error: boolean;
     newItemsLoading: boolean;
+    offset: number;
 }
 
 type charListProps = {
@@ -27,10 +28,9 @@ class CharList extends Component<charListProps, charactersState> {
         characters: null,
         loading: true,
         error: false,
-        newItemsLoading: false
+        newItemsLoading: false,
+        offset: 210 /* offset in character list */
     }
-
-    private offset = 120; /* offset in character list */
 
     private generateCharGrid(characters: characterInfo[]) {
         const charListItems = characters.map((character) => {
@@ -60,7 +60,7 @@ class CharList extends Component<charListProps, charactersState> {
     }
 
     private onCharactersLoaded(newCharacters: any) {
-        this.setState(({characters}) => {
+        this.setState(({characters, offset}) => {
             return {
                 characters: characters
                     ? [
@@ -69,7 +69,8 @@ class CharList extends Component<charListProps, charactersState> {
                     ]
                     : newCharacters,
                 loading: false,
-                newItemsLoading: false
+                newItemsLoading: false,
+                offset: offset + 9
             }
         });
     }
@@ -87,8 +88,6 @@ class CharList extends Component<charListProps, charactersState> {
         const service = new MarvelService();
 
         if (isNotFirstLoad) {
-            this.offset += 9;
-
             this.setState({
                 newItemsLoading: true
             });
@@ -99,7 +98,7 @@ class CharList extends Component<charListProps, charactersState> {
             });
         }
 
-        service.getCharacters(this.offset)
+        service.getCharacters(this.state.offset)
             .then(res => this.onCharactersLoaded(res))
             .catch((e) => {
                 this.onError(e);
