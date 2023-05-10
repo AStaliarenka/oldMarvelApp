@@ -59,16 +59,18 @@ class CharList extends Component<charListProps, charactersState> {
         );
     }
 
-    private onCharactersLoaded(characters: any) {
-        this.setState({
-            characters: this.state.characters
-                ? [
-                        ...this.state.characters,
-                        ...characters
-                ]
-                : characters,
-            loading: false,
-            newItemsLoading: false
+    private onCharactersLoaded(newCharacters: any) {
+        this.setState(({characters}) => {
+            return {
+                characters: characters
+                    ? [
+                            ...characters,
+                            ...newCharacters
+                    ]
+                    : newCharacters,
+                loading: false,
+                newItemsLoading: false
+            }
         });
     }
 
