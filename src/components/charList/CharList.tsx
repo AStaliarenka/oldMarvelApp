@@ -7,14 +7,15 @@ import './charList.scss';
 import abyss from '../../resources/img/abyss.jpg';
 
 interface characterInfo {
-    thumbnail: string,
-    name: string,
-    id: number
+    thumbnail: string;
+    name: string;
+    id: number;
 }
 type charactersState = {
-    characters: characterInfo[] | null,
-    loading: boolean,
-    error: boolean
+    characters: characterInfo[] | null;
+    loading: boolean;
+    error: boolean;
+    newItemsLoading: boolean;
 }
 
 type charListProps = {
@@ -25,7 +26,8 @@ class CharList extends Component<charListProps, charactersState> {
     state: charactersState = {
         characters: null,
         loading: true,
-        error: false
+        error: false,
+        newItemsLoading: false
     }
 
     private offset = 120; /* offset in character list */
@@ -59,8 +61,14 @@ class CharList extends Component<charListProps, charactersState> {
 
     private onCharactersLoaded(characters: any) {
         this.setState({
-            characters,
-            loading: false
+            characters: this.state.characters
+                ? [
+                        ...this.state.characters,
+                        ...characters
+                ]
+                : characters,
+            loading: false,
+            newItemsLoading: false
         });
     }
 
@@ -73,8 +81,21 @@ class CharList extends Component<charListProps, charactersState> {
         });
     }
 
-    private loadCharacters = () => {
+    private loadCharacters = (isNotFirstLoad?: boolean) => {
         const service = new MarvelService();
+
+        if (isNotFirstLoad) {
+            this.offset += 9;
+
+            this.setState({
+                newItemsLoading: true
+            });
+        }
+        else {
+            this.setState({
+                loading: true
+            });
+        }
 
         service.getCharacters(this.offset)
             .then(res => this.onCharactersLoaded(res))
@@ -88,7 +109,7 @@ class CharList extends Component<charListProps, charactersState> {
     }
 
     render() {
-        const {characters, loading, error} = this.state;
+        const {characters, loading, error, newItemsLoading} = this.state;
         const isCharDataLoaded = !(loading || error);
         const spinner = loading ? <Spinner/> : null;
         const charList = isCharDataLoaded && characters ? this.generateCharGrid(characters) : null;
@@ -97,8 +118,10 @@ class CharList extends Component<charListProps, charactersState> {
             <div className="char__list">
                 {spinner}
                 {charList}
-                <button className="button button__main button__long">
-                    <div className="inner">load more</div>
+                <button className="button button__main button__long" disabled={newItemsLoading}>
+                    <div onClick={() => {this.loadCharacters(true)}} className="inner">
+                        load more
+                    </div>
                 </button>
             </div>
         );
