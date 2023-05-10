@@ -9,6 +9,7 @@ import { character as myCharacter } from "../components/interfaces/character";
 class MarvelService {
 	private _apiBase = 'https://gateway.marvel.com:443/v1/public/';
 	private _apiKeyParam = `apikey=${keys.public}`;
+	private _charactersTotal: undefined | number;
 
 	public getResource = async (url: string) => {
 		const res = await fetch(url);
@@ -51,6 +52,10 @@ class MarvelService {
 		});
 
 		if (res.code === 200 && res.data?.results) {
+			if (!this._charactersTotal) {
+				this._charactersTotal = res.data.total;
+			}
+
 			return res.data.results.map(character => {
 				return {
 					id: character.id,
@@ -59,6 +64,10 @@ class MarvelService {
 				};
 			});
 		}
+	}
+
+	public get charactersTotalCount() {
+		return this._charactersTotal ? this._charactersTotal : 0;
 	}
 
 	private _transformCharacterData(character: Character): myCharacter {

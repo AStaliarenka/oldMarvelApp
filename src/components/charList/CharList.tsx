@@ -17,6 +17,7 @@ type charactersState = {
     error: boolean;
     newItemsLoading: boolean;
     offset: number;
+    isCharsEnded: boolean;
 }
 
 type charListProps = {
@@ -29,8 +30,13 @@ class CharList extends Component<charListProps, charactersState> {
         loading: true,
         error: false,
         newItemsLoading: false,
-        offset: 210 /* offset in character list */
+        offset: 210, /* offset in character list */
+        isCharsEnded: false
     }
+
+    private service = new MarvelService();
+
+    private _charactersTotal: number | undefined;
 
     private generateCharGrid(characters: characterInfo[]) {
         const charListItems = characters.map((character) => {
@@ -84,12 +90,11 @@ class CharList extends Component<charListProps, charactersState> {
         });
     }
 
-    private loadCharacters = (isNotFirstLoad?: boolean) => {
-        const service = new MarvelService();
-
+    private loadCharacters = async (isNotFirstLoad?: boolean) => {
         if (isNotFirstLoad) {
             this.setState({
-                newItemsLoading: true
+                newItemsLoading: true,
+                isCharsEnded: !((Number(this._charactersTotal) - 9) > this.state.offset)
             });
         }
         else {
@@ -98,19 +103,21 @@ class CharList extends Component<charListProps, charactersState> {
             });
         }
 
-        service.getCharacters(this.state.offset)
+        return this.service.getCharacters(this.state.offset)
             .then(res => this.onCharactersLoaded(res))
             .catch((e) => {
                 this.onError(e);
             });
     }
 
-    componentDidMount(): void {
-        this.loadCharacters();
+    async componentDidMount() {
+        await this.loadCharacters();
+
+        this._charactersTotal = this.service.charactersTotalCount;
     }
 
     render() {
-        const {characters, loading, error, newItemsLoading} = this.state;
+        const {characters, loading, error, newItemsLoading, isCharsEnded} = this.state;
         const isCharDataLoaded = !(loading || error);
         const spinner = loading ? <Spinner/> : null;
         const charList = isCharDataLoaded && characters ? this.generateCharGrid(characters) : null;
@@ -119,7 +126,11 @@ class CharList extends Component<charListProps, charactersState> {
             <div className="char__list">
                 {spinner}
                 {charList}
-                <button className="button button__main button__long" disabled={newItemsLoading}>
+                <button
+                    className="button button__main button__long"
+                    disabled={newItemsLoading}
+                    style={{display: isCharsEnded ? 'none' : 'block'}}
+                    >
                     <div onClick={() => {this.loadCharacters(true)}} className="inner">
                         load more
                     </div>
