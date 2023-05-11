@@ -36,6 +36,8 @@ class CharList extends Component<charListProps, charactersState> {
 
     private service = new MarvelService();
 
+    private _countOfCharactersPack = 9;
+
     private _charactersTotal: number | undefined;
 
     private generateCharGrid(characters: characterInfo[]) {
@@ -76,7 +78,7 @@ class CharList extends Component<charListProps, charactersState> {
                     : newCharacters,
                 loading: false,
                 newItemsLoading: false,
-                offset: offset + 9
+                offset: offset + this._countOfCharactersPack
             }
         });
     }
@@ -94,7 +96,7 @@ class CharList extends Component<charListProps, charactersState> {
         if (isNotFirstLoad) {
             this.setState({
                 newItemsLoading: true,
-                isCharsEnded: !((Number(this._charactersTotal) - 9) > this.state.offset)
+                isCharsEnded: !((Number(this._charactersTotal) - this._countOfCharactersPack) > this.state.offset)
             });
         }
         else {
@@ -103,7 +105,7 @@ class CharList extends Component<charListProps, charactersState> {
             });
         }
 
-        return this.service.getCharacters(this.state.offset)
+        return this.service.getCharacters(this.state.offset, this._countOfCharactersPack)
             .then(res => this.onCharactersLoaded(res))
             .catch((e) => {
                 this.onError(e);
@@ -114,6 +116,12 @@ class CharList extends Component<charListProps, charactersState> {
         await this.loadCharacters();
 
         this._charactersTotal = this.service.charactersTotalCount;
+
+        if (this.state.offset === (this._charactersTotal - this._countOfCharactersPack)) {
+            this.setState({
+                isCharsEnded: true
+            });
+        }
     }
 
     render() {

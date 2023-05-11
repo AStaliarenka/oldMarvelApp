@@ -45,9 +45,9 @@ class MarvelService {
 		}
 	}
 
-	public getCharacters = async (offset: number = 210) => {
+	public getCharacters = async (offset: number = 210, limit?: number) => {
 		const res = await marvelAPI.getCharacters({
-			limit: 9,
+			limit: limit ? limit : 9,
 			offset
 		});
 
