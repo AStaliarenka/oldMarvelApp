@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {useState} from 'react';
 
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
@@ -9,45 +9,35 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 import decoration from '../../resources/img/vision.png';
 
-type appState = {
-    selectedChar: number | null
-}
+const App  = () => {
+    const [selectedChar, setChar] = useState<number | null>(null);
 
-class App extends Component<{}, appState> {
-    state = {
-        selectedChar: null
+    const onCharSelected = (id: number) => {
+        setChar(id);
     }
 
-    private onCharSelected = (id: number) => {
-        this.setState({
-            selectedChar: id
-        });
-    }
-
-    render() {
-        const errFallback = <p>Something went wrong</p>;
-
-        return (
-            <div className="app">
-                <AppHeader/>
-                <main>
-                    
-                    <ErrorBoundary fallback={errFallback}>
-                        <RandomChar/>
+    const errFallback = <p>Something went wrong</p>;
+    
+    return (
+        <div className="app">
+            <AppHeader/>
+            <main>
+                
+                <ErrorBoundary fallback={errFallback}>
+                    <RandomChar/>
+                </ErrorBoundary>
+                <div className="char__content">
+                    <ErrorBoundary>
+                        <CharList onCharSelected={onCharSelected}/>
                     </ErrorBoundary>
-                    <div className="char__content">
-                        <ErrorBoundary>
-                            <CharList onCharSelected={this.onCharSelected}/>
-                        </ErrorBoundary>
-                        <ErrorBoundary fallback={errFallback}>
-                            <CharInfo charId={this.state.selectedChar}/>
-                        </ErrorBoundary>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
-                </main>
-            </div>
-        )
-    }
+                    <ErrorBoundary fallback={errFallback}>
+                        <CharInfo charId={selectedChar}/>
+                    </ErrorBoundary>
+                </div>
+                <img className="bg-decoration" src={decoration} alt="vision"/>
+            </main>
+        </div>
+    );
 }
 
 export default App;
