@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -11,36 +11,24 @@ interface characterInfo {
     name: string;
     id: number;
 }
-type charactersState = {
-    characters: characterInfo[] | null;
-    loading: boolean;
-    error: boolean;
-    newItemsLoading: boolean;
-    offset: number;
-    isCharsEnded: boolean;
-}
 
 type charListProps = {
     onCharSelected: (id: number) => void
 }
 
-class CharList extends Component<charListProps, charactersState> {
-    state: charactersState = {
-        characters: null,
-        loading: true,
-        error: false,
-        newItemsLoading: false,
-        offset: 210, /* offset in character list */
-        isCharsEnded: false
-    }
+const marvelService = new MarvelService();
+const _countOfCharactersPack = 9;
+let _charactersTotal = 0;
 
-    private service = new MarvelService();
+function CharList(props: charListProps) {
+    const [characters, setCharacters] = useState(null);
+    const [offset, setOffset] = useState(210);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
+    const [isCharsEnded, setIsCharsEnded] = useState(false);
 
-    private _countOfCharactersPack = 9;
-
-    private _charactersTotal: number | undefined;
-
-    private generateCharGrid(characters: characterInfo[]) {
+    const generateCharGrid = (characters: characterInfo[]) => {
         const charListItems = characters.map((character) => {
             let imgStyle = {objectFit : 'cover'};
 
@@ -52,7 +40,7 @@ class CharList extends Component<charListProps, charactersState> {
                 <li 
                     className="char__item"
                     key={character.id}
-                    onClick={() => this.props.onCharSelected(character.id)}>
+                    onClick={() => props.onCharSelected(character.id)}>
                         {/* @ts-ignore */}
                         <img src={character.thumbnail ? character.thumbnail : abyss} alt="character" style={imgStyle}/>
                         <div className="char__name">{character.name}</div>
@@ -67,68 +55,58 @@ class CharList extends Component<charListProps, charactersState> {
         );
     }
 
-    private onCharactersLoaded(newCharacters: any) {
-        this.setState(({characters, offset}) => {
-            return {
-                characters: characters
-                    ? [
-                            ...characters,
-                            ...newCharacters
-                    ]
-                    : newCharacters,
-                loading: false,
-                newItemsLoading: false,
-                offset: offset + this._countOfCharactersPack
-            }
-        });
+    const onCharactersLoaded = (newCharacters: any) => {
+        setCharacters(characters
+            ? [
+                    ...characters,
+                    ...newCharacters
+            ]
+            : newCharacters);
+        setOffset(offset + _countOfCharactersPack);
+        setIsLoading(false);
+        setIsNewItemsLoading(false);
     }
 
-    private onError = (e: Error | string) => {
+    const onError = (e: Error | string) => {
         console.log(e);
 
-        this.setState({
-            loading: false,
-            error: true
-        });
+        setIsLoading(false);
+        setHasError(true);
     }
 
-    private loadCharacters = async (isNotFirstLoad?: boolean) => {
+    const loadCharacters = async (isNotFirstLoad?: boolean) => {
         if (isNotFirstLoad) {
-            this.setState({
-                newItemsLoading: true,
-                isCharsEnded: !((Number(this._charactersTotal) - this._countOfCharactersPack) > this.state.offset)
-            });
+            setIsNewItemsLoading(true);
+            setIsCharsEnded(
+                !((Number(_charactersTotal) - _countOfCharactersPack) > offset)
+            )
         }
         else {
-            this.setState({
-                loading: true
-            });
+            setIsLoading(true)
         }
 
-        return this.service.getCharacters(this.state.offset, this._countOfCharactersPack)
-            .then(res => this.onCharactersLoaded(res))
+        return marvelService.getCharacters(offset, _countOfCharactersPack)
+            .then(res => onCharactersLoaded(res))
             .catch((e) => {
-                this.onError(e);
+                onError(e);
             });
     }
 
-    async componentDidMount() {
-        await this.loadCharacters();
+    useEffect(() => {
+        (async () => {
+            await loadCharacters();
+            _charactersTotal = marvelService.charactersTotalCount;
 
-        this._charactersTotal = this.service.charactersTotalCount;
+            if (offset === (_charactersTotal - _countOfCharactersPack)) {
+                setIsCharsEnded(true);
+            }
 
-        if (this.state.offset === (this._charactersTotal - this._countOfCharactersPack)) {
-            this.setState({
-                isCharsEnded: true
-            });
-        }
-    }
+        })();
+    }, []);
 
-    render() {
-        const {characters, loading, error, newItemsLoading, isCharsEnded} = this.state;
-        const isCharDataLoaded = !(loading || error);
-        const spinner = loading ? <Spinner/> : null;
-        const charList = isCharDataLoaded && characters ? this.generateCharGrid(characters) : null;
+        const isCharDataLoaded = !(isLoading || hasError);
+        const spinner = isLoading ? <Spinner/> : null;
+        const charList = isCharDataLoaded && characters ? generateCharGrid(characters) : null;
 
         return (
             <div className="char__list">
@@ -136,16 +114,15 @@ class CharList extends Component<charListProps, charactersState> {
                 {charList}
                 <button
                     className="button button__main button__long"
-                    disabled={newItemsLoading}
+                    disabled={isNewItemsLoading}
                     style={{display: isCharsEnded ? 'none' : 'block'}}
                     >
-                    <div onClick={() => {this.loadCharacters(true)}} className="inner">
+                    <div onClick={() => {loadCharacters(true)}} className="inner">
                         load more
                     </div>
                 </button>
             </div>
         );
-    }
 }
 
 export default CharList;
