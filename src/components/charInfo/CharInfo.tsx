@@ -1,4 +1,4 @@
-import {Component, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import MarvelService from '../../services/MarvelService';
 
@@ -23,10 +23,12 @@ function CharInfo(props: charInfoProps) {
 
     useEffect(() => {
         updateChar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         updateChar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.charId]);
 
     const updateChar = () => {

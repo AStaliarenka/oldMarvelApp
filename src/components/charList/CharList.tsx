@@ -126,6 +126,7 @@ function CharList(props: charListProps) {
             }
 
         })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
         const isCharDataLoaded = !(isLoading || hasError);
