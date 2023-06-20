@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -28,8 +28,16 @@ function CharList(props: charListProps) {
     const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
     const [isCharsEnded, setIsCharsEnded] = useState(false);
 
-    const generateCharGrid = (characters: characterInfo[]) => {
-        const charListItems = characters.map((character) => {
+    const itemsRef = useRef<HTMLLIElement[]>([]);
+
+    const focusOnItem = (id: number) => {
+        itemsRef.current.forEach(item => item.classList.remove('char__item_selected'));
+        itemsRef.current[id].classList.add('char__item_selected');
+        itemsRef.current[id].focus();
+    }
+
+    function generateCharGrid(characters: characterInfo[]) {
+        const charListItems = characters.map((character, i) => {
             let imgStyle = {objectFit : 'cover'};
 
             if (character.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
@@ -39,8 +47,24 @@ function CharList(props: charListProps) {
             return (
                 <li 
                     className="char__item"
+                    tabIndex={0}
+                    ref={element => {
+                        if (element) {
+                            itemsRef.current[i] = element
+                        }
+                    }}
                     key={character.id}
-                    onClick={() => props.onCharSelected(character.id)}>
+                    onClick={() => {
+                        props.onCharSelected(character.id);
+                        focusOnItem(i);
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === ' ' || e.key === 'Enter') {
+                            props.onCharSelected(character.id);
+                            focusOnItem(i);
+                        }
+                    }}
+                    >
                         {/* @ts-ignore */}
                         <img src={character.thumbnail ? character.thumbnail : abyss} alt="character" style={imgStyle}/>
                         <div className="char__name">{character.name}</div>
