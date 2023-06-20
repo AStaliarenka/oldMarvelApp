@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {Component, useEffect, useState} from 'react';
 
 import MarvelService from '../../services/MarvelService';
 
@@ -14,84 +14,64 @@ type charInfoProps = {
     charId: number | null
 }
 
-type charInfoState = {
-    loading: boolean,
-    error: boolean,
-    char: character | null
-}
+const marvelService = new MarvelService();
 
-class CharInfo extends Component<charInfoProps, charInfoState> {
-    state = {
-        loading: false,
-        error: false,
-        char: null
-    }
+function CharInfo(props: charInfoProps) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
+    const [char, setChar] = useState(null);
 
-    componentDidMount() {
-        this.updateChar();
-    }
+    useEffect(() => {
+        updateChar();
+    }, []);
 
-    componentDidUpdate(prevProps: Readonly<charInfoProps>, prevState: Readonly<charInfoState>, snapshot?: any): void {
-        if (this.props.charId !== prevProps.charId) {
-            this.updateChar();
-        }
-    }
+    useEffect(() => {
+        updateChar();
+    }, [props.charId]);
 
-    service = new MarvelService();
-
-    private updateChar = () => {
-        const {charId} = this.props;
+    const updateChar = () => {
+        const {charId} = props;
 
         if (!charId) {
             return;
         }
 
-        this.onCharLoading();
+        onCharLoading();
 
-        this.service.getCharacterById(charId)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
+        marvelService.getCharacterById(charId)
+            .then(onCharLoaded)
+            .catch(onError);
     }
 
-    private onCharLoaded = (char: any) => {
-        this.setState({
-            char,
-            loading: false
-        });
+    const onCharLoaded = (char: any) => {
+        setChar(char);
+        setIsLoading(false);
     }
 
-    private onCharLoading = () => {
-        this.setState({
-            loading: true
-        });
+    const onCharLoading = () => {
+        setIsLoading(true);
     }
 
-    private onError = (e: any) => {
+    const onError = (e: any) => {
         console.log(e);
 
-        this.setState({
-            loading: false,
-            error: true
-        });
+        setIsLoading(false);
+        setHasError(true);
     }
 
-    render() {
-        const {char, loading, error} = this.state;
+    const mockLayout = char || isLoading || hasError ? null : <Sceleton/>;
+    const errorMessage = hasError ? <ErrorMessage/> : null;
+    const spinner = isLoading ? <Spinner/> : null;
+    const content = !(hasError || isLoading || !char) ? <View char = {char}/> : null;
 
-        const mockLayout = char || loading || error ? null : <Sceleton/>;
-        const errorMessage = error ? <ErrorMessage/> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = !(error || loading || !char) ? <View char = {char}/> : null;
-
-        return (
-            <div className="char__info">
-                {mockLayout}
-                {errorMessage}
-                {spinner}
-                {content}
-            </div>
-        );
-    }
+    return (
+        <div className="char__info">
+            {mockLayout}
+            {errorMessage}
+            {spinner}
+            {content}
+        </div>
+    );
 }
 
 const View = ({char}: {char: character}) => {
