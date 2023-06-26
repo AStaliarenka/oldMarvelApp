@@ -32,12 +32,34 @@ export const useHttp = () => {
 			}
 	}, []);
 
+	const requestFunc = useCallback(async (func: (params: any) => Promise<any>, params?: any) => { /* TODO: any */
+		setLoading(true);
+
+		try {
+			const res = await func(params);
+
+			if (res?.status !== 'Ok') {
+				throw new Error('Coluld not fetch');
+			}
+
+			setLoading(false);
+
+			return res;
+		} catch (error: any) { /* TODO: any */
+			setLoading(false);
+			setError(error.message);
+
+			throw(error);
+		}
+	}, []);
+
 	const clearError = useCallback(() => setError(null), []);
 
 	return {
 		loading,
 		request,
 		error,
-		clearError
+		clearError,
+		requestFunc
 	};
 }
