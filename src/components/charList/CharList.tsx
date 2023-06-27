@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import MarvelService from '../../services/MarvelService';
+import { useMarvelService } from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 
 import './charList.scss';
@@ -16,17 +16,16 @@ type charListProps = {
     onCharSelected: (id: number) => void
 }
 
-const marvelService = new MarvelService();
 const _countOfCharactersPack = 9;
 let _charactersTotal = 0;
 
 function CharList(props: charListProps) {
     const [characters, setCharacters] = useState(null);
     const [offset, setOffset] = useState(210);
-    const [isLoading, setIsLoading] = useState(false);
-    const [hasError, setHasError] = useState(false);
     const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
     const [isCharsEnded, setIsCharsEnded] = useState(false);
+
+    const {loading, getCharacters, getCharactersTotalCount} = useMarvelService();
 
     const itemsRef = useRef<HTMLLIElement[]>([]);
 
@@ -87,15 +86,7 @@ function CharList(props: charListProps) {
             ]
             : newCharacters);
         setOffset(offset + _countOfCharactersPack);
-        setIsLoading(false);
         setIsNewItemsLoading(false);
-    }
-
-    const onError = (e: Error | string) => {
-        console.log(e);
-
-        setIsLoading(false);
-        setHasError(true);
     }
 
     const loadCharacters = async (isNotFirstLoad?: boolean) => {
@@ -105,21 +96,15 @@ function CharList(props: charListProps) {
                 !((Number(_charactersTotal) - _countOfCharactersPack) > offset)
             )
         }
-        else {
-            setIsLoading(true)
-        }
 
-        return marvelService.getCharacters(offset, _countOfCharactersPack)
-            .then(res => onCharactersLoaded(res))
-            .catch((e) => {
-                onError(e);
-            });
+        return getCharacters(offset, _countOfCharactersPack)
+            .then(onCharactersLoaded);
     }
 
     useEffect(() => {
         (async () => {
             await loadCharacters();
-            _charactersTotal = marvelService.charactersTotalCount;
+            _charactersTotal = getCharactersTotalCount();
 
             if (offset === (_charactersTotal - _countOfCharactersPack)) {
                 setIsCharsEnded(true);
@@ -129,9 +114,8 @@ function CharList(props: charListProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-        const isCharDataLoaded = !(isLoading || hasError);
-        const spinner = isLoading ? <Spinner/> : null;
-        const charList = isCharDataLoaded && characters ? generateCharGrid(characters) : null;
+        const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
+        const charList = characters ? generateCharGrid(characters) : null;
 
         return (
             <div className="char__list">
