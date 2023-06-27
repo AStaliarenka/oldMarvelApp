@@ -9,7 +9,7 @@ import { character as myCharacter } from "../components/interfaces/character";
 let _charactersTotal: number | undefined = 0;
 
 const useMarvelService = () => {
-	const {loading, requestFunc, error} = useHttp();
+	const {loading, requestFunc, error, clearError} = useHttp();
 
 	const getCharacters = async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getCharacters;
@@ -59,7 +59,8 @@ const useMarvelService = () => {
 		error,
 		getCharacterById,
 		getCharacters,
-		getCharactersTotalCount
+		getCharactersTotalCount,
+		clearError
 	}
 }
 

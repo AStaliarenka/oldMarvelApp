@@ -11,7 +11,7 @@ import mjolnir from '../../resources/img/mjolnir.png';
 function RandomChar() {
     const [character, setCharacter] = useState(null);
 
-    const {error, loading, getCharacterById} = useMarvelService();
+    const {error, loading, getCharacterById, clearError} = useMarvelService();
 
     const onCharLoaded = (char: any) => {
         setCharacter(char);
@@ -19,6 +19,7 @@ function RandomChar() {
 
 
     const updateChar = async () => {
+        clearError();
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         // const id = 100; /* TEST: char with id=100 is not exist */
 
