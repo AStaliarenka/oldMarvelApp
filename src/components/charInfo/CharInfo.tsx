@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-import MarvelService from '../../services/MarvelService';
+import { useMarvelService } from '../../services/MarvelService';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
@@ -14,12 +14,11 @@ type charInfoProps = {
     charId: number | null
 }
 
-const marvelService = new MarvelService();
 
 function CharInfo(props: charInfoProps) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [hasError, setHasError] = useState(false);
     const [char, setChar] = useState(null);
+
+    const {getCharacterById, loading, error} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -38,33 +37,18 @@ function CharInfo(props: charInfoProps) {
             return;
         }
 
-        onCharLoading();
-
-        marvelService.getCharacterById(charId)
-            .then(onCharLoaded)
-            .catch(onError);
+        getCharacterById(charId)
+            .then(onCharLoaded);
     }
 
     const onCharLoaded = (char: any) => {
         setChar(char);
-        setIsLoading(false);
     }
 
-    const onCharLoading = () => {
-        setIsLoading(true);
-    }
-
-    const onError = (e: any) => {
-        console.log(e);
-
-        setIsLoading(false);
-        setHasError(true);
-    }
-
-    const mockLayout = char || isLoading || hasError ? null : <Sceleton/>;
-    const errorMessage = hasError ? <ErrorMessage/> : null;
-    const spinner = isLoading ? <Spinner/> : null;
-    const content = !(hasError || isLoading || !char) ? <View char = {char}/> : null;
+    const mockLayout = char || loading || error ? null : <Sceleton/>;
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const spinner = loading ? <Spinner/> : null;
+    const content = !(error || loading || !char) ? <View char = {char}/> : null;
 
     return (
         <div className="char__info">
