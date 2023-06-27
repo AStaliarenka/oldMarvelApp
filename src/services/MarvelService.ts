@@ -65,7 +65,7 @@ const useMarvelService = () => {
 
 	const getCharacters = async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getCharacters;
-		const res = await requestFunc(func, {offset, limit: limit ? limit : 9}) as Awaited<ReturnType<typeof func>>;
+		const res = await requestFunc(func.bind(marvelAPI), {offset, limit: limit ? limit : 9}) as Awaited<ReturnType<typeof func>>;
 
 		if (res.code === 200 && res.data?.results) {
 			if (!_charactersTotal) {
