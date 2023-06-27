@@ -7,6 +7,7 @@ import { Character} from "marvel-ts/dist/types";
 import { character as myCharacter } from "../components/interfaces/character";
 
 let _charactersTotal: number | undefined = 0;
+let _comicsTotal: number | undefined = 0;
 
 const useMarvelService = () => {
 	const {loading, requestFunc, error, clearError} = useHttp();
@@ -30,6 +31,28 @@ const useMarvelService = () => {
 		}
 	}
 
+	const getComics = async (offset: number = 210, limit?: number) => {
+		const func = marvelAPI.getComics;
+
+		const comicsLimit = 8;
+
+		const res = await requestFunc(func.bind(marvelAPI), {offset, limit: limit ? limit : comicsLimit}) as Awaited<ReturnType<typeof func>>;
+
+		if (res.code === 200 && res.data?.results) {
+			if (!_comicsTotal) {
+				_comicsTotal = res.data.total;
+			}
+
+			return res.data.results.map(comic => {
+				return {
+					id: comic.id,
+					title: comic.title,
+					thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : '',
+				};
+			});
+		}
+	}
+
 	const transformCharacterData = (character: Character): myCharacter => {
 		return {
 			name: character.name || 'Unknown hero',
@@ -43,6 +66,10 @@ const useMarvelService = () => {
 
 	const getCharactersTotalCount = () => {
 		return _charactersTotal ? _charactersTotal : 0;
+	}
+
+	const getComicsTotalCount = () => {
+		return _comicsTotal ? _comicsTotal : 0;
 	}
 
 	const getCharacterById = async (id: number) => {
@@ -60,7 +87,9 @@ const useMarvelService = () => {
 		getCharacterById,
 		getCharacters,
 		getCharactersTotalCount,
-		clearError
+		clearError,
+		getComics,
+		getComicsTotalCount
 	}
 }
 
