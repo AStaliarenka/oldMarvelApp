@@ -18,7 +18,7 @@ type charInfoProps = {
 function CharInfo(props: charInfoProps) {
     const [char, setChar] = useState(null);
 
-    const {getCharacterById, loading, error} = useMarvelService();
+    const {getCharacterById, loading, error, clearError} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -36,6 +36,8 @@ function CharInfo(props: charInfoProps) {
         if (!charId) {
             return;
         }
+
+        clearError();
 
         getCharacterById(charId)
             .then(onCharLoaded);

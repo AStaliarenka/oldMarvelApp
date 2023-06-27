@@ -25,7 +25,7 @@ function CharList(props: charListProps) {
     const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
     const [isCharsEnded, setIsCharsEnded] = useState(false);
 
-    const {loading, getCharacters, getCharactersTotalCount} = useMarvelService();
+    const {loading, getCharacters, getCharactersTotalCount, error} = useMarvelService();
 
     const itemsRef = useRef<HTMLLIElement[]>([]);
 
@@ -115,7 +115,7 @@ function CharList(props: charListProps) {
     }, []);
 
         const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
-        const charList = characters ? generateCharGrid(characters) : null;
+        const charList = (characters && !error) ? generateCharGrid(characters) : null;
 
         return (
             <div className="char__list">
