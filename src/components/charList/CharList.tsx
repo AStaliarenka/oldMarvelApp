@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { useMarvelService } from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 
 import './charList.scss';
