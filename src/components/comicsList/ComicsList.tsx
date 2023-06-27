@@ -1,73 +1,134 @@
-import './comicsList.scss';
-import uw from '../../resources/img/UW.png';
-import xMen from '../../resources/img/x-men.png';
+import { useState, useEffect } from 'react';
 
-const ComicsList = () => {
+import './comicsList.scss';
+import useMarvelService from '../../services/MarvelService';
+
+import Spinner from '../spinner/Spinner';
+
+import abyss from '../../resources/img/abyss.jpg';
+
+type comicsListProps = {
+    onComicSelected: (id: number) => void
+}
+
+type comicsListInfo = {
+    thumbnail: string;
+    title: string;
+    id: number;
+}
+
+const _countOfComicsPack = 8;
+let _comicsTotal = 0;
+
+const ComicsList = (props: comicsListProps) => {
+    const [comics, setComics] = useState(null);
+    const [offset, setOffset] = useState(210);
+    const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
+    const [isComicsEnded, setIsComicsEnded] = useState(false);
+
+    const {getComics, getComicsTotalCount, error, loading} = useMarvelService();
+
+    function generateComicsGrid(comics: comicsListInfo[]) {
+        const comicsListItems = comics.map((comic, i) => {
+            let imgStyle = {objectFit : 'cover'};
+
+            if (comic.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+                imgStyle = {objectFit : 'unset'};
+            }
+
+            return (
+                <li 
+                    className="comics__item"
+                    tabIndex={0}
+                    // ref={element => {
+                    //     if (element) {
+                    //         itemsRef.current[i] = element
+                    //     }
+                    // }}
+                    key={comic.id}
+                    // onClick={() => {
+                    //     props.onComicSelected(comic.id);
+                    //     focusOnItem(i);
+                    // }}
+                    // onKeyDown={(e) => {
+                    //     if (e.key === ' ' || e.key === 'Enter') {
+                    //         props.onComicSelected(comic.id);
+                    //         focusOnItem(i);
+                    //     }
+                    // }}
+                    >
+                        {/* @ts-ignore */}
+                        <a href="/#">
+                        {/* @ts-ignore */}
+                        <img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
+                        <div className="comics__item-name">{comic.title}</div>
+                        <div className="comics__item-price">NOT AVAILABLE</div>
+                    </a>
+                </li>
+            );
+        });
+
+        return (
+            <ul className="comics__grid">
+                {comicsListItems}
+            </ul>
+        );
+    }
+
+    const onComicsLoaded = (newComics: any) => {
+        setComics(comics
+            ? [
+                    ...comics,
+                    ...newComics
+            ]
+            : newComics);
+        setOffset(offset + _countOfComicsPack);
+        setIsNewItemsLoading(false);
+    }
+
+    const loadComics = async (isNotFirstLoad?: boolean) => {
+        if (isNotFirstLoad) {
+            setIsNewItemsLoading(true);
+            setIsComicsEnded(
+                !((Number(_comicsTotal) - _countOfComicsPack) > offset)
+            )
+        }
+
+        return getComics(offset, _countOfComicsPack)
+            .then(onComicsLoaded);
+    }
+
+    useEffect(() => {
+        (async () => {
+            await loadComics();
+            _comicsTotal = getComicsTotalCount();
+
+            if (offset === (_comicsTotal - _countOfComicsPack)) {
+                setIsComicsEnded(true);
+            }
+
+        })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
+    const comicsList = (comics && !error) ? generateComicsGrid(comics) : null;
+
     return (
         <div className="comics__list">
-            <ul className="comics__grid">
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={uw} alt="ultimate war" className="comics__item-img"/>
-                        <div className="comics__item-name">ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB</div>
-                        <div className="comics__item-price">9.99$</div>
-                    </a>
-                </li>
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={xMen} alt="x-men" className="comics__item-img"/>
-                        <div className="comics__item-name">X-Men: Days of Future Past</div>
-                        <div className="comics__item-price">NOT AVAILABLE</div>
-                    </a>
-                </li>
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={uw} alt="ultimate war" className="comics__item-img"/>
-                        <div className="comics__item-name">ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB</div>
-                        <div className="comics__item-price">9.99$</div>
-                    </a>
-                </li>
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={xMen} alt="x-men" className="comics__item-img"/>
-                        <div className="comics__item-name">X-Men: Days of Future Past</div>
-                        <div className="comics__item-price">NOT AVAILABLE</div>
-                    </a>
-                </li>
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={uw} alt="ultimate war" className="comics__item-img"/>
-                        <div className="comics__item-name">ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB</div>
-                        <div className="comics__item-price">9.99$</div>
-                    </a>
-                </li>
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={xMen} alt="x-men" className="comics__item-img"/>
-                        <div className="comics__item-name">X-Men: Days of Future Past</div>
-                        <div className="comics__item-price">NOT AVAILABLE</div>
-                    </a>
-                </li>
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={uw} alt="ultimate war" className="comics__item-img"/>
-                        <div className="comics__item-name">ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB</div>
-                        <div className="comics__item-price">9.99$</div>
-                    </a>
-                </li>
-                <li className="comics__item">
-                    <a href="/#">
-                        <img src={xMen} alt="x-men" className="comics__item-img"/>
-                        <div className="comics__item-name">X-Men: Days of Future Past</div>
-                        <div className="comics__item-price">NOT AVAILABLE</div>
-                    </a>
-                </li>
-            </ul>
-            <button className="button button__main button__long">
-                <div className="inner">load more</div>
-            </button>
-        </div>
-    )
+                {spinner}
+                {comicsList}
+                <button
+                    className="button button__main button__long"
+                    disabled={isNewItemsLoading}
+                    style={{display: isComicsEnded ? 'none' : 'block'}}
+                    >
+                    <div onClick={() => {loadComics(true)}} className="inner">
+                        load more
+                    </div>
+                </button>
+            </div>
+    );
 }
 
 export default ComicsList;
