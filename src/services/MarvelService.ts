@@ -6,6 +6,14 @@ import { Character} from "marvel-ts/dist/types";
 
 import { character as myCharacter } from "../components/interfaces/character";
 
+import { Comic } from "marvel-ts/dist/types";
+
+type EntityWithThumbnail = {
+	thumbnail: string;
+}
+
+export type ComicsShortInfo = Pick<Comic, 'id' | 'title'> & EntityWithThumbnail;
+
 let _charactersTotal: number | undefined = 0;
 let _comicsTotal: number | undefined = 0;
 
@@ -43,13 +51,15 @@ const useMarvelService = () => {
 				_comicsTotal = res.data.total;
 			}
 
-			return res.data.results.map(comic => {
+			const resultArr: ComicsShortInfo[] = res.data.results.map(comic => {
 				return {
 					id: comic.id,
 					title: comic.title,
 					thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : '',
 				};
 			});
+
+			return resultArr;
 		}
 	}
 

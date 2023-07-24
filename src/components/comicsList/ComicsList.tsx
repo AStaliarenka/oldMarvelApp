@@ -7,28 +7,26 @@ import Spinner from '../spinner/Spinner';
 
 import abyss from '../../resources/img/abyss.jpg';
 
-type comicsListProps = {
-    onComicSelected: (id: number) => void
-}
+import { ComicsShortInfo } from '../../services/MarvelService';
 
-type comicsListInfo = {
-    thumbnail: string;
-    title: string;
-    id: number;
+type comicsListProps = {
+    onComicSelected: (id: number) => void;
+    comics: ComicsShortInfo[] | null;
+    setComics: React.Dispatch<React.SetStateAction<ComicsShortInfo[] | null>>
 }
 
 const _countOfComicsPack = 8;
 let _comicsTotal = 0;
 
 const ComicsList = (props: comicsListProps) => {
-    const [comics, setComics] = useState(null);
+    // const [comics, setComics] = useState(null);
     const [offset, setOffset] = useState(210);
     const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
     const [isComicsEnded, setIsComicsEnded] = useState(false);
 
     const {getComics, getComicsTotalCount, error, loading} = useMarvelService();
 
-    function generateComicsGrid(comics: comicsListInfo[]) {
+    function generateComicsGrid(comics: ComicsShortInfo[]) {
         const comicsListItems = comics.map((comic, i) => {
             let imgStyle = {objectFit : 'cover'};
 
@@ -46,10 +44,12 @@ const ComicsList = (props: comicsListProps) => {
                     //     }
                     // }}
                     key={comic.id}
-                    // onClick={() => {
-                    //     props.onComicSelected(comic.id);
-                    //     focusOnItem(i);
-                    // }}
+                    onClick={() => {
+                        if (comic.id) {
+                            props.onComicSelected(comic.id);
+                        }
+                        // focusOnItem(i);
+                    }}
                     // onKeyDown={(e) => {
                     //     if (e.key === ' ' || e.key === 'Enter') {
                     //         props.onComicSelected(comic.id);
@@ -76,9 +76,9 @@ const ComicsList = (props: comicsListProps) => {
     }
 
     const onComicsLoaded = (newComics: any) => {
-        setComics(comics
+        props.setComics(props.comics
             ? [
-                    ...comics,
+                    ...props.comics,
                     ...newComics
             ]
             : newComics);
@@ -93,6 +93,8 @@ const ComicsList = (props: comicsListProps) => {
                 !((Number(_comicsTotal) - _countOfComicsPack) > offset)
             )
         }
+
+        // TODO: scroll down after loading
 
         return getComics(offset, _countOfComicsPack)
             .then(onComicsLoaded);
@@ -112,7 +114,7 @@ const ComicsList = (props: comicsListProps) => {
     }, []);
 
     const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
-    const comicsList = (comics && !error) ? generateComicsGrid(comics) : null;
+    const comicsList = (props.comics && !error) ? generateComicsGrid(props.comics) : null;
 
     return (
         <div className="comics__list">
