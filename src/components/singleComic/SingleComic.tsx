@@ -1,5 +1,4 @@
 import './singleComic.scss';
-import xMen from '../../resources/img/x-men.png';
 import { ModifiedComic } from '../../services/MarvelService';
 
 type charInfoProps = {
