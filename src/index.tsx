@@ -6,14 +6,14 @@ import './style/style.scss';
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
-// root.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
 // is mounted two times with React Strict
 
-root.render(
-    <App />
-);
+// root.render(
+//     <App />
+// );
