@@ -1,9 +1,4 @@
-import { useState, useEffect } from 'react';
-
 import './comicsList.scss';
-import useMarvelService from '../../services/MarvelService';
-
-import Spinner from '../spinner/Spinner';
 
 import abyss from '../../resources/img/abyss.jpg';
 
@@ -11,21 +6,10 @@ import { ModifiedComic } from '../../services/MarvelService';
 
 type comicsListProps = {
     onComicSelected: (id: number) => void;
-    comics: ModifiedComic[] | null;
-    setComics: React.Dispatch<React.SetStateAction<ModifiedComic[] | null>>
+    comics: ModifiedComic[];
 }
 
-const _countOfComicsPack = 8;
-let _comicsTotal = 0;
-
 const ComicsList = (props: comicsListProps) => {
-    // const [comics, setComics] = useState(null);
-    const [offset, setOffset] = useState(210);
-    const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
-    const [isComicsEnded, setIsComicsEnded] = useState(false);
-
-    const {getComics, getComicsTotalCount, error, loading} = useMarvelService();
-
     function generateComicsGrid(comics: ModifiedComic[]) {
         const comicsListItems = comics.map((comic, i) => {
             let imgStyle = {objectFit : 'cover'};
@@ -43,7 +27,7 @@ const ComicsList = (props: comicsListProps) => {
                     //         itemsRef.current[i] = element
                     //     }
                     // }}
-                    key={comic.id}
+                    key={i} /* TODO: ID*/
                     onClick={() => {
                         if (comic.id) {
                             props.onComicSelected(comic.id);
@@ -75,60 +59,11 @@ const ComicsList = (props: comicsListProps) => {
         );
     }
 
-    const onComicsLoaded = (newComics: any) => {
-        props.setComics(props.comics
-            ? [
-                    ...props.comics,
-                    ...newComics
-            ]
-            : newComics);
-        setOffset(offset + _countOfComicsPack);
-        setIsNewItemsLoading(false);
-    }
-
-    const loadComics = async (isNotFirstLoad?: boolean) => {
-        if (isNotFirstLoad) {
-            setIsNewItemsLoading(true);
-            setIsComicsEnded(
-                !((Number(_comicsTotal) - _countOfComicsPack) > offset)
-            )
-        }
-
-        // TODO: scroll down after loading
-
-        return getComics(offset, _countOfComicsPack)
-            .then(onComicsLoaded);
-    }
-
-    useEffect(() => {
-        (async () => {
-            await loadComics();
-            _comicsTotal = getComicsTotalCount();
-
-            if (offset === (_comicsTotal - _countOfComicsPack)) {
-                setIsComicsEnded(true);
-            }
-
-        })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
-    const comicsList = (props.comics && !error) ? generateComicsGrid(props.comics) : null;
+    const comicsList = generateComicsGrid(props.comics);
 
     return (
         <div className="comics__list">
-                {spinner}
                 {comicsList}
-                <button
-                    className="button button__main button__long"
-                    disabled={isNewItemsLoading}
-                    style={{display: isComicsEnded ? 'none' : 'block'}}
-                    >
-                    <div onClick={() => {loadComics(true)}} className="inner">
-                        load more
-                    </div>
-                </button>
             </div>
     );
 }

@@ -6,6 +6,8 @@ import { Character} from "marvel-ts/dist/types";
 
 import { character as myCharacter } from "../components/interfaces/character";
 
+import { ComicParameters } from "marvel-ts/dist/types";
+
 // import { Comic } from "marvel-ts/dist/types";
 
 // type EntityWithThumbnail = {
@@ -54,14 +56,14 @@ const useMarvelService = () => {
 
 		const comicsLimit = 8;
 
-		const res = await requestFunc(func.bind(marvelAPI), {offset, limit: limit ? limit : comicsLimit}) as Awaited<ReturnType<typeof func>>;
+		const params: ComicParameters = {offset, limit: limit ? limit : comicsLimit, issueNumber: 1};
+
+		const res = await requestFunc(func.bind(marvelAPI), params) as Awaited<ReturnType<typeof func>>;
 
 		if (res.code === 200 && res.data?.results) {
 			if (!_comicsTotal) {
 				_comicsTotal = res.data.total;
 			}
-
-			console.log('data', res.data.results[0]);
 
 			const resultArr: ModifiedComic[] = res.data.results.map(comic => {
 				return {
