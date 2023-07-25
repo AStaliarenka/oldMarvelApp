@@ -74,7 +74,7 @@ const ComicsPage = () => {
     </div>
   </button>;
 
-  const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
+  const spinner = (loading) ? <Spinner/> : null;
   const comicsList = (comics && !error)
     ? <ComicsList onComicSelected = {onComicSelected} comics = {comics}/>
     : null;
