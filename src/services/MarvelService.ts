@@ -6,13 +6,23 @@ import { Character} from "marvel-ts/dist/types";
 
 import { character as myCharacter } from "../components/interfaces/character";
 
-import { Comic } from "marvel-ts/dist/types";
+// import { Comic } from "marvel-ts/dist/types";
 
-type EntityWithThumbnail = {
+// type EntityWithThumbnail = {
+// 	thumbnail: string;
+// }
+
+// export type ComicsShortInfo = Pick<Comic, 'id' | 'title' | 'description' | 'textObjects'> & EntityWithThumbnail;
+
+export type ModifiedComic = {
+	id: number;
+	title: string;
+	language: string;
+	description: string;
+	price: string;
+	pageCount: number | string;
 	thumbnail: string;
 }
-
-export type ComicsShortInfo = Pick<Comic, 'id' | 'title'> & EntityWithThumbnail;
 
 let _charactersTotal: number | undefined = 0;
 let _comicsTotal: number | undefined = 0;
@@ -51,11 +61,17 @@ const useMarvelService = () => {
 				_comicsTotal = res.data.total;
 			}
 
-			const resultArr: ComicsShortInfo[] = res.data.results.map(comic => {
+			console.log('data', res.data.results[0]);
+
+			const resultArr: ModifiedComic[] = res.data.results.map(comic => {
 				return {
-					id: comic.id,
-					title: comic.title,
+					id: comic.id || 0,
+					title: comic.title || 'unknown',
 					thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : '',
+					language: (comic.textObjects?.length && comic.textObjects[0].language) ? comic.textObjects[0].language : 'unknown', /* TODO: lang list*/
+					description: comic.description ? comic.description : 'No description',
+					price: (comic.prices?.length && comic.prices[0].price) ? String(comic.prices[0].price) : 'unknown price',
+					pageCount: comic.pageCount ? comic.pageCount : 'unknown'
 				};
 			});
 

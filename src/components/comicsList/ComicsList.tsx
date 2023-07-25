@@ -7,12 +7,12 @@ import Spinner from '../spinner/Spinner';
 
 import abyss from '../../resources/img/abyss.jpg';
 
-import { ComicsShortInfo } from '../../services/MarvelService';
+import { ModifiedComic } from '../../services/MarvelService';
 
 type comicsListProps = {
     onComicSelected: (id: number) => void;
-    comics: ComicsShortInfo[] | null;
-    setComics: React.Dispatch<React.SetStateAction<ComicsShortInfo[] | null>>
+    comics: ModifiedComic[] | null;
+    setComics: React.Dispatch<React.SetStateAction<ModifiedComic[] | null>>
 }
 
 const _countOfComicsPack = 8;
@@ -26,7 +26,7 @@ const ComicsList = (props: comicsListProps) => {
 
     const {getComics, getComicsTotalCount, error, loading} = useMarvelService();
 
-    function generateComicsGrid(comics: ComicsShortInfo[]) {
+    function generateComicsGrid(comics: ModifiedComic[]) {
         const comicsListItems = comics.map((comic, i) => {
             let imgStyle = {objectFit : 'cover'};
 

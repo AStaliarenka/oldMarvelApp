@@ -11,12 +11,12 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 import decoration from '../../resources/img/vision.png';
 
-import { ComicsShortInfo } from '../../services/MarvelService';
+import { ModifiedComic } from '../../services/MarvelService';
 
 const App  = () => {
     const [selectedChar, setChar] = useState<number | null>(null);
     const [selectedComic, setComic] = useState<number | null>(null);
-    const [comics, setComics] = useState<ComicsShortInfo[] | null>(null);
+    const [comics, setComics] = useState<ModifiedComic[] | null>(null);
 
     const onCharSelected = (id: number) => {
         setChar(id);
@@ -26,10 +26,12 @@ const App  = () => {
         setComic(id);
     }
 
+    const comicData = comics?.find((comic) => comic.id === selectedComic);
+
     const errFallback = <p>Something went wrong</p>;
-    const comicsContent = selectedComic ?
+    const comicsContent = (selectedComic && comicData) ?
     <ErrorBoundary>
-        <SingleComic comicId = {selectedComic} back = {setComic}/>
+        <SingleComic comicId = {selectedComic} back = {setComic} comicInfo={comicData}/>
     </ErrorBoundary>
     : <ErrorBoundary>
         <ComicsList onComicSelected = {onComicSelected} comics = {comics} setComics = {setComics}/>
