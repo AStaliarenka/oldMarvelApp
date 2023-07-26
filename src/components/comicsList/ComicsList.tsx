@@ -63,8 +63,8 @@ const ComicsList = (props: comicsListProps) => {
 
     return (
         <div className="comics__list">
-                {comicsList}
-            </div>
+            {comicsList}
+        </div>
     );
 }
 

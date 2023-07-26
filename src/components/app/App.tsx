@@ -28,7 +28,7 @@ const App  = () => {
                 <main>
                     <Routes>
                         <Route path='/' element={
-                            <ErrorBoundary>
+                            <div className='char'>
                                 <ErrorBoundary fallback={errFallback}>
                                     <RandomChar/>
                                 </ErrorBoundary>
@@ -41,7 +41,7 @@ const App  = () => {
                                     </ErrorBoundary>
                                 </div>
                                 <img className="bg-decoration" src={decoration} alt="vision"/>
-                            </ErrorBoundary>
+                            </div>
                         }>
                         </Route>
                         <Route path='comics/*' element={
