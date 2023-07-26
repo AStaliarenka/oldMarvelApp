@@ -41,13 +41,10 @@ const ComicsList = (props: comicsListProps) => {
                     //     }
                     // }}
                     >
-                        {/* @ts-ignore */}
-                        <a href="/#">
-                        {/* @ts-ignore */}
-                        <img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
-                        <div className="comics__item-name">{comic.title}</div>
-                        <div className="comics__item-price">NOT AVAILABLE</div>
-                    </a>
+                    {/* @ts-ignore */}
+                    <img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
+                    <div className="comics__item-name">{comic.title}</div>
+                    <div className="comics__item-price">NOT AVAILABLE</div>
                 </li>
             );
         });
