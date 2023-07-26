@@ -6,7 +6,7 @@ import { Character} from "marvel-ts/dist/types";
 
 import { character as myCharacter } from "../components/interfaces/character";
 
-import { ComicParameters } from "marvel-ts/dist/types";
+import { ComicParameters, CharacterParameters } from "marvel-ts/dist/types";
 
 // import { Comic } from "marvel-ts/dist/types";
 
@@ -34,7 +34,8 @@ const useMarvelService = () => {
 
 	const getCharacters = async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getCharacters;
-		const res = await requestFunc(func.bind(marvelAPI), {offset, limit: limit ? limit : 9}) as Awaited<ReturnType<typeof func>>;
+		const params: CharacterParameters = {offset, limit: limit ? limit : 9};
+		const res = await requestFunc(func.bind(marvelAPI), params) as Awaited<ReturnType<typeof func>>;
 
 		if (res.code === 200 && res.data?.results) {
 			if (!_charactersTotal) {
