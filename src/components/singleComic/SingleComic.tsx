@@ -21,7 +21,7 @@ function SingleComic(props: charInfoProps) {
             <p className="single-comic__descr">{`Language: ${language}`}</p>
             <div className="single-comic__price">{`${price}$`}</div>
         </div>
-        <div className="single-comic__back" onClick={() => {props.back(null)}}>Back to all</div>
+        <a href="/#" className="single-comic__back" onClick={() => {props.back(null)}}>Back to all</a>
     </div>
     );
 }
