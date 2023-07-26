@@ -10,7 +10,7 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 import decoration from '../../resources/img/vision.png';
 
-import ComicsPage from '../comicsPage/ComicsPage';
+import ComicsPage from '../pages/comicsPage/ComicsPage';
 
 const App  = () => {
     const [selectedChar, setChar] = useState<number | null>(null);

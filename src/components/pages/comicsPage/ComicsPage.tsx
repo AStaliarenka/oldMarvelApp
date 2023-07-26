@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { useDidMount } from '../../helpers/common';
+import { useDidMount } from '../../../helpers/common';
 
-import useMarvelService from '../../services/MarvelService';
+import useMarvelService from '../../../services/MarvelService';
 
-import Spinner from '../spinner/Spinner';
-import AppBanner from '../appBanner/AppBanner';
+import Spinner from '../../spinner/Spinner';
+import AppBanner from '../../appBanner/AppBanner';
 
-import { ModifiedComic } from '../../services/MarvelService';
+import { ModifiedComic } from '../../../services/MarvelService';
 
-import ComicsList from '../comicsList/ComicsList';
-import SingleComic from '../singleComic/SingleComic';
+import ComicsList from '../../comicsList/ComicsList';
+import SingleComic from '../../singleComic/SingleComic';
 
 const _countOfComicsPack = 8;
 let _comicsTotal = 0;
