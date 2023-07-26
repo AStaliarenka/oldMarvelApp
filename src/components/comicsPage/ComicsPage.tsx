@@ -4,6 +4,7 @@ import { useDidMount } from '../../helpers/common';
 import useMarvelService from '../../services/MarvelService';
 
 import Spinner from '../spinner/Spinner';
+import AppBanner from '../appBanner/AppBanner';
 
 import { ModifiedComic } from '../../services/MarvelService';
 
@@ -89,6 +90,7 @@ const ComicsPage = () => {
 
   return (
     <div className="comics">
+      <AppBanner/>
       {comicsContent}
       {spinner}
       {loadButton}
