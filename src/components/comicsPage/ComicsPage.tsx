@@ -10,6 +10,8 @@ import { ModifiedComic } from '../../services/MarvelService';
 import ComicsList from '../comicsList/ComicsList';
 import SingleComic from '../singleComic/SingleComic';
 
+import AppBanner from '../appBanner/AppBanner';
+
 const _countOfComicsPack = 8;
 let _comicsTotal = 0;
 
@@ -87,6 +89,7 @@ const ComicsPage = () => {
 
   return (
     <div className="comics">
+      <AppBanner/>
       {comicsContent}
       {spinner}
       {loadButton}
