@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
@@ -21,27 +22,39 @@ const App  = () => {
     const errFallback = <p>Something went wrong</p>;
     
     return (
-        <div className="app">
-            <AppHeader/>
-            <main>
-                {/* <ErrorBoundary fallback={errFallback}>
-                    <RandomChar/>
-                </ErrorBoundary>
-                <div className="char__content">
-                    <ErrorBoundary>
-                        <CharList onCharSelected={onCharSelected}/>
-                    </ErrorBoundary>
-                    <ErrorBoundary fallback={errFallback}>
-                        <CharInfo charId={selectedChar}/>
-                    </ErrorBoundary>
-                </div>
-                <img className="bg-decoration" src={decoration} alt="vision"/> */}
-                <ErrorBoundary fallback={errFallback}>
-                    <ComicsPage/>
-                </ErrorBoundary>
-                
-            </main>
-        </div>
+        <BrowserRouter>
+            <div className="app">
+                <AppHeader/>
+                <main>
+                    <Routes>
+                        <Route path='/' element={
+                            <ErrorBoundary>
+                                <ErrorBoundary fallback={errFallback}>
+                                    <RandomChar/>
+                                </ErrorBoundary>
+                                <div className="char__content">
+                                    <ErrorBoundary>
+                                        <CharList onCharSelected={onCharSelected}/>
+                                    </ErrorBoundary>
+                                    <ErrorBoundary fallback={errFallback}>
+                                        <CharInfo charId={selectedChar}/>
+                                    </ErrorBoundary>
+                                </div>
+                                <img className="bg-decoration" src={decoration} alt="vision"/>
+                            </ErrorBoundary>
+                        }>
+                        </Route>
+                        <Route path='comics/*' element={
+                            <ErrorBoundary fallback={errFallback}>
+                                <ComicsPage/>
+                            </ErrorBoundary>
+                        }>
+                        </Route>
+                    </Routes>
+                    
+                </main>
+            </div>
+        </BrowserRouter>
     );
 }
 
