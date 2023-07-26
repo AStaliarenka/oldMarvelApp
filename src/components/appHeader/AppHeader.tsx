@@ -1,5 +1,7 @@
 import './appHeader.scss';
 
+import { NavLink } from 'react-router-dom';
+
 const AppHeader = () => {
     return (
         <header className="app__header">
@@ -10,9 +12,9 @@ const AppHeader = () => {
             </h1>
             <nav className="app__menu">
                 <ul>
-                    <li><a href="/">Characters</a></li>
+                    <li><NavLink to="/" className={({isActive, isPending}) => isPending ? "pending" : isActive ? "active" : ""}>Characters</NavLink></li>
                     /
-                    <li><a href="/comics">Comics</a></li>
+                    <li><NavLink to="/comics" className={({isActive, isPending}) => isPending ? "pending" : isActive ? "active" : ""}>Comics</NavLink></li>
                 </ul>
             </nav>
         </header>
