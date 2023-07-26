@@ -64,15 +64,17 @@ const ComicsPage = () => {
     loadComicsFunc();
 });
 
-  const loadButton = <button
-    className="button button__main button__long"
-    disabled={isNewItemsLoading}
-    style={{display: isComicsEnded ? 'none' : 'block'}}
-    >
-    <div onClick={() => {loadComics(true)}} className="inner">
-        load more
-    </div>
-  </button>;
+  const loadButton = !selectedComic
+  ? <button
+      className="button button__main button__long"
+      disabled={isNewItemsLoading}
+      style={{display: isComicsEnded ? 'none' : 'block'}}
+      >
+      <div onClick={() => {loadComics(true)}} className="inner">
+          load more
+      </div>
+    </button>
+  : null;
 
   const spinner = (loading) ? <Spinner/> : null;
   const comicsList = (comics && !error)
@@ -83,7 +85,7 @@ const ComicsPage = () => {
 
   const comicsContent = (selectedComic && comicData) ?
     <SingleComic comicId = {selectedComic} back = {setComic} comicInfo={comicData}/>
-    : comicsList
+    : comicsList;
 
   return (
     <div className="comics">
