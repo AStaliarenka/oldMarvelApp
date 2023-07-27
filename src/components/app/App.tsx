@@ -4,8 +4,7 @@ import AppHeader from "../appHeader/AppHeader";
 
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
-import ComicsPage from '../pages/comics';
-import MainPage from '../pages/main';
+import { MainPage, ComicsPage } from '../pages';
 
 const App  = () => {
     const errFallback = <p>Something went wrong</p>;
