@@ -17,6 +17,8 @@ const AppHeader = () => {
                     <li><NavLink to="/" className={toggleActive}>Characters</NavLink></li>
                     /
                     <li><NavLink to="/comics" className={toggleActive}>Comics</NavLink></li>
+                    /
+                    <li><NavLink to="/testForm" className={toggleActive}>Test Form</NavLink></li>
                 </ul>
             </nav>
         </header>
