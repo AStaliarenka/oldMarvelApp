@@ -5,6 +5,7 @@ import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
 import Sceleton from '../skeleton/Skeleton';
+import { useDidMount } from '../../helpers/common';
 
 import { character } from '../interfaces/character';
 
@@ -20,10 +21,9 @@ function CharInfo(props: charInfoProps) {
 
     const {getCharacterById, loading, error, clearError} = useMarvelService();
 
-    useEffect(() => {
+    useDidMount(() => {
         updateChar();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
 
     useEffect(() => {
         updateChar();
