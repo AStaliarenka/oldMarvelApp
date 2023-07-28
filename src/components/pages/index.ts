@@ -1,9 +1,11 @@
 import MainPage from "./main";
 import ComicsPage from "./comics";
 import Page404 from "./404";
+import SingleComicPage from "./singleComic";
 
 export {
     MainPage,
     ComicsPage,
-    Page404
+    Page404,
+    SingleComicPage
 }

@@ -4,7 +4,7 @@ import AppHeader from "../appHeader/AppHeader";
 
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
-import { MainPage, ComicsPage, Page404 } from '../pages';
+import { MainPage, ComicsPage, Page404, SingleComicPage } from '../pages';
 
 const App  = () => {
     const errFallback = <p>Something went wrong</p>;
@@ -22,6 +22,12 @@ const App  = () => {
                         <Route path='comics' element={
                             <ErrorBoundary fallback={errFallback}>
                                 <ComicsPage/>
+                            </ErrorBoundary>
+                        }>
+                        </Route>
+                        <Route path='comics/:comicId' element={
+                            <ErrorBoundary fallback={errFallback}>
+                                <SingleComicPage/>
                             </ErrorBoundary>
                         }>
                         </Route>

@@ -9,21 +9,15 @@ import AppBanner from '../../appBanner/AppBanner';
 import { ModifiedComic } from '../../../services/MarvelService';
 
 import ComicsList from '../../comicsList/ComicsList';
-import SingleComic from '../../singleComic/SingleComic';
 
 const _countOfComicsPack = 8;
 let _comicsTotal = 0;
 
 const ComicsPage = () => {
-  const [selectedComic, setComic] = useState<number | null>(null);
   const [comics, setComics] = useState<ModifiedComic[] | null>(null);
   const [offset, setOffset] = useState(210);
   const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
   const [isComicsEnded, setIsComicsEnded] = useState(false);
-
-  const onComicSelected = (id: number) => {
-    setComic(id);
-  }
 
   const {getComics, getComicsTotalCount, error, loading} = useMarvelService();
 
@@ -65,8 +59,8 @@ const ComicsPage = () => {
     loadComicsFunc();
 });
 
-  const loadButton = !selectedComic
-  ? <button
+  const loadButton =
+  <button
       className="button button__main button__long"
       disabled={isNewItemsLoading}
       style={{display: isComicsEnded ? 'none' : 'block'}}
@@ -74,24 +68,17 @@ const ComicsPage = () => {
       <div onClick={() => {loadComics(true)}} className="inner">
           load more
       </div>
-    </button>
-  : null;
+    </button>;
 
   const spinner = (loading) ? <Spinner/> : null;
   const comicsList = (comics && !error)
-    ? <ComicsList onComicSelected = {onComicSelected} comics = {comics}/>
+    ? <ComicsList comics = {comics}/>
     : null;
-
-  const comicData = comics?.find((comic) => comic.id === selectedComic);
-
-  const comicsContent = (selectedComic && comicData) ?
-    <SingleComic comicId = {selectedComic} back = {setComic} comicInfo={comicData}/>
-    : comicsList;
 
   return (
     <div className="comics">
       <AppBanner/>
-      {comicsContent}
+      {comicsList}
       {spinner}
       {loadButton}
     </div>

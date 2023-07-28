@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import './comicsList.scss';
 
 import abyss from '../../resources/img/abyss.jpg';
@@ -5,7 +7,6 @@ import abyss from '../../resources/img/abyss.jpg';
 import { ModifiedComic } from '../../services/MarvelService';
 
 type comicsListProps = {
-    onComicSelected: (id: number) => void;
     comics: ModifiedComic[];
 }
 
@@ -28,12 +29,12 @@ const ComicsList = (props: comicsListProps) => {
                     //     }
                     // }}
                     key={i} /* TODO: ID*/
-                    onClick={() => {
-                        if (comic.id) {
-                            props.onComicSelected(comic.id);
-                        }
-                        // focusOnItem(i);
-                    }}
+                    // onClick={() => {
+                    //     if (comic.id) {
+                    //         props.onComicSelected(comic.id);
+                    //     }
+                    //     // focusOnItem(i);
+                    // }}
                     // onKeyDown={(e) => {
                     //     if (e.key === ' ' || e.key === 'Enter') {
                     //         props.onComicSelected(comic.id);
@@ -41,10 +42,13 @@ const ComicsList = (props: comicsListProps) => {
                     //     }
                     // }}
                     >
-                    {/* @ts-ignore */}
-                    <img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
-                    <div className="comics__item-name">{comic.title}</div>
-                    <div className="comics__item-price">NOT AVAILABLE</div>
+                        <Link to={`/comics/${comic.id}`}>
+                            {/* @ts-ignore */}
+                            <img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
+                            <div className="comics__item-name">{comic.title}</div>
+                            <div className="comics__item-price">NOT AVAILABLE</div>
+                        </Link>
+                    
                 </li>
             );
         });
