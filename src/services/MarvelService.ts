@@ -6,7 +6,7 @@ import { Character} from "marvel-ts/dist/types";
 
 import { character as myCharacter } from "../components/interfaces/character";
 
-import { ComicParameters, CharacterParameters } from "marvel-ts/dist/types";
+import { ComicParameters, CharacterParameters, Comic } from "marvel-ts/dist/types";
 
 // import { Comic } from "marvel-ts/dist/types";
 
@@ -52,6 +52,28 @@ const useMarvelService = () => {
 		}
 	}
 
+	function transformComicData(comic: Comic) {
+		return {
+			id: comic.id || 0,
+			title: comic.title || 'unknown',
+			thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : '',
+			language: (comic.textObjects?.length && comic.textObjects[0].language) ? comic.textObjects[0].language : 'unknown', /* TODO: lang list*/
+			description: comic.description ? comic.description : 'No description',
+			price: (comic.prices?.length && comic.prices[0].price) ? String(comic.prices[0].price) : 'unknown price',
+			pageCount: comic.pageCount ? comic.pageCount : 'unknown'
+		};
+	}
+
+	const getComicById = async (comicId: number) => {
+		const func = marvelAPI.getComicById;
+
+		const res = await requestFunc(func.bind(marvelAPI), comicId) as Awaited<ReturnType<typeof func>>;
+
+		if (res.code === 200 && res.data?.results) {
+			return transformComicData(res.data?.results[0]);
+		}
+	}
+
 	const getComics = async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getComics;
 
@@ -67,15 +89,7 @@ const useMarvelService = () => {
 			}
 
 			const resultArr: ModifiedComic[] = res.data.results.map(comic => {
-				return {
-					id: comic.id || 0,
-					title: comic.title || 'unknown',
-					thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : '',
-					language: (comic.textObjects?.length && comic.textObjects[0].language) ? comic.textObjects[0].language : 'unknown', /* TODO: lang list*/
-					description: comic.description ? comic.description : 'No description',
-					price: (comic.prices?.length && comic.prices[0].price) ? String(comic.prices[0].price) : 'unknown price',
-					pageCount: comic.pageCount ? comic.pageCount : 'unknown'
-				};
+				return transformComicData(comic);
 			});
 
 			return resultArr;
@@ -118,6 +132,7 @@ const useMarvelService = () => {
 		getCharactersTotalCount,
 		clearError,
 		getComics,
+		getComicById,
 		getComicsTotalCount
 	}
 }
