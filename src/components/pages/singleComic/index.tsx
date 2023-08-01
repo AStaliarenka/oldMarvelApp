@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 
 import { ModifiedComic } from '../../../services/MarvelService';
 import Spinner from '../../spinner/Spinner';
@@ -16,6 +16,7 @@ function SingleComicPage() {
     const {comicId} = useParams<"comicId">();
     const [comic, setComic] = useState<ModifiedComic | null>(null);
     const {getComicById, loading, error, clearError} = useMarvelService();
+    const currentLocation = useLocation();
 
     const updateComic = () => {
         if (!comicId) {
@@ -59,7 +60,7 @@ function SingleComicPage() {
                     <p className="single-comic__descr">{`Language: ${language}`}</p>
                     <div className="single-comic__price">{`${price}$`}</div>
                 </div>
-                <Link to="/comics" className="single-comic__back">Back to all</Link>
+                <Link to={(currentLocation.state && currentLocation.state.prevPath === "comics") ? "/comics": "/"} className="single-comic__back">Back to all</Link>
             </div>
         );
     }

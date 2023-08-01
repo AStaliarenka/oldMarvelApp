@@ -42,7 +42,7 @@ const ComicsList = (props: comicsListProps) => {
                     //     }
                     // }}
                     >
-                        <Link to={`/comics/${comic.id}`}>
+                        <Link to={`/comics/${comic.id}`} state={{prevPath: 'comics'}}>
                             {/* @ts-ignore */}
                             <img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
                             <div className="comics__item-name">{comic.title}</div>
