@@ -1,6 +1,7 @@
 main .wrapper {
     display: flex;
     justify-content: center;
+    background: center / cover no-repeat url(../../../resources/img/marvelPrev.jpg);
 }
 
 .testForm {
@@ -8,5 +9,10 @@ main .wrapper {
     align-items: start;
     flex-direction: column;
     justify-content: space-between;
-    height: 300px;
+    height: 500px;
+    padding: 40px;
+    margin: 40px 0;
+    background-color: #fff;
+    border-radius: 30px;
+    border: 2px solid black;
 }
