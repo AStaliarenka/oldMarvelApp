@@ -1,0 +1,12 @@
+main .wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.testForm {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+}
