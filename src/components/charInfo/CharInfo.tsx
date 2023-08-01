@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 
 import useMarvelService from '../../services/MarvelService';
 
@@ -97,9 +98,26 @@ const View = ({char}: {char: character}) => {
                 {
                     comics && comics.items.length
                         ? comics.items.slice(0, 9).map((item, i) => { /* 9 - is limit of count */
+                            const comicIdStr = item.resourceURI;
+                            let comicId = '';
+
+                            if (comicIdStr) {
+                                const indexIdStart = comicIdStr.lastIndexOf('/');
+
+                                if (indexIdStart !== -1) {
+                                    comicId = comicIdStr.slice(indexIdStart + 1);
+                                }
+                            }
+
+                            const link = comicId
+                            ? <Link to={`/comics/${comicId}`}>
+                                {item.name}
+                            </Link>
+                            : null;
+
                             return (
                                 <li className="char__comics-item" key={i}>
-                                    {item.name}
+                                    {link}
                                 </li>
                             )
                         })
