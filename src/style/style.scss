@@ -60,6 +60,27 @@ input::-webkit-inner-spin-button {
     }
 }
 
+// 768 - 1
+@media (360px <= width <= 767px) {
+    .app {
+        width: 360px;
+
+        &__header {
+            flex-direction: column;
+        }
+    }
+}
+
+@media (767px <= width <= 1100px) {
+    .app {
+        width: 767px;
+
+        &__header {
+            flex-direction: column;
+        }
+    }
+}
+
 main {
     margin-top: 50px;
     position: relative;
