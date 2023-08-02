@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import AppContainer from "../../appContainer";
+import MarvelButton from "../../marvelButton";
 
 import "./style.scss";
 
@@ -50,7 +51,12 @@ export default function TestFormPage() {
       <p>{data}</p>
       <div className="testForm__buttons">
         <button>Submit</button>
-        <button type="button" onClick={() => {onTestButtonClick()}}>Test BUTTON</button>
+        <MarvelButton
+          buttonStyle="main"
+          onClickHandler={onTestButtonClick}
+          text="Test BUTTON"
+          type="button"
+        />
         <button type="button" onClick={() => {clearErrors()}}>CLEAR errors</button>
       </div>
       

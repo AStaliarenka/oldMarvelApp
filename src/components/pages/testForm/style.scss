@@ -30,4 +30,14 @@ main .wrapper {
         width: 100%;
         height: 200px;
     }
+
+    &__buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        button {
+            margin: 20px;
+        }
+    }
 }
