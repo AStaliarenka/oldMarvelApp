@@ -16,38 +16,46 @@ const App  = () => {
             <div className="app">
                 <AppContainer>
                     <AppHeader/>
-                    <main>
-                        <Routes>
-                            <Route path='/' element={
+                </AppContainer>   
+                <main>
+                    <Routes>
+                        <Route path='/' element={
+                            <AppContainer>
                                 <MainPage/>
-                            }>
-                            </Route>
-                            <Route path='comics' element={
+                            </AppContainer>
+                            
+                        }>
+                        </Route>
+                        <Route path='comics' element={
+                            <AppContainer>
                                 <ErrorBoundary fallback={errFallback}>
                                     <ComicsPage/>
                                 </ErrorBoundary>
-                            }>
-                            </Route>
-                            <Route path='comics/:comicId' element={
+                            </AppContainer>
+                        }>
+                        </Route>
+                        <Route path='comics/:comicId' element={
+                            <AppContainer>
                                 <ErrorBoundary fallback={errFallback}>
                                     <SingleComicPage/>
                                 </ErrorBoundary>
-                            }>
-                            </Route>
-                            <Route path='testForm' element={
-                                <ErrorBoundary fallback={errFallback}>
-                                    <TestFormPage/>
-                                </ErrorBoundary>
-                            }>
-                            </Route>
-                            <Route path='*' element={
+                            </AppContainer>
+                        }>
+                        </Route>
+                        <Route path='testForm' element={
+                            <ErrorBoundary fallback={errFallback}>
+                                <TestFormPage/>
+                            </ErrorBoundary>
+                        }>
+                        </Route>
+                        <Route path='*' element={
+                            <AppContainer>
                                 <Page404/>
-                            }>
-                            </Route>
-                        </Routes>
-                        
-                    </main>
-                </AppContainer>          
+                            </AppContainer>
+                        }>
+                        </Route>
+                    </Routes>   
+                </main>
             </div>
         </BrowserRouter>
     );
