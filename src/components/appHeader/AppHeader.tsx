@@ -6,7 +6,7 @@ const AppHeader = () => {
     const toggleActive = ({isActive}: {isActive: boolean}) => isActive ? "active" : "";
 
     return (
-        <header className="app__header">
+        <header className="app__header app-container">
             <h1 className="app__title">
                 <a href="/#">
                     <span>Marvel</span> information portal

@@ -14,9 +14,7 @@ const App  = () => {
     return (
         <BrowserRouter>
             <div className="app">
-                <AppContainer>
-                    <AppHeader/>
-                </AppContainer>   
+                <AppHeader/> 
                 <main>
                     <Routes>
                         <Route path='/' element={

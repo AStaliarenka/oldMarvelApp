@@ -33,3 +33,18 @@
         }
     }
 }
+
+// 768 - 1
+@media (360px <= width <= 767px) {
+    .app_header.app-container {
+        width: 360px;
+        flex-direction: column;
+    }
+}
+
+@media (767px <= width <= 1100px) {
+    .app_header.app-container {
+        width: 767px;
+        flex-direction: column;
+    }
+}
