@@ -26,9 +26,17 @@ main .wrapper {
     &__inputs {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        // justify-content: space-between;
         width: 100%;
         height: 200px;
+
+        & > * {
+            margin-bottom: 10px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
     }
 
     &__buttons {
