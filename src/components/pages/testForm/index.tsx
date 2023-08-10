@@ -8,20 +8,32 @@ import "./style.scss";
 
 type TestForm = {
   firstName: string;
+  lastName: string;
   category: string;
   aboutYou: string;
 }
 
 enum TestFormInputNames {
   firstName = 'firstName',
+  lastName = 'lastName',
+  // phoneNumber = 'phoneNumber',
   category = 'category',
   aboutYou = 'aboutYou'
 }
 
+const selectOptions: Record<string, string> = {
+  empty: 'Select...',
+  bumer: 'Bumer',
+  zumer: 'Zumer',
+  singer: 'Singer',
+  doter: 'Doter'
+};
+
 export default function TestFormPage() {
   const { register, handleSubmit, setValue, clearErrors, formState: {errors} } = useForm<TestForm>({
     defaultValues: {
-      [TestFormInputNames.firstName]: 'ALEXIUS',
+      [TestFormInputNames.firstName]: 'Wrong',
+      [TestFormInputNames.lastName]: 'Data',
       [TestFormInputNames.aboutYou]: 'genius'
     }
   });
@@ -30,36 +42,47 @@ export default function TestFormPage() {
   const [data, setData] = useState("");
 
   const onTestButtonClick = () => {
-    setValue(TestFormInputNames.firstName, "Maxim");
+    setValue(TestFormInputNames.firstName, "Alex");
+    setValue(TestFormInputNames.lastName, "Stoliarenko");
     setValue(TestFormInputNames.aboutYou, "Not a genius");
     setValue(TestFormInputNames.category, "B");
   };
 
   const form = (
     <form className="testForm"  onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}>
-      
-
       <div className="testForm__inputs">
         <input {...register(TestFormInputNames.firstName)} placeholder="First name" />
+        <input {...register(TestFormInputNames.lastName)} placeholder="Last name" />
         <select {...register(TestFormInputNames.category, { required: true })} aria-invalid={errors.category ? true : false}>
-          <option value="">Select...</option>
-          <option value="A">Option A</option>
-          <option value="B">Option B</option>
+          {
+            Object.keys(selectOptions).map((key, index) => {
+              return <option key={index} value={key}>{selectOptions[key]}</option>;
+            })
+          }
         </select>
         <textarea {...register(TestFormInputNames.aboutYou)} placeholder="About you" />
       </div>
       <p>{data}</p>
       <div className="testForm__buttons">
-        <button>Submit</button>
+        <MarvelButton
+          buttonStyle="main"
+          onClickHandler={() => {}} /* TODO: */
+          text="Submit"
+          type="submit"
+        />
         <MarvelButton
           buttonStyle="main"
           onClickHandler={onTestButtonClick}
           text="Test BUTTON"
           type="button"
         />
-        <button type="button" onClick={() => {clearErrors()}}>CLEAR errors</button>
-      </div>
-      
+        <MarvelButton
+          buttonStyle="secondary"
+          onClickHandler={clearErrors}
+          text="CLEAR errors"
+          type="button"
+        />
+      </div> 
     </form>
   );
 
