@@ -19,8 +19,14 @@ main .wrapper {
     border-radius: 30px;
     border: 2px solid black;
 
-    select[aria-invalid='true'] {
+    [aria-invalid='true'] {
         border-color: red;
+
+        // &:focus, &:focus-visible {
+        //     border-color: red;
+        //     outline: red auto 1px;
+        //     border-width: 1px;
+        // }
     }
 
     &__inputs {
