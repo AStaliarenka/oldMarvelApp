@@ -1,3 +1,5 @@
+import {Helmet} from 'react-helmet';
+
 import { useState } from 'react';
 import { useDidMount } from '../../../helpers/common';
 
@@ -77,6 +79,10 @@ const ComicsPage = () => {
 
   return (
     <div className="comics">
+      <Helmet>
+        <meta name="description" content="Page with list of comics" />
+        <title>Comics page</title>
+      </Helmet>
       <AppBanner/>
       {comicsList}
       {spinner}

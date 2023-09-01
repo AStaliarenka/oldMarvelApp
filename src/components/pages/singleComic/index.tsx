@@ -1,3 +1,4 @@
+import {Helmet} from 'react-helmet';
 import {useState, useEffect} from 'react';
 
 import { Link, useParams, useLocation } from 'react-router-dom';
@@ -71,9 +72,13 @@ function SingleComicPage() {
 
     return (
         <>
-        {errorMessage}
-        {spinner}
-        {content}
+            <Helmet>
+                <meta name="description" content="Page with comic description" />
+                <title>Comic description</title>
+            </Helmet>
+            {errorMessage}
+            {spinner}
+            {content}
         </>
     );
 }
