@@ -16,11 +16,10 @@ type charInfoProps = {
     charId: number | null
 }
 
-
 function CharInfo(props: charInfoProps) {
-    const [char, setChar] = useState(null);
+    const [char, setChar] = useState<character | null>(null);
 
-    const {getCharacterById, loading, error, clearError} = useMarvelService();
+    const {getCharacterById, clearError, process, setProcess} = useMarvelService();
 
     useDidMount(() => {
         updateChar();
@@ -41,24 +40,46 @@ function CharInfo(props: charInfoProps) {
         clearError();
 
         getCharacterById(charId)
-            .then(onCharLoaded);
+            .then(onCharLoaded)
+            .then(() => setProcess('confirmed'));
     }
 
-    const onCharLoaded = (char: any) => {
-        setChar(char);
+    const onCharLoaded = (char: Awaited<ReturnType<typeof getCharacterById>>) => {
+        if (char) {
+            setChar(char);
+        }
+        else {
+            throw new Error('Undefined character');
+        }
     }
 
-    const mockLayout = char || loading || error ? null : <Sceleton/>;
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(error || loading || !char) ? <View char = {char}/> : null;
+    const setContent = (process: any, char: any) => {
+        switch (process) {
+            case 'waiting':
+                return <Sceleton/>;
+            case 'loading':
+                return <Spinner/>;
+            case 'confirmed':
+                return <View char={char}/>;
+            case 'error':
+                return <ErrorMessage/>
+            default:
+                throw new Error('Unexpected process state');
+        }
+    } 
+
+    // const mockLayout = char || loading || error ? null : <Sceleton/>;
+    // const errorMessage = error ? <ErrorMessage/> : null;
+    // const spinner = loading ? <Spinner/> : null;
+    // const content = !(error || loading || !char) ? <View char = {char}/> : null;
 
     return (
         <div className="char__info">
-            {mockLayout}
+            {/* {mockLayout}
             {errorMessage}
             {spinner}
-            {content}
+            {content} */}
+            {setContent(process, char)}
         </div>
     );
 }
