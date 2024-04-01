@@ -13,9 +13,9 @@ const userInitialState: AuthState = {
 export const authReducer: Reducer<AuthState, AuthAction> = (state = userInitialState, action) => {
     switch (action.type) {
         case AuthActionTypes.login:
-            return {isSignedIn: true, userId: action.payload, error: null};
+            return {...state, isSignedIn: true, userId: action.payload, error: null}; // ...state for beauty
         case AuthActionTypes.logout:
-            return {isSignedIn: false, userId: null, error: null};
+            return {...state, isSignedIn: false, userId: null, error: null};
         default:
             return {...state, error: 'Unexpected error on authReducer'};
     }
