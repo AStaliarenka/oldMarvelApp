@@ -1,22 +1,34 @@
-import { Reducer } from '@reduxjs/toolkit'
+import { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { AuthState, AuthAction, AuthActionTypes } from './@types';
+import { AuthState } from './@types';
+// import { AuthState, AuthAction, AuthActionTypes } from './@types';
 
-const userInitialState: AuthState = {
+const initialState: AuthState = {
     isSignedIn: false,
     userId: null,
     error: null,
 };
 
-// PayloadAction<number, (typeof actions)[keyof typeof actions]>
-
-export const authReducer: Reducer<AuthState, AuthAction> = (state = userInitialState, action) => {
-    switch (action.type) {
-        case AuthActionTypes.login:
-            return {...state, isSignedIn: true, userId: action.payload, error: null}; // ...state for beauty
-        case AuthActionTypes.logout:
-            return {...state, isSignedIn: false, userId: null, error: null};
-        default:
-            return {...state, error: 'Unexpected error on authReducer'};
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers: {
+        userLoggedIn(state, action: PayloadAction<number>) {
+            const userId = action.payload;
+            
+            state.error = null;
+            state.userId = userId;
+        },
+        userLoggedOut(state, action: PayloadAction<void>) {
+            state.error = null;
+            state.userId = null;
+        }
     }
-};
+});
+
+const {actions, reducer} = authSlice;
+
+export const {userLoggedIn, userLoggedOut} = actions;
+
+export default reducer;

@@ -5,6 +5,12 @@ import {get as getDataFromLs} from "local-storage";
 import AppContainer from "../../appContainer";
 import MarvelButton from "../../marvelButton";
 
+import { useAppDispatch } from "../../../hooks/redux.hooks";
+
+import { userLoggedOut, userLoggedIn } from "../../../app/reducers/auth";
+
+import store from "../../../app/store/store";
+
 import "./style.scss";
 
 type TestForm = {
@@ -43,6 +49,14 @@ export default function TestFormPage() {
     }
   });
 
+  const dispatch = useAppDispatch();
+
+  const userDataFromDB = {
+    firstName: "Alex",
+    lastName: "Stoliarenko",
+    userId: 15
+  };
+
   const [data, setData] = useState("");
 
   const onTestButtonClick = () => {
@@ -55,7 +69,7 @@ export default function TestFormPage() {
   const onValidSubmit = (data: TestForm) => {
     const currenUser = getDataFromLs<UserInfo>('user');
 
-    if (currenUser && data.firstName === 'Alex' && data.lastName === 'Stoliarenko') {
+    if (currenUser && data.firstName === userDataFromDB.firstName && data.lastName === userDataFromDB.lastName) {
       alert('success');
     }
     else {
@@ -109,6 +123,26 @@ export default function TestFormPage() {
           buttonStyle="main"
           onClickHandler={onTestButtonClick}
           text="Test BUTTON"
+          type="button"
+        />
+        <MarvelButton
+          buttonStyle="main"
+          // onClickHandler={() => store.dispatch({type: "auth/userLoggedIn", payload: 16})} /* TODO: */
+          onClickHandler={() => dispatch(userLoggedIn(16))}
+          text="Fake login"
+          type="button"
+        />
+        <MarvelButton
+          buttonStyle="main"
+          // onClickHandler={() => store.dispatch({type: "auth/userLoggedOut"})} /* TODO: */
+          onClickHandler={() => dispatch(userLoggedOut())}
+          text="Fake logout"
+          type="button"
+        />
+        <MarvelButton
+          buttonStyle="main"
+          onClickHandler={() => console.log(store.getState())} /* TODO: */
+          text="Show state in console"
           type="button"
         />
         <MarvelButton
