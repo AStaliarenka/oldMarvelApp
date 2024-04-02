@@ -5,7 +5,6 @@ import ErrorBoundary from '../../errorBoundary/ErrorBoundary';
 import RandomChar from '../../randomChar/RandomChar';
 import CharList from '../../charList/CharList';
 import CharInfo from '../../charInfo/CharInfo';
-import decoration from '../../../resources/img/vision.png';
 
 const MainPage = () => {
     const errFallback = <p>Something went wrong</p>;
@@ -33,7 +32,6 @@ const MainPage = () => {
                     <CharInfo charId={selectedChar}/>
                 </ErrorBoundary>
             </div>
-            <img className="bg-decoration" src={decoration} alt="vision"/>
         </div>
     );
 }
