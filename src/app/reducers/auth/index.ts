@@ -17,10 +17,12 @@ const authSlice = createSlice({
         userLoggedIn(state, action: PayloadAction<number>) {
             const userId = action.payload;
             
+            state.isSignedIn = true;
             state.error = null;
             state.userId = userId;
         },
         userLoggedOut(state, action: PayloadAction<void>) {
+            state.isSignedIn = false;
             state.error = null;
             state.userId = null;
         }
