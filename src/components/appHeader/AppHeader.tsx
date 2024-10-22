@@ -1,5 +1,7 @@
 import './appHeader.scss';
 
+import Theme from '../theme';
+
 import { NavLink } from 'react-router-dom';
 
 const AppHeader = () => {
@@ -8,13 +10,7 @@ const AppHeader = () => {
     return (
         <header className="app__header mainHeader app-container">
             <div className='mainHeader__topRow'>
-                <div className='mainHeader__themeToggle themeToggle'>
-                    <span className='themeToggle__label'>Theme</span>
-                    <label className = "switch">
-                        <input type="checkbox"></input>
-                        <span className="slider round"></span>
-                    </label>
-                </div>
+                <Theme/>
             </div>
             <div className="mainHeader__bottomRow">
                 <h1 className="app__title">
