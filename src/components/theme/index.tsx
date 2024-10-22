@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hooks";
 import { useEffect } from "react";
 import { set } from "./slice";
+import { THEME_VALUES } from "./slice/@types";
 
 import "./style.scss";
 
@@ -16,7 +17,7 @@ const Theme = () => {
     }, [ theme ]);
 
     const handleChange = () => {
-        const next = theme === 'dark' ? 'light' : 'dark';
+        const next = theme === THEME_VALUES.dark ? THEME_VALUES.light : THEME_VALUES.dark;
 
         dispatch(set(next));
     }
@@ -26,7 +27,7 @@ const Theme = () => {
             <span className='themeToggle__label'>Theme</span>
             <label className = "switch">
                 <input type="checkbox"
-                    checked = {theme === 'dark' ? true : false}
+                    checked = {theme === THEME_VALUES.dark ? true : false}
                     onClick={handleChange}>
                 </input>
                 <span className="slider round"></span>
