@@ -27,7 +27,7 @@ const Theme = () => {
             <span className='themeToggle__label'>Theme</span>
             <label className = "switch">
                 <input type="checkbox"
-                    checked = {theme === THEME_VALUES.dark ? true : false}
+                    defaultChecked = {theme === THEME_VALUES.dark ? true : false}
                     onClick={handleChange}>
                 </input>
                 <span className="slider round"></span>
