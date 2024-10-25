@@ -2,12 +2,13 @@
 
 .app {
     &__header {
-        .mainHeader {
+        &.mainHeader {
+            padding: 50px 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
     
-            &__bottomRow {
+            .mainHeader__bottomRow {
                 display: flex;
                 justify-content: space-between;
                 margin-top: 20px;
@@ -49,14 +50,14 @@
 
 // 768 - 1
 @media (360px <= width <= 767px) {
-    .app_header.app-container {
+    .app_header.mainHeader {
         width: 360px;
         flex-direction: column;
     }
 }
 
 @media (767px <= width <= 1100px) {
-    .app_header.app-container {
+    .app_header.mainHeader {
         width: 767px;
         flex-direction: column;
     }
