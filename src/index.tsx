@@ -19,5 +19,7 @@ root.render(
 // is mounted two times with React Strict
 
 // root.render(
-//     <App />
+//     <Provider store={store}>
+//       <App />
+//     </Provider>
 // );
