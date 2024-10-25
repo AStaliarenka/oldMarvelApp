@@ -24,7 +24,7 @@ const Theme = () => {
 
     return (
         <div className='themeToggle'>
-            <span className='themeToggle__label'>Theme</span>
+            <span className='themeToggle__label'>{theme === THEME_VALUES.dark ? 'Dark' : 'Light'}</span>
             <label className = "switch">
                 <input type="checkbox"
                     defaultChecked = {theme === THEME_VALUES.dark ? true : false}

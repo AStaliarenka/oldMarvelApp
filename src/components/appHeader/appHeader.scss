@@ -1,23 +1,27 @@
 @import '../../style/variables.scss';
 
 .app {
-    &__header {
-        &.mainHeader {
-            background-color: rgb(var((--main-header-background)));
+    &__header.mainHeader {
+        background-color: rgb(var((--main-header-background)));
+
+        .app__container {
+            margin: 0 auto;
+            padding: 50px 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-    
+
             .mainHeader__bottomRow {
                 display: flex;
                 justify-content: space-between;
                 margin-top: 20px;
             }
     
-            // &__topRow {
-            //     // float: right;                
-            // }
-        }
+            .mainHeader__topRow {
+                display: flex;
+                justify-content: end;              
+            }
+        }    
     }
     &__title {
         color: rgb(var((--main-header-text-secondary)));
