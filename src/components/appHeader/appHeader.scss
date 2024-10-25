@@ -3,6 +3,7 @@
 .app {
     &__header {
         &.mainHeader {
+            background-color: rgb(var((--main-header-background)));;
             padding: 50px 0;
             display: flex;
             flex-direction: column;
@@ -20,11 +21,12 @@
         }
     }
     &__title {
+        color: rgb(var((--main-header-text-secondary)));
         font-weight: bold;
         font-size: 28px;
         line-height: 37px;
         span {
-            color: $main-color;
+            color: rgb(var((--main-header-text-primary)));
         }
     }
     &__menu {
@@ -35,13 +37,14 @@
             font-size: 24px;
             line-height: 32px;
             li {
+                color: rgb(var((--main-header-text-secondary)));
                 margin: 0 8px;
                 a:hover {
-                    color: $main-color;
+                    color: rgb(var((--main-header-text-hover)));
                 }
 
                 a.active {
-                    color: $main-color;
+                    color: rgb(var((--main-header-text-primary)));
                 }
             }
         }

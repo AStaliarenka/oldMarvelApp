@@ -1,0 +1,23 @@
+@import './colors.scss';
+
+// TODO: split into 2 files
+
+[data-theme='light'] {
+    // main-header
+    --main-header-text-primary: var(--red-500);
+    --main-header-text-hover: var(--red-500);
+
+    --main-header-text-secondary: var(--black-999);
+
+    --main-header-background: var(--white);
+}
+
+[data-theme='dark'] {
+    // main-header
+    --main-header-text-primary: var(--red-200);
+    --main-header-text-hover: var(--black-999);
+
+    --main-header-text-secondary: var(--white);
+
+    --main-header-background: var(--black-600);
+}
