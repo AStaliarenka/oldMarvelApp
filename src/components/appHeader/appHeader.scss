@@ -3,8 +3,7 @@
 .app {
     &__header {
         &.mainHeader {
-            background-color: rgb(var((--main-header-background)));;
-            padding: 50px 0;
+            background-color: rgb(var((--main-header-background)));
             display: flex;
             flex-direction: column;
             justify-content: space-between;
