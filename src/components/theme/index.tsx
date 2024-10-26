@@ -22,12 +22,23 @@ const Theme = () => {
         dispatch(set(next));
     }
 
+    let toggleLabelValue: string, checkboxValue: boolean;
+
+    if (theme === THEME_VALUES.dark) {
+        toggleLabelValue = 'Dark';
+        checkboxValue = true;
+    }
+    else {
+        toggleLabelValue = 'Light';
+        checkboxValue = false;
+    }
+
     return (
         <div className='themeToggle'>
-            <span className='themeToggle__label'>{theme === THEME_VALUES.dark ? 'Dark' : 'Light'}</span>
+            <span className='themeToggle__label'>{toggleLabelValue}</span>
             <label className = "switch">
                 <input type="checkbox"
-                    defaultChecked = {theme === THEME_VALUES.dark ? true : false}
+                    defaultChecked = {checkboxValue}
                     onClick={handleChange}>
                 </input>
                 <span className="slider round"></span>
