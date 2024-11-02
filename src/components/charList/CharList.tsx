@@ -37,7 +37,7 @@ function CharList(props: charListProps) {
 
 	function generateCharGrid(characters: characterInfo[]) {
 		const charListItems = characters.map((character, i) => {
-			let imgStyle = {objectFit : "cover"};
+			let imgStyle: React.CSSProperties = {objectFit : "cover"};
 
 			if (character.thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
 				imgStyle = {objectFit : "unset"};
@@ -64,7 +64,6 @@ function CharList(props: charListProps) {
 						}
 					}}
 				>
-					{/* @ts-ignore */}
 					<img src={character.thumbnail ? character.thumbnail : abyss} alt="character" style={imgStyle}/>
 					<div className="char__name">{character.name}</div>
 				</li>
