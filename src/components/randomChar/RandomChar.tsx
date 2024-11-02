@@ -70,7 +70,7 @@ function RandomChar() {
 const View = ({char}: any) => {
 	const {name, description, thumbnail, homepage, wiki} = char;
 
-	let imgStyle = {objectFit : "cover"};
+	let imgStyle: React.CSSProperties = {objectFit : "cover"};
 
 	if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
 		imgStyle = {objectFit : "unset"};
@@ -78,7 +78,6 @@ const View = ({char}: any) => {
 
 	return (
 		<div className="randomchar__block">
-			{/* @ts-ignore */}
 			<img src={thumbnail} alt="Random character" className="randomchar__img" style={imgStyle}/>
 			<div className="randomchar__info">
 				<p className="randomchar__name">{name}</p>
