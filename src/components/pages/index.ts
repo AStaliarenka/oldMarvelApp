@@ -5,9 +5,9 @@ import SingleComicPage from "./singleComic";
 import TestFormPage from "./testForm";
 
 export {
-    MainPage,
-    ComicsPage,
-    Page404,
-    SingleComicPage,
-    TestFormPage
+	MainPage,
+	ComicsPage,
+	Page404,
+	SingleComicPage,
+	TestFormPage
 }

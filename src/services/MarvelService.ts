@@ -46,7 +46,7 @@ const useMarvelService = () => {
 				return {
 					id: character.id,
 					name: character.name,
-					thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : '',
+					thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : "",
 				};
 			});
 		}
@@ -55,12 +55,12 @@ const useMarvelService = () => {
 	function transformComicData(comic: Comic) {
 		return {
 			id: comic.id || 0,
-			title: comic.title || 'unknown',
-			thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : '',
-			language: (comic.textObjects?.length && comic.textObjects[0].language) ? comic.textObjects[0].language : 'unknown', /* TODO: lang list*/
-			description: comic.description ? comic.description : 'No description',
-			price: (comic.prices?.length && comic.prices[0].price) ? String(comic.prices[0].price) : 'unknown price',
-			pageCount: comic.pageCount ? comic.pageCount : 'unknown'
+			title: comic.title || "unknown",
+			thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : "",
+			language: (comic.textObjects?.length && comic.textObjects[0].language) ? comic.textObjects[0].language : "unknown", /* TODO: lang list*/
+			description: comic.description ? comic.description : "No description",
+			price: (comic.prices?.length && comic.prices[0].price) ? String(comic.prices[0].price) : "unknown price",
+			pageCount: comic.pageCount ? comic.pageCount : "unknown"
 		};
 	}
 
@@ -98,11 +98,11 @@ const useMarvelService = () => {
 
 	const transformCharacterData = (character: Character): myCharacter => {
 		return {
-			name: character.name || 'Unknown hero',
-			description: character.description || 'no description about character',
-			thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : '',
-			homepage: character.urls ? (character.urls[0].url || '/#') : '/#',
-			wiki: character.urls ? (character.urls[1].url || '/#') : '/#',
+			name: character.name || "Unknown hero",
+			description: character.description || "no description about character",
+			thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : "",
+			homepage: character.urls ? (character.urls[0].url || "/#") : "/#",
+			wiki: character.urls ? (character.urls[1].url || "/#") : "/#",
 			comics: character.comics
 		};
 	}

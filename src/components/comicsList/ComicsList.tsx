@@ -1,72 +1,72 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import './comicsList.scss';
+import "./comicsList.scss";
 
-import abyss from '../../resources/img/abyss.jpg';
+import abyss from "../../resources/img/abyss.jpg";
 
-import { ModifiedComic } from '../../services/MarvelService';
+import { ModifiedComic } from "../../services/MarvelService";
 
 type comicsListProps = {
     comics: ModifiedComic[];
 }
 
 const ComicsList = (props: comicsListProps) => {
-    function generateComicsGrid(comics: ModifiedComic[]) {
-        const comicsListItems = comics.map((comic, i) => {
-            let imgStyle = {objectFit : 'cover'};
+	function generateComicsGrid(comics: ModifiedComic[]) {
+		const comicsListItems = comics.map((comic, i) => {
+			let imgStyle = {objectFit : "cover"};
 
-            if (comic.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-                imgStyle = {objectFit : 'unset'};
-            }
+			if (comic.thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
+				imgStyle = {objectFit : "unset"};
+			}
 
-            return (
-                <li 
-                    className="comics__item"
-                    tabIndex={0}
-                    // ref={element => {
-                    //     if (element) {
-                    //         itemsRef.current[i] = element
-                    //     }
-                    // }}
-                    key={i} /* TODO: ID*/
-                    // onClick={() => {
-                    //     if (comic.id) {
-                    //         props.onComicSelected(comic.id);
-                    //     }
-                    //     // focusOnItem(i);
-                    // }}
-                    // onKeyDown={(e) => {
-                    //     if (e.key === ' ' || e.key === 'Enter') {
-                    //         props.onComicSelected(comic.id);
-                    //         focusOnItem(i);
-                    //     }
-                    // }}
-                    >
-                        <Link to={`/comics/${comic.id}`} state={{prevPath: 'comics'}}>
-                            {/* @ts-ignore */}
-                            <img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
-                            <div className="comics__item-name">{comic.title}</div>
-                            <div className="comics__item-price">NOT AVAILABLE</div>
-                        </Link>
+			return (
+				<li 
+					className="comics__item"
+					tabIndex={0}
+					// ref={element => {
+					//     if (element) {
+					//         itemsRef.current[i] = element
+					//     }
+					// }}
+					key={i} /* TODO: ID*/
+					// onClick={() => {
+					//     if (comic.id) {
+					//         props.onComicSelected(comic.id);
+					//     }
+					//     // focusOnItem(i);
+					// }}
+					// onKeyDown={(e) => {
+					//     if (e.key === ' ' || e.key === 'Enter') {
+					//         props.onComicSelected(comic.id);
+					//         focusOnItem(i);
+					//     }
+					// }}
+				>
+					<Link to={`/comics/${comic.id}`} state={{prevPath: "comics"}}>
+						{/* @ts-ignore */}
+						<img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
+						<div className="comics__item-name">{comic.title}</div>
+						<div className="comics__item-price">NOT AVAILABLE</div>
+					</Link>
                     
-                </li>
-            );
-        });
+				</li>
+			);
+		});
 
-        return (
-            <ul className="comics__grid">
-                {comicsListItems}
-            </ul>
-        );
-    }
+		return (
+			<ul className="comics__grid">
+				{comicsListItems}
+			</ul>
+		);
+	}
 
-    const comicsList = generateComicsGrid(props.comics);
+	const comicsList = generateComicsGrid(props.comics);
 
-    return (
-        <div className="comics__list">
-            {comicsList}
-        </div>
-    );
+	return (
+		<div className="comics__list">
+			{comicsList}
+		</div>
+	);
 }
 
 export default ComicsList;

@@ -7,11 +7,11 @@ type ButtonProps = {
 }
 
 export default function MarvelButton(props: ButtonProps) {
-    return (
-        <button className={`button button__${props.buttonStyle}`} type={props.type} onClick={() => {props.onClickHandler()}}>
-          <div className="inner">
-            {props.text}
-          </div>
-        </button>
-    );
+	return (
+		<button className={`button button__${props.buttonStyle}`} type={props.type} onClick={() => {props.onClickHandler()}}>
+			<div className="inner">
+				{props.text}
+			</div>
+		</button>
+	);
 }

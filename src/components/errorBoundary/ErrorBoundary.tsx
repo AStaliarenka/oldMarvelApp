@@ -1,5 +1,5 @@
-import {Component} from 'react';
-import ErrorMessage from '../errorMessage/errorMessage';
+import {Component} from "react";
+import ErrorMessage from "../errorMessage/errorMessage";
 
 type State = {
 	hasError: boolean;
@@ -16,7 +16,7 @@ class ErrorBoundary extends Component<Props, State> {
 	}
 
 	componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-		console.log('error', error);
+		console.log("error", error);
 	}
 
 	static getDerivedStateFromError() {

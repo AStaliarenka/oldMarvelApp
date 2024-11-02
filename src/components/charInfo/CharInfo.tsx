@@ -1,152 +1,152 @@
-import {useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import {useEffect, useState} from "react";
+import { Link } from "react-router-dom";
 
-import useMarvelService from '../../services/MarvelService';
+import useMarvelService from "../../services/MarvelService";
 
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/errorMessage';
-import Sceleton from '../skeleton/Skeleton';
-import { useDidMount } from '../../helpers/common';
+import Spinner from "../spinner/Spinner";
+import ErrorMessage from "../errorMessage/errorMessage";
+import Sceleton from "../skeleton/Skeleton";
+import { useDidMount } from "../../helpers/common";
 
-import { character } from '../interfaces/character';
+import { character } from "../interfaces/character";
 
-import './charInfo.scss';
+import "./charInfo.scss";
 
 type charInfoProps = {
     charId: number | null
 }
 
 function CharInfo(props: charInfoProps) {
-    const [char, setChar] = useState<character | null>(null);
+	const [char, setChar] = useState<character | null>(null);
 
-    const {getCharacterById, clearError, process, setProcess} = useMarvelService();
+	const {getCharacterById, clearError, process, setProcess} = useMarvelService();
 
-    useDidMount(() => {
-        updateChar();
-    });
+	useDidMount(() => {
+		updateChar();
+	});
 
-    useEffect(() => {
-        updateChar();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.charId]);
+	useEffect(() => {
+		updateChar();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [props.charId]);
 
-    const updateChar = () => {
-        const {charId} = props;
+	const updateChar = () => {
+		const {charId} = props;
 
-        if (!charId) {
-            return;
-        }
+		if (!charId) {
+			return;
+		}
 
-        clearError();
+		clearError();
 
-        getCharacterById(charId)
-            .then(onCharLoaded)
-            .then(() => setProcess('confirmed'));
-    }
+		getCharacterById(charId)
+			.then(onCharLoaded)
+			.then(() => setProcess("confirmed"));
+	}
 
-    const onCharLoaded = (char: Awaited<ReturnType<typeof getCharacterById>>) => {
-        if (char) {
-            setChar(char);
-        }
-        else {
-            throw new Error('Undefined character');
-        }
-    }
+	const onCharLoaded = (char: Awaited<ReturnType<typeof getCharacterById>>) => {
+		if (char) {
+			setChar(char);
+		}
+		else {
+			throw new Error("Undefined character");
+		}
+	}
 
-    const setContent = (process: any, char: any) => {
-        switch (process) {
-            case 'waiting':
-                return <Sceleton/>;
-            case 'loading':
-                return <Spinner/>;
-            case 'confirmed':
-                return <View char={char}/>;
-            case 'error':
-                return <ErrorMessage/>
-            default:
-                throw new Error('Unexpected process state');
-        }
-    } 
+	const setContent = (process: any, char: any) => {
+		switch (process) {
+		case "waiting":
+			return <Sceleton/>;
+		case "loading":
+			return <Spinner/>;
+		case "confirmed":
+			return <View char={char}/>;
+		case "error":
+			return <ErrorMessage/>
+		default:
+			throw new Error("Unexpected process state");
+		}
+	} 
 
-    // const mockLayout = char || loading || error ? null : <Sceleton/>;
-    // const errorMessage = error ? <ErrorMessage/> : null;
-    // const spinner = loading ? <Spinner/> : null;
-    // const content = !(error || loading || !char) ? <View char = {char}/> : null;
+	// const mockLayout = char || loading || error ? null : <Sceleton/>;
+	// const errorMessage = error ? <ErrorMessage/> : null;
+	// const spinner = loading ? <Spinner/> : null;
+	// const content = !(error || loading || !char) ? <View char = {char}/> : null;
 
-    return (
-        <div className="char__info">
-            {/* {mockLayout}
+	return (
+		<div className="char__info">
+			{/* {mockLayout}
             {errorMessage}
             {spinner}
             {content} */}
-            {setContent(process, char)}
-        </div>
-    );
+			{setContent(process, char)}
+		</div>
+	);
 }
 
 const View = ({char}: {char: character}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
+	const {name, description, thumbnail, homepage, wiki, comics} = char;
 
-    let imgStyle = {objectFit : 'cover'};
+	let imgStyle = {objectFit : "cover"};
 
-    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-        imgStyle = {objectFit : 'unset'};
-    }
+	if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
+		imgStyle = {objectFit : "unset"};
+	}
 
-    return (
-        <>
-            <div className="char__basics">
-                {/* @ts-ignore */}
-                <img src={thumbnail} style={imgStyle} alt="abyss"/>
-                <div>
-                    <div className="char__info-name">{name}</div>
-                    <div className="char__btns">
-                        <a href={homepage} className="button button__main">
-                            <div className="inner">homepage</div>
-                        </a>
-                        <a href={wiki} className="button button__secondary">
-                            <div className="inner">Wiki</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div className="char__descr">
-                {description}
-            </div>
-            <div className="char__comics">Comics:</div>
-            <ul className="char__comics-list">
-                {comics && comics.items.length > 0 ? null : 'There is no comics with this character'}
-                {
-                    comics && comics.items.length
-                        ? comics.items.slice(0, 9).map((item, i) => { /* 9 - is limit of count */
-                            const comicIdStr = item.resourceURI;
-                            let comicId = '';
+	return (
+		<>
+			<div className="char__basics">
+				{/* @ts-ignore */}
+				<img src={thumbnail} style={imgStyle} alt="abyss"/>
+				<div>
+					<div className="char__info-name">{name}</div>
+					<div className="char__btns">
+						<a href={homepage} className="button button__main">
+							<div className="inner">homepage</div>
+						</a>
+						<a href={wiki} className="button button__secondary">
+							<div className="inner">Wiki</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div className="char__descr">
+				{description}
+			</div>
+			<div className="char__comics">Comics:</div>
+			<ul className="char__comics-list">
+				{comics && comics.items.length > 0 ? null : "There is no comics with this character"}
+				{
+					comics && comics.items.length
+						? comics.items.slice(0, 9).map((item, i) => { /* 9 - is limit of count */
+							const comicIdStr = item.resourceURI;
+							let comicId = "";
 
-                            if (comicIdStr) {
-                                const indexIdStart = comicIdStr.lastIndexOf('/');
+							if (comicIdStr) {
+								const indexIdStart = comicIdStr.lastIndexOf("/");
 
-                                if (indexIdStart !== -1) {
-                                    comicId = comicIdStr.slice(indexIdStart + 1);
-                                }
-                            }
+								if (indexIdStart !== -1) {
+									comicId = comicIdStr.slice(indexIdStart + 1);
+								}
+							}
 
-                            const link = comicId
-                            ? <Link to={`/comics/${comicId}`}>
-                                {item.name}
-                            </Link>
-                            : null;
+							const link = comicId
+								? <Link to={`/comics/${comicId}`}>
+									{item.name}
+								</Link>
+								: null;
 
-                            return (
-                                <li className="char__comics-item" key={i}>
-                                    {link}
-                                </li>
-                            )
-                        })
-                        : null
-                }
-            </ul>
-        </>
-    );
+							return (
+								<li className="char__comics-item" key={i}>
+									{link}
+								</li>
+							)
+						})
+						: null
+				}
+			</ul>
+		</>
+	);
 }
 
 export default CharInfo;

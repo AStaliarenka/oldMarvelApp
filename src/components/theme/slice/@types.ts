@@ -1,6 +1,6 @@
 export const THEME_VALUES = {
 	dark: "dark",
-    light: "light"
+	light: "light"
 } as const;
 
 type ObjectValues<T> = T[keyof T];
