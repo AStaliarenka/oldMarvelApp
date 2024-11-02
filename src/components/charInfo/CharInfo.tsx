@@ -27,7 +27,6 @@ function CharInfo(props: charInfoProps) {
 
 	useEffect(() => {
 		updateChar();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.charId]);
 
 	const updateChar = () => {
@@ -96,7 +95,7 @@ const View = ({char}: {char: character}) => {
 	return (
 		<>
 			<div className="char__basics">
-				{/* @ts-ignore */}
+
 				<img src={thumbnail} style={imgStyle} alt="abyss"/>
 				<div>
 					<div className="char__info-name">{name}</div>

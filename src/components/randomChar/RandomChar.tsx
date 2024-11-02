@@ -37,7 +37,6 @@ function RandomChar() {
 		return () => {
 			clearInterval(timerId);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const errorMessage = error ? <ErrorMessage/> : null;
