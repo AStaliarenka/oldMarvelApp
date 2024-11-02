@@ -14,6 +14,8 @@ export default [
     rules: {
       "quotes": ["error", "double"],
       "indent": ["error", "tab"],
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
     }
   }
 ];
