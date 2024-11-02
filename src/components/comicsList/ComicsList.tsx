@@ -13,7 +13,7 @@ type comicsListProps = {
 const ComicsList = (props: comicsListProps) => {
 	function generateComicsGrid(comics: ModifiedComic[]) {
 		const comicsListItems = comics.map((comic, i) => {
-			let imgStyle = {objectFit : "cover"};
+			let imgStyle: React.CSSProperties = {objectFit : "cover"};
 
 			if (comic.thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
 				imgStyle = {objectFit : "unset"};
@@ -43,7 +43,6 @@ const ComicsList = (props: comicsListProps) => {
 					// }}
 				>
 					<Link to={`/comics/${comic.id}`} state={{prevPath: "comics"}}>
-						{/* @ts-ignore */}
 						<img src={comic.thumbnail ? comic.thumbnail : abyss} alt="comic" className="comics__item-img" style={imgStyle}/>
 						<div className="comics__item-name">{comic.title}</div>
 						<div className="comics__item-price">NOT AVAILABLE</div>
