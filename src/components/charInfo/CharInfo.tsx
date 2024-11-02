@@ -86,7 +86,7 @@ function CharInfo(props: charInfoProps) {
 const View = ({char}: {char: character}) => {
 	const {name, description, thumbnail, homepage, wiki, comics} = char;
 
-	let imgStyle = {objectFit : "cover"};
+	let imgStyle: React.CSSProperties = {objectFit : "cover"};
 
 	if (thumbnail === "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg") {
 		imgStyle = {objectFit : "unset"};
@@ -95,7 +95,6 @@ const View = ({char}: {char: character}) => {
 	return (
 		<>
 			<div className="char__basics">
-				{/* @ts-ignore */}
 				<img src={thumbnail} style={imgStyle} alt="abyss"/> 
 				<div>
 					<div className="char__info-name">{name}</div>
