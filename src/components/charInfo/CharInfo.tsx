@@ -95,8 +95,8 @@ const View = ({char}: {char: character}) => {
 	return (
 		<>
 			<div className="char__basics">
-
-				<img src={thumbnail} style={imgStyle} alt="abyss"/>
+				{/* @ts-ignore */}
+				<img src={thumbnail} style={imgStyle} alt="abyss"/> 
 				<div>
 					<div className="char__info-name">{name}</div>
 					<div className="char__btns">
