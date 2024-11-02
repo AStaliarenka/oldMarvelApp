@@ -1,5 +1,3 @@
-@import '../../../style/variables.scss';
-
 .single-comic {
     margin-top: 50px;
     display: grid;
@@ -24,7 +22,7 @@
         font-weight: bold;
         font-size: 24px;
         line-height: 32px;
-        color: $main-color;
+        color: rgb(var(--red-500));
         margin-top: 25px;
     }
     &__back {
@@ -34,7 +32,7 @@
         font-size: 18px;
         line-height: 24px;
         &:hover {
-            color: $main-color;
+            color: rgb(var(--red-500));
         }
     }
 }

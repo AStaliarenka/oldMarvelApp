@@ -1,9 +1,7 @@
-@import '../../style/variables.scss';
-
 .app {
     &__banner {
         width: 100%;
-        background-color: $dark;
+        background-color: rgb(var(--black-700));
         height: 100px;
         padding: 0 25px 0 45px;
         display: grid;

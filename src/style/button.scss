@@ -1,5 +1,3 @@
-@import './variables';
-
 .button {
     min-width: 101px;
     color: #fff;
@@ -17,12 +15,12 @@
     }
     .inner {
         position: relative;
-        background-color: $main-color;
+        background-color: rgb(var(--red-500));
         line-height: 18px;
         padding: 0 18px;
         transition: none;
         &::before {
-            border-color: $main-color transparent;
+            border-color: rgb(var(--red-500)) transparent;
             border-style: solid;
             border-width: 0 0 10px 10px;
             content: "";
@@ -33,7 +31,7 @@
             transition: none;
         }
         &::after {
-            border-color: $main-color transparent;
+            border-color: rgb(var(--red-500)) transparent;
             border-style: solid;
             border-width: 0 0 10px 10px;
             content: "";
@@ -52,13 +50,13 @@
     }
     &__secondary {
         .inner {
-            background-color: $grey;
+            background-color: rgb(var(--black-200));
             &::before {
-                border-color: $grey transparent;
+                border-color: rgb(var(--black-200)) transparent;
                 transition: none;
             }
             &::after {
-                border-color: $grey transparent; 
+                border-color: rgb(var(--black-200)) transparent; 
                 transition: none;
             }
         }
@@ -80,10 +78,10 @@
 
     }
     &.button__main::before, &.button__main::after {
-        background-color: $main-color;
+        background-color: rgb(var(--red-500));
     }
     &.button__secondary::before, &.button__secondary::after {
-        background-color: $grey;
+        background-color: rgb(var(--black-200));
     }
     &:hover {
         transform: translateY(-5px);
