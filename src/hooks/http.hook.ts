@@ -42,7 +42,7 @@ export const useHttp = () => {
 			setError(error.message);
 			setProcess(PROCESS_NAMES.error);
 
-			throw(error);
+			// throw(error); /* TODO: change */
 		}
 	}, []);
 	/* eslint-disable */
