@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
 const PROCESS_NAMES = {
 	waiting: "waiting",
@@ -16,7 +16,7 @@ export const useHttp = () => {
 	const [error, setError] = useState<null | any>(null);
 	const [process, setProcess] = useState<Process>(PROCESS_NAMES.waiting);
 
-	const request = useCallback(async (
+	const request = async (
 		url: string,
 		method = "GET",
 		body = null,
@@ -44,9 +44,9 @@ export const useHttp = () => {
 
 			// throw(error); /* TODO: change */
 		}
-	}, []);
+	};
 	/* eslint-disable */
-	const requestFunc = useCallback(async <T extends Function>(func: T, params?: any) => { /* TODO: any */
+	const requestFunc = async <T extends Function>(func: T, params?: any) => { /* TODO: any */
 		/* eslint-enable */
 		setLoading(true);
 
@@ -66,12 +66,12 @@ export const useHttp = () => {
 
 			// throw(error); /* TODO: I skip this now) */
 		}
-	}, []);
+	};
 
-	const clearError = useCallback(() => {
+	const clearError = () => {
 		setError(null);
 		setProcess(PROCESS_NAMES.loading); /* TODO: check is liading need here */
-	}, []);
+	};
 
 	return {
 		loading,
