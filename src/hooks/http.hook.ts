@@ -23,7 +23,7 @@ export const useHttp = () => {
 		headers = {}
 	) => {
 		setLoading(true);
-		setProcess("loading");
+		setProcess(PROCESS_NAMES.loading);
 
 		try {
 			const res = await fetch(url, {method, body, headers});
@@ -40,7 +40,7 @@ export const useHttp = () => {
 		} catch (error: any) { /* TODO: any */
 			setLoading(false);
 			setError(error.message);
-			setProcess("error");
+			setProcess(PROCESS_NAMES.error);
 
 			throw(error);
 		}
@@ -69,7 +69,7 @@ export const useHttp = () => {
 
 	const clearError = useCallback(() => {
 		setError(null);
-		setProcess("loading");
+		setProcess(PROCESS_NAMES.loading);
 	}, []);
 
 	return {
