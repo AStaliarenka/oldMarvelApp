@@ -63,7 +63,7 @@ export const useHttp = () => {
 			setLoading(false);
 			setError(error.message);
 
-			throw(error);
+			// throw(error); /* I skip this now) */
 		}
 	}, []);
 

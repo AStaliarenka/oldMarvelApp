@@ -118,8 +118,9 @@ const useMarvelService = () => {
 	const getCharacterById = async (id: number) => {
 		const func = marvelAPI.getCharacterById;
 		const res = await requestFunc(func.bind(marvelAPI), id) as Awaited<ReturnType<typeof func>>;
+		/* TODO: res can be undefined, something interesting */
 
-		if (res.data?.results) {
+		if (res?.data?.results) {
 			return transformCharacterData(res.data.results[0]);
 		}
 	}
