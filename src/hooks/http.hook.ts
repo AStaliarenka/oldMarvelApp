@@ -45,8 +45,9 @@ export const useHttp = () => {
 			throw(error);
 		}
 	}, []);
-
-	const requestFunc = useCallback(async (func: (params: any) => Promise<any>, params?: any) => { /* TODO: any */
+	/* eslint-disable */
+	const requestFunc = useCallback(async <T extends Function>(func: T, params?: any) => { /* TODO: any */
+		/* eslint-enable */
 		setLoading(true);
 
 		try {
