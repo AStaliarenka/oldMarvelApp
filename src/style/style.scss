@@ -54,6 +54,10 @@ input::-webkit-inner-spin-button {
     position: relative;
 }
 
+:root { /* TODO: it may be wrong solution for scroll */
+    overflow-y: scroll;
+}
+
 // 768 - 1
 @media (360px <= width <= 767px) {
     .app-container {
