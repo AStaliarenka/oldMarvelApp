@@ -63,13 +63,13 @@ export const useHttp = () => {
 			setLoading(false);
 			setError(error.message);
 
-			// throw(error); /* I skip this now) */
+			// throw(error); /* TODO: I skip this now) */
 		}
 	}, []);
 
 	const clearError = useCallback(() => {
 		setError(null);
-		setProcess(PROCESS_NAMES.loading);
+		setProcess(PROCESS_NAMES.loading); /* TODO: check is liading need here */
 	}, []);
 
 	return {
