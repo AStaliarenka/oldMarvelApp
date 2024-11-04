@@ -34,12 +34,11 @@ const useMarvelService = () => {
 
 	const getCharacters = async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getCharacters;
-		type FuncType = typeof func;
 
 		const params: CharacterParameters = {offset, limit: limit ? limit : 9};
-		const res = await <FuncType><unknown>requestFunc(func.bind(marvelAPI), params) as Awaited<ReturnType<FuncType>>;
+		const res = await requestFunc(func.bind(marvelAPI), params);
 
-		if (res.code === 200 && res.data?.results) {
+		if (res?.code === 200 && res.data?.results) {
 			if (!_charactersTotal) {
 				_charactersTotal = res.data.total;
 			}
@@ -68,26 +67,24 @@ const useMarvelService = () => {
 
 	const getComicById = async (comicId: number) => {
 		const func = marvelAPI.getComicById;
-		type FuncType = typeof func;
 
-		const res = await <FuncType><unknown>requestFunc(func.bind(marvelAPI), comicId) as Awaited<ReturnType<typeof func>>;
+		const res = await requestFunc(func.bind(marvelAPI), comicId);
 
-		if (res.code === 200 && res.data?.results) {
+		if (res?.code === 200 && res.data?.results) {
 			return transformComicData(res.data?.results[0]);
 		}
 	}
 
 	const getComics = async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getComics;
-		type FuncType = typeof func;
 
 		const comicsLimit = 8;
 
 		const params: ComicParameters = {offset, limit: limit ? limit : comicsLimit, issueNumber: 1};
 
-		const res = await <FuncType><unknown>requestFunc(func.bind(marvelAPI), params) as Awaited<ReturnType<FuncType>>;
+		const res = await requestFunc(func.bind(marvelAPI), params);
 
-		if (res.code === 200 && res.data?.results) {
+		if (res?.code === 200 && res.data?.results) {
 			if (!_comicsTotal) {
 				_comicsTotal = res.data.total;
 			}
@@ -121,9 +118,8 @@ const useMarvelService = () => {
 
 	const getCharacterById = async (id: number) => {
 		const func = marvelAPI.getCharacterById;
-		type FuncType = typeof func;
 
-		const res = await <FuncType><unknown>requestFunc(func.bind(marvelAPI), id) as Awaited<ReturnType<FuncType>>;
+		const res = await requestFunc(func.bind(marvelAPI), id);
 		/* TODO: res can be undefined, something interesting */
 
 		if (res?.data?.results) {

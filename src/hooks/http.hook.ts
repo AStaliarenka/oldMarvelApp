@@ -45,13 +45,14 @@ export const useHttp = () => {
 			// throw(error); /* TODO: change */
 		}
 	};
-	/* eslint-disable */
-	const requestFunc = async <T extends Function>(func: T, params?: any) => { /* TODO: any */
-		/* eslint-enable */
+
+
+	const requestFunc = async <T extends (...args: any[]) => Promise<any>>(func: T, ...params: Parameters<T>): Promise<Awaited<ReturnType<T>> | undefined> => { /* TODO: any */
+
 		setLoading(true);
 
 		try {
-			const res = await func(params);
+			const res = await func(...params);
 
 			if (res?.status !== "Ok") {
 				throw new Error("Coluld not fetch");
