@@ -1,0 +1,18 @@
+.test-currency {
+    background-color: rgb(var(--white));
+    border-radius: 30px;
+    border: 2px solid rgb(var(--black-999));
+    margin: 40px 0;
+    padding: 30px;
+    height: 250px;
+    font-size: 36px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__info-block {
+        display: flex;
+        flex-direction: column;
+    }
+}

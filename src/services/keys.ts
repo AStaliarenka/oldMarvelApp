@@ -3,4 +3,6 @@ const keys = {
 	private: "ab1214a27ab229e1c5f2d5290844e42fdd6cdc2d"
 };
 
+// TODO: delete this file and use .env
+
 export default keys;

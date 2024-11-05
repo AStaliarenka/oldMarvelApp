@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {get as getDataFromLs} from "local-storage";
-
 import AppContainer from "../../appContainer";
 import MarvelButton from "../../marvelButton";
-
+import TestCurrency from "../../testCurrency";
 import { useAppDispatch } from "../../../hooks/redux.hooks";
-
 import { userLoggedOut, userLoggedIn } from "../../../app/reducers/auth";
-
 import store from "../../../app/store/store";
 
 import "./style.scss";
@@ -158,7 +155,10 @@ export default function TestFormPage() {
 	return (
 		<div className="wrapper">
 			<AppContainer>
-				{form}
+				<div className="test-block">
+					{form}
+					<TestCurrency currency="USD" baseCurrency="RUB"></TestCurrency>
+				</div>
 			</AppContainer>
 		</div>
 	);

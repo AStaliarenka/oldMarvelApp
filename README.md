@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# Hello there
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+You need to create .env file in the root folder (not src) first.
+
+Than you need to get free API key on [freecurrencyapi.com](https://freecurrencyapi.com)
+and on [developer.marvel.com](https://developer.marvel.com) (but now you don`t need
+to log in on marvel)
+
+In this file you need to create REACT_APP_FREE_CURRENCY_API_KEY
+and REACT_APP_FREE_MARVEL_PUBLIC_API_KEY public key, but now you don`t need to add second one
 
 ## Available Scripts
 
