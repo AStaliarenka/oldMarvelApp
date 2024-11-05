@@ -2,6 +2,7 @@ main .wrapper {
     background: center / cover no-repeat url(../../../resources/img/marvelPrev.jpg);
 
     .app__container {
+        margin: 0 auto;
         display: flex;
         justify-content: center;
     }
