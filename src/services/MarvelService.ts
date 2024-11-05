@@ -30,7 +30,7 @@ let _charactersTotal: number | undefined = 0;
 let _comicsTotal: number | undefined = 0;
 
 const useMarvelService = () => {
-	const {loading, requestFunc, error, clearError, process, setProcess} = useHttp();
+	const {loading, requestFunc, error, clearError, process, setProcess, processNames} = useHttp();
 
 	const getCharacters = async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getCharacters;
@@ -138,6 +138,7 @@ const useMarvelService = () => {
 		getComicById,
 		getComicsTotalCount,
 		process,
+		processNames,
 		setProcess
 	}
 }

@@ -6,7 +6,6 @@ import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
 import Sceleton from "../skeleton/Skeleton";
-import { useDidMount } from "../../helpers/common";
 
 import { character } from "../interfaces/character";
 
@@ -19,11 +18,7 @@ type charInfoProps = {
 function CharInfo(props: charInfoProps) {
 	const [char, setChar] = useState<character | null>(null);
 
-	const {getCharacterById, clearError, process, setProcess} = useMarvelService();
-
-	useDidMount(() => {
-		updateChar();
-	});
+	const {getCharacterById, clearError, process, setProcess, processNames} = useMarvelService();
 
 	useEffect(() => {
 		updateChar();
@@ -52,15 +47,16 @@ function CharInfo(props: charInfoProps) {
 		}
 	}
 
-	const setContent = (process: any, char: any) => {
+	const setContent = () => {
 		switch (process) {
-		case "waiting":
+		case processNames.waiting:
 			return <Sceleton/>;
-		case "loading":
+		case processNames.loading:
 			return <Spinner/>;
-		case "confirmed":
-			return <View char={char}/>;
-		case "error":
+		case processNames.confirmed:
+			if (char) return <View char={char}/>
+			else return <Sceleton/>
+		case processNames.error:
 			return <ErrorMessage/>
 		default:
 			throw new Error("Unexpected process state");
@@ -78,7 +74,7 @@ function CharInfo(props: charInfoProps) {
             {errorMessage}
             {spinner}
             {content} */}
-			{setContent(process, char)}
+			{setContent()}
 		</div>
 	);
 }

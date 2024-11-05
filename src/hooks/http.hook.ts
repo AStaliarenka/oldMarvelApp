@@ -46,7 +46,6 @@ export const useHttp = () => {
 		}
 	};
 
-
 	const requestFunc = async <T extends (...args: any[]) => Promise<any>>(func: T, ...params: Parameters<T>): Promise<Awaited<ReturnType<T>> | undefined> => { /* TODO: any */
 
 		setLoading(true);
@@ -81,6 +80,7 @@ export const useHttp = () => {
 		clearError,
 		requestFunc,
 		process,
-		setProcess
+		setProcess,
+		processNames: PROCESS_NAMES
 	};
 }
