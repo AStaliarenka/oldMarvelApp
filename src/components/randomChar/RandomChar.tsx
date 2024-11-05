@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import useMarvelService from "../../services/MarvelService";
 
@@ -18,14 +18,14 @@ function RandomChar() {
 	};
 
 
-	const updateChar = async () => {
+	const updateChar = useCallback(async () => {
 		clearError();
 		const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
 		// const id = 100; /* TEST: char with id=100 is not exist */
 
 		getCharacterById(id)
 			.then(onCharLoaded);
-	}
+	}, []);
 
 	useEffect(() => {
 		updateChar();
@@ -37,7 +37,7 @@ function RandomChar() {
 		return () => {
 			clearInterval(timerId);
 		}
-	}, []);
+	}, [updateChar]);
 
 	const errorMessage = error ? <ErrorMessage/> : null;
 	const spinner = loading ? <Spinner/> : null;
