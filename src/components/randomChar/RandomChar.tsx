@@ -1,31 +1,29 @@
 import { useState, useEffect, useCallback } from "react";
-
 import useMarvelService from "../../services/MarvelService";
-
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
+import { character as myCharacter } from "../interfaces/character";
 
 import "./randomChar.scss";
+
 import mjolnir from "../../resources/img/mjolnir.png";
 
 function RandomChar() {
-	const [character, setCharacter] = useState(null);
-
 	const {error, loading, getCharacterById, clearError} = useMarvelService();
 
-	const onCharLoaded = (char: any) => {
-		setCharacter(char);
-	};
+	const [character, setCharacter] = useState<Awaited<ReturnType<typeof getCharacterById>> | null>(null);
 
+	const onCharLoaded = (char: Awaited<ReturnType<typeof getCharacterById>>) => {
+		if (char) setCharacter(char);
+	};
 
 	const updateChar = useCallback(async () => {
 		clearError();
 		const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
 		// const id = 100; /* TEST: char with id=100 is not exist */
 
-		getCharacterById(id)
-			.then(onCharLoaded);
-	}, []);
+		onCharLoaded(await getCharacterById(id))
+	}, []); /* TODO: refactor */
 
 	useEffect(() => {
 		updateChar();
@@ -42,8 +40,6 @@ function RandomChar() {
 	const errorMessage = error ? <ErrorMessage/> : null;
 	const spinner = loading ? <Spinner/> : null;
 	const content = !(error || loading) && character ? <View char = {character}/> : null;
-
-	// TODO: const content: delete character from condition
 
 	return (
 		<div className="randomchar">
@@ -67,7 +63,7 @@ function RandomChar() {
 	)
 }
 
-const View = ({char}: any) => {
+const View = ({char}: {char: myCharacter}) => {
 	const {name, description, thumbnail, homepage, wiki} = char;
 
 	let imgStyle: React.CSSProperties = {objectFit : "cover"};
