@@ -50,7 +50,7 @@ const useMarvelService = () => {
 					thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : "",
 				};
 			});
-		}
+		} else return null;
 	}
 
 	function transformComicData(comic: Comic) {
@@ -72,7 +72,7 @@ const useMarvelService = () => {
 
 		if (res?.code === 200 && res.data?.results) {
 			return transformComicData(res.data?.results[0]);
-		}
+		} else return null;
 	}
 
 	const getComics = async (offset: number = 210, limit?: number) => {
@@ -94,7 +94,7 @@ const useMarvelService = () => {
 			});
 
 			return resultArr;
-		}
+		} else return null;
 	}
 
 	const transformCharacterData = (character: Character): myCharacter => {
@@ -125,6 +125,7 @@ const useMarvelService = () => {
 		if (res?.data?.results) {
 			return transformCharacterData(res.data.results[0]);
 		}
+		else return null;
 	}
 
 	return {

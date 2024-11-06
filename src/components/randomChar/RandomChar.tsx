@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
 import { character as myCharacter } from "../interfaces/character";
+import { useDidMount } from "../../helpers/common";
 
 import "./randomChar.scss";
 
@@ -17,15 +18,38 @@ function RandomChar() {
 		if (char) setCharacter(char);
 	};
 
-	const updateChar = useCallback(async () => {
+	const updateChar = async () => {
 		clearError();
+
 		const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-		// const id = 100; /* TEST: char with id=100 is not exist */
 
 		onCharLoaded(await getCharacterById(id))
-	}, []); /* TODO: refactor */
+	};
 
-	useEffect(() => {
+	// const updateChar = useCallback(async (incorrectId?: number) => {
+	// 	clearError();
+
+	// 	if (incorrectId) {
+	// 		onCharLoaded(await getCharacterById(incorrectId))
+	// 	}
+	// 	else {
+	// 		const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+	// 		// const id = 100; /* TEST: char with id=100 is not exist */
+	
+	// 		onCharLoaded(await getCharacterById(id))
+	// 	}
+		
+	// }, []);
+
+	// useEffect(() => {
+	// 	updateChar(100);
+	// }, []);
+
+	const handleUpdateChar = () => {
+		updateChar();
+	}
+
+	useDidMount(() => {
 		updateChar();
 
 		const interval = 500000; /* TEST */
@@ -35,7 +59,7 @@ function RandomChar() {
 		return () => {
 			clearInterval(timerId);
 		}
-	}, [updateChar]);
+	});
 
 	const errorMessage = error ? <ErrorMessage/> : null;
 	const spinner = loading ? <Spinner/> : null;
@@ -55,7 +79,7 @@ function RandomChar() {
                     Or choose another one
 				</p>
 				<button className="button button__main">
-					<div className="inner" onClick={updateChar}>try it</div>
+					<div className="inner" onClick={handleUpdateChar}>try it</div>
 				</button>
 				<img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
 			</div>
