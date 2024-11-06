@@ -59,6 +59,7 @@ export const useHttp = () => {
 	): Promise<Awaited<ReturnType<T>> | undefined> => {
 
 		setLoading(true);
+		setProcess(PROCESS_NAMES.loading);
 
 		try {
 			const res = await func(...params);
