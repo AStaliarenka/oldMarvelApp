@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { Objectvalues } from "../helpers/common";
+
 const PROCESS_NAMES = {
 	waiting: "waiting",
 	confirmed: "confirmed",
@@ -7,13 +9,18 @@ const PROCESS_NAMES = {
 	error: "error"
 } as const;
 
-type Objectvalues<T> = T[keyof T];
-
 type Process = Objectvalues<typeof PROCESS_NAMES>;
+
+const getErrorMessage = (error: unknown) => {
+	if (error instanceof Error) {
+		return error.message
+	} else return "Something went wrong";
+	// } else return String(error);
+}
 
 export const useHttp = () => {
 	const [loading, setLoading] = useState<boolean>(false);
-	const [error, setError] = useState<null | any>(null);
+	const [error, setError] = useState<string | null>(null); /* rename to errorMessage */
 	const [process, setProcess] = useState<Process>(PROCESS_NAMES.waiting);
 
 	const request = async (
@@ -37,16 +44,19 @@ export const useHttp = () => {
 			setLoading(false);
 
 			return data;
-		} catch (error: any) { /* TODO: any */
+		} catch (error: unknown) {
 			setLoading(false);
-			setError(error.message);
+			setError(getErrorMessage(error));
 			setProcess(PROCESS_NAMES.error);
-
-			// throw(error); /* TODO: change */
+			// throw(error); /* TODO: I skip this now) */
 		}
 	};
 
-	const requestFunc = async <T extends (...args: any[]) => Promise<any>>(func: T, ...params: Parameters<T>): Promise<Awaited<ReturnType<T>> | undefined> => { /* TODO: any */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const requestFunc = async <T extends (...args: any[]) => any>( /* TODO: refactor */
+		func: T,
+		...params: Parameters<T>
+	): Promise<Awaited<ReturnType<T>> | undefined> => {
 
 		setLoading(true);
 
@@ -60,23 +70,23 @@ export const useHttp = () => {
 			setLoading(false);
 
 			return res;
-		} catch (error: any) { /* TODO: any */
+		} catch (error: unknown) {
 			setLoading(false);
-			setError(error.message);
-
+			setError(getErrorMessage(error));
+			setProcess(PROCESS_NAMES.error);
 			// throw(error); /* TODO: I skip this now) */
 		}
 	};
 
 	const clearError = () => {
 		setError(null);
-		setProcess(PROCESS_NAMES.loading); /* TODO: check is liading need here */
 	};
 
 	return {
 		loading,
 		request,
 		error,
+		setError,
 		clearError,
 		requestFunc,
 		process,
