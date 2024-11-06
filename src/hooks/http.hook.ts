@@ -42,6 +42,7 @@ export const useHttp = () => {
 			const data = await res.json();
 
 			setLoading(false);
+			setProcess(PROCESS_NAMES.confirmed); /* if fetch error we also need to confirm process */
 
 			return data;
 		} catch (error: unknown) {
@@ -69,6 +70,7 @@ export const useHttp = () => {
 			}
 
 			setLoading(false);
+			setProcess(PROCESS_NAMES.confirmed); /* if fetch error we also need to confirm process */
 
 			return res;
 		} catch (error: unknown) {
