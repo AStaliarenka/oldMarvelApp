@@ -157,7 +157,7 @@ export default function TestFormPage() {
 
 	return (
 		<>
-			<section className="wrapper">
+			<section className="test-section">
 				<AppContainer>
 					<div className="test-block">
 						{form}
