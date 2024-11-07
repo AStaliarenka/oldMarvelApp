@@ -23,7 +23,7 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 	const queryClient = useQueryClient()
 
 	// isLoading - only for first query, after refetch you need to use isFetching (it depends)
-	const {data, isError, isLoading, refetch, error} = useQuery({queryKey: [CURRENCY_QUERY_NAME], queryFn:
+	const {data, isError, isLoading, refetch} = useQuery({queryKey: [CURRENCY_QUERY_NAME], queryFn:
 		async ({signal}) => {
 			return getCurrency(currency, baseCurrency, signal)
 		}
