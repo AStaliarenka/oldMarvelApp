@@ -55,6 +55,10 @@ main {
     position: relative;
 }
 
+html, body, main, #root {
+    height: 100%;
+}
+
 .pulse {
     animation: pulse 1.5s ease-in-out .5s infinite
 }
