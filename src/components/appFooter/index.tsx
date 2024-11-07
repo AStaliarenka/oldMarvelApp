@@ -1,4 +1,3 @@
-import { element } from "prop-types"
 import AppContainer from "../appContainer"
 import { getBemElementClass } from "../../helpers/common"
 
