@@ -49,17 +49,17 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 	})
 
 	if (isError) {
-		return <TestCurrencyContainer children={failedView}/>
+		return <TestCurrencyContainer>{failedView}</TestCurrencyContainer>
 	}
 
 	if (isLoading) {
-		return <TestCurrencyContainer children={<Spinner/>}/>
+		return <TestCurrencyContainer>{<Spinner/>}</TestCurrencyContainer>
 	}
 
 	const currencyValue = data?.data?.[currency]
 
 	if (typeof currencyValue !== "number") {
-		return <TestCurrencyContainer children={failedView}/>
+		return <TestCurrencyContainer>{failedView}</TestCurrencyContainer>
 	}
 
 	const currencyValueAfterTransform = (currencyValue * 100).toFixed(4)
