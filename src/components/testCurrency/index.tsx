@@ -1,6 +1,6 @@
 import cssClasses from "./cssClasses"
 import { getBemElementClass } from "../../helpers/common"
-import { TestCurrencyProps, TestCurrencyContainerProps } from "./@types"
+import { TestCurrencyProps, TestCurrencyContainerProps, currencyNames } from "./@types"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import Spinner from "../spinner/Spinner"
 import MarvelButton from "../marvelButton"
@@ -62,8 +62,6 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 		return <TestCurrencyContainer>{failedView}</TestCurrencyContainer>
 	}
 
-	const currencyValueAfterTransform = (currencyValue * 100).toFixed(4)
-
 	return (
 		<TestCurrencyContainer>
 			<div className={getBemElementClass(cssClasses.name, cssClasses.elements.infoBlock)}>
@@ -71,7 +69,9 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 					<span>{`${RUB_AMPLIFICATOR} ${baseCurrency}`}</span>
 				</div>
 				<div className={getBemElementClass(cssClasses.name, cssClasses.elements.secondCurrencyBlock)}>
-					<span>{currencyValueAfterTransform}</span>
+					<span>
+						{baseCurrency === currencyNames.russRubels ? (currencyValue * RUB_AMPLIFICATOR).toFixed(4) : currencyValue}
+					</span>
 					<span>{` ${currency}`}</span>
 				</div>
 			</div>
