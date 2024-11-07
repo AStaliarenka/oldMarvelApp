@@ -1,10 +1,11 @@
 import cssClasses from "./cssClasses"
 import { getBemElementClass } from "../../helpers/common"
-import { TestCurrencyProps, TestCurrencyContainerProps, currencyNames } from "./@types"
+import { TestCurrencyProps, TestCurrencyContainerProps } from "./@types"
 import { useQueryClient, useQuery } from "@tanstack/react-query"
 import Spinner from "../spinner/Spinner"
 import MarvelButton from "../marvelButton"
 import { useDidMount } from "../../helpers/common"
+import useFreeCurrencyService, {currencyNames} from "../../services/freecurrencyService"
 
 import "./style.scss"
 
@@ -13,8 +14,8 @@ const TestCurrencyContainer = ({children}: TestCurrencyContainerProps) => {
 }
 
 const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
+	const {getCurrency} = useFreeCurrencyService(); 
 	const failedView = <div>Request Failed</div>
-	const currencyApiKey = process.env.REACT_APP_FREE_CURRENCY_API_KEY
 
 	const CURRENCY_QUERY_NAME = "currencies"
 	const RUB_AMPLIFICATOR = 100
@@ -22,22 +23,9 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 	const queryClient = useQueryClient()
 
 	// isLoading - only for first query, after refetch you need to use isFetching (it depends)
-	const {data, isError, isLoading, refetch} = useQuery({queryKey: [CURRENCY_QUERY_NAME], queryFn:
+	const {data, isError, isLoading, refetch, error} = useQuery({queryKey: [CURRENCY_QUERY_NAME], queryFn:
 		async ({signal}) => {
-			const URL = "https://api.freecurrencyapi.com/v1/latest"
-
-			if (currencyApiKey) {
-				const res = await fetch(
-					`${URL}?apikey=${currencyApiKey}&currencies=${currency}&base_currency=${baseCurrency}`,
-					{
-						signal
-					}
-				)
-
-				return res.json()
-			}
-
-			else throw new Error("You don`t have an API key, see README.md")
+			return getCurrency(currency, baseCurrency, signal)
 		}
 	})
 
@@ -56,7 +44,7 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 		return <TestCurrencyContainer>{<Spinner/>}</TestCurrencyContainer>
 	}
 
-	const currencyValue = data?.data?.[currency]
+	const currencyValue = data?.data[currency]
 
 	if (typeof currencyValue !== "number") {
 		return <TestCurrencyContainer>{failedView}</TestCurrencyContainer>

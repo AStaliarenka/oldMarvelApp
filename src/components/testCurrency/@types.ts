@@ -1,12 +1,4 @@
-import { Objectvalues } from "../../helpers/common";
-
-export const currencyNames = {
-	dollar: "USD",
-	euro: "EUR",
-	russRubels: "RUB"
-} as const
-
-type Currency = Objectvalues<typeof currencyNames>
+import { Currency } from "../../services/freecurrencyService"
 
 export type TestCurrencyContainerProps = {
 	children: React.ReactNode
