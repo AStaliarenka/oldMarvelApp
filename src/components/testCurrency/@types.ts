@@ -8,4 +8,11 @@ export const currencyNames = {
 
 type Currency = Objectvalues<typeof currencyNames>
 
-export type TestCurrencyProps = {baseCurrency: Currency, currency: Currency}
+export type TestCurrencyContainerProps = {
+	children: React.ReactNode
+}
+
+export type TestCurrencyProps = {
+	baseCurrency: Currency,
+	currency: Currency
+}

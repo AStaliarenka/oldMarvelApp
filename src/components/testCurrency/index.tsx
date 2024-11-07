@@ -1,57 +1,65 @@
 import cssClasses from "./cssClasses"
 import { getBemElementClass } from "../../helpers/common"
-import { TestCurrencyProps } from "./@types"
-import { useQuery } from "react-query"
+import { TestCurrencyProps, TestCurrencyContainerProps } from "./@types"
+import { useQuery, useQueryClient } from "react-query"
 import Spinner from "../spinner/Spinner"
 import MarvelButton from "../marvelButton"
+import { useDidMount } from "../../helpers/common"
 
 import "./style.scss"
 
+const TestCurrencyContainer = ({children}: TestCurrencyContainerProps) => {
+	return <div className={cssClasses.name}>{children}</div>
+}
+
 const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
-	const currencyController = new AbortController()
 	const failedView = <div>Request Failed</div>
 	const currencyApiKey = process.env.REACT_APP_FREE_CURRENCY_API_KEY
 
-	const getCurrencies = async () => {
+	const CURRENCY_QUERY_NAME = "currencies"
+	const RUB_AMPLIFICATOR = 100
+
+	const queryClient = useQueryClient()
+
+	const {data, error, isLoading, refetch} = useQuery(CURRENCY_QUERY_NAME, async ({signal}) => {
 		const URL = "https://api.freecurrencyapi.com/v1/latest"
 
 		if (currencyApiKey) {
 			const res = await fetch(
 				`${URL}?apikey=${currencyApiKey}&currencies=${currency}&base_currency=${baseCurrency}`,
 				{
-					signal: currencyController.signal
+					signal
 				}
 			)
 
-			return res.json();
+			return res.json()
 		}
 
-		else throw new Error("You don`t have an API key, see REDME.md");		
-	}
+		else throw new Error("You don`t have an API key, see README.md")
+	})
 
-	const rubAmplificator = 100
+	useDidMount(() => {
+		return () => {
+			queryClient.cancelQueries(CURRENCY_QUERY_NAME)
+			console.log("Unmount testCurrency")
+		}
+	})
 
-	const {data, error, isLoading} = useQuery("currencies", getCurrencies)
+	if (error) return <TestCurrencyContainer children={failedView}/>
 
-	if (error) return failedView
+	if (isLoading) return <TestCurrencyContainer children={<Spinner/>}/>
 
-	if (isLoading) return (
-		<div className={cssClasses.name}>
-			<Spinner/>
-		</div>
-	)
+	const currencyValue = data?.data?.[currency]
 
-	const currencyValue = data.data[currency];
-
-	if (typeof currencyValue !== "number") return failedView
+	if (typeof currencyValue !== "number") return <TestCurrencyContainer children={failedView}/>
 
 	const currencyValueAfterTransform = (currencyValue * 100).toFixed(4)
 
 	return (
-		<div className={cssClasses.name}>
+		<TestCurrencyContainer>
 			<div className={getBemElementClass(cssClasses.name, cssClasses.elements.infoBlock)}>
 				<div className={getBemElementClass(cssClasses.name, cssClasses.elements.firstCurrencyBlock)}>
-					<span>{`${rubAmplificator} ${baseCurrency}`}</span>
+					<span>{`${RUB_AMPLIFICATOR} ${baseCurrency}`}</span>
 				</div>
 				<div className={getBemElementClass(cssClasses.name, cssClasses.elements.secondCurrencyBlock)}>
 					<span>{currencyValueAfterTransform}</span>
@@ -61,13 +69,22 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 			<MarvelButton
 				buttonStyle="main"
 				onClickHandler={() => {
-					currencyController.abort();
-  					console.log("Canceled fetch");
+					queryClient.cancelQueries(CURRENCY_QUERY_NAME)
+					console.log("Canceled fetch")
 				}}
 				text="cancel fetch"
 				type="button"
 			/>
-		</div>
+			<MarvelButton
+				buttonStyle="secondary"
+				onClickHandler={() => {
+					refetch()
+					console.log("Refetch")
+				}}
+				text="update"
+				type="button"
+			/>
+		</TestCurrencyContainer>
 	)
 }
 
