@@ -21,7 +21,8 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 
 	const queryClient = useQueryClient()
 
-	const {data, isError, isPending, refetch} = useQuery({queryKey: [CURRENCY_QUERY_NAME], queryFn:
+	// isLoading - only for first query, after refetch you need to use isFetching (it depends)
+	const {data, isError, isLoading, refetch} = useQuery({queryKey: [CURRENCY_QUERY_NAME], queryFn:
 		async ({signal}) => {
 			const URL = "https://api.freecurrencyapi.com/v1/latest"
 
@@ -47,18 +48,19 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 		}
 	})
 
-	if (isError) return <TestCurrencyContainer children={failedView}/>
+	if (isError) {
+		return <TestCurrencyContainer children={failedView}/>
+	}
 
-	console.log("isPending", isPending)
-
-	if (isPending) {
-		console.log("spinner")
+	if (isLoading) {
 		return <TestCurrencyContainer children={<Spinner/>}/>
 	}
 
 	const currencyValue = data?.data?.[currency]
 
-	if (typeof currencyValue !== "number") return <TestCurrencyContainer children={failedView}/>
+	if (typeof currencyValue !== "number") {
+		return <TestCurrencyContainer children={failedView}/>
+	}
 
 	const currencyValueAfterTransform = (currencyValue * 100).toFixed(4)
 
@@ -86,6 +88,10 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 				buttonStyle="secondary"
 				onClickHandler={() => {
 					refetch()
+					// queryClient.invalidateQueries({
+					// 	queryKey: [CURRENCY_QUERY_NAME],
+					// 	refetchType: "all"
+					// })
 					console.log("Refetch")
 				}}
 				text="update"
