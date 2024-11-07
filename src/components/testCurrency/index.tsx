@@ -1,7 +1,7 @@
 import cssClasses from "./cssClasses"
 import { getBemElementClass } from "../../helpers/common"
 import { TestCurrencyProps, TestCurrencyContainerProps } from "./@types"
-import { useQuery, useQueryClient } from "react-query"
+import { useQueryClient, useQuery } from "@tanstack/react-query"
 import Spinner from "../spinner/Spinner"
 import MarvelButton from "../marvelButton"
 import { useDidMount } from "../../helpers/common"
@@ -21,37 +21,46 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 
 	const queryClient = useQueryClient()
 
-	const {data, error, isLoading, refetch} = useQuery(CURRENCY_QUERY_NAME, async ({signal}) => {
-		const URL = "https://api.freecurrencyapi.com/v1/latest"
+	// isLoading - only for first query, after refetch you need to use isFetching (it depends)
+	const {data, isError, isLoading, refetch} = useQuery({queryKey: [CURRENCY_QUERY_NAME], queryFn:
+		async ({signal}) => {
+			const URL = "https://api.freecurrencyapi.com/v1/latest"
 
-		if (currencyApiKey) {
-			const res = await fetch(
-				`${URL}?apikey=${currencyApiKey}&currencies=${currency}&base_currency=${baseCurrency}`,
-				{
-					signal
-				}
-			)
+			if (currencyApiKey) {
+				const res = await fetch(
+					`${URL}?apikey=${currencyApiKey}&currencies=${currency}&base_currency=${baseCurrency}`,
+					{
+						signal
+					}
+				)
 
-			return res.json()
+				return res.json()
+			}
+
+			else throw new Error("You don`t have an API key, see README.md")
 		}
-
-		else throw new Error("You don`t have an API key, see README.md")
 	})
 
 	useDidMount(() => {
 		return () => {
-			queryClient.cancelQueries(CURRENCY_QUERY_NAME)
+			queryClient.cancelQueries({queryKey: [CURRENCY_QUERY_NAME]})
 			console.log("Unmount testCurrency")
 		}
 	})
 
-	if (error) return <TestCurrencyContainer children={failedView}/>
+	if (isError) {
+		return <TestCurrencyContainer>{failedView}</TestCurrencyContainer>
+	}
 
-	if (isLoading) return <TestCurrencyContainer children={<Spinner/>}/>
+	if (isLoading) {
+		return <TestCurrencyContainer>{<Spinner/>}</TestCurrencyContainer>
+	}
 
 	const currencyValue = data?.data?.[currency]
 
-	if (typeof currencyValue !== "number") return <TestCurrencyContainer children={failedView}/>
+	if (typeof currencyValue !== "number") {
+		return <TestCurrencyContainer>{failedView}</TestCurrencyContainer>
+	}
 
 	const currencyValueAfterTransform = (currencyValue * 100).toFixed(4)
 
@@ -69,7 +78,7 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 			<MarvelButton
 				buttonStyle="main"
 				onClickHandler={() => {
-					queryClient.cancelQueries(CURRENCY_QUERY_NAME)
+					queryClient.cancelQueries({queryKey: [CURRENCY_QUERY_NAME]})
 					console.log("Canceled fetch")
 				}}
 				text="cancel fetch"
@@ -79,6 +88,10 @@ const TestCurrency = ({currency, baseCurrency}: TestCurrencyProps) => {
 				buttonStyle="secondary"
 				onClickHandler={() => {
 					refetch()
+					// queryClient.invalidateQueries({
+					// 	queryKey: [CURRENCY_QUERY_NAME],
+					// 	refetchType: "all"
+					// })
 					console.log("Refetch")
 				}}
 				text="update"

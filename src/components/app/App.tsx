@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {lazy, Suspense} from "react";
 
 import AppHeader from "../appHeader/AppHeader";
+import AppFooter from "../appFooter";
 import Spinner from "../spinner/Spinner";
 
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
@@ -9,6 +10,8 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { MainPage, ComicsPage, TestFormPage } from "../pages";
 
 import AppContainer from "../appContainer";
+
+import "./style.scss"
 
 // lazy works only with Suspens wrapper
 const Page404 = lazy(() => import("../pages/404"));
@@ -20,7 +23,7 @@ const App  = () => {
 	return (
 		<BrowserRouter>
 			<div className="app">
-				<AppHeader/> 
+				<AppHeader/>
 				<main>
 					<Suspense fallback={<Spinner/>}>
 						<Routes>
@@ -62,6 +65,7 @@ const App  = () => {
 						</Routes>
 					</Suspense>  
 				</main>
+				<AppFooter/>
 			</div>
 		</BrowserRouter>
 	);

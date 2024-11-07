@@ -1,0 +1,14 @@
+section.second-section {
+    min-height: 600px;
+    background-color: rgb(var(--black-600));
+
+    .second-section {
+        &__title {
+            color: rgb(var(--red-200));
+        }
+
+        &__text-block {
+            color: rgb(var(--white));
+        }
+    }
+}
