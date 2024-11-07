@@ -8,6 +8,9 @@ import { useAppDispatch } from "../../../hooks/redux.hooks";
 import { userLoggedOut, userLoggedIn } from "../../../app/reducers/auth";
 import store from "../../../app/store/store";
 
+import SecondTestSection from "../../testBlock/secondTestSection";
+import ThirdTestSection from "../../testBlock/thirdTestSection";
+
 import "./style.scss";
 
 type TestForm = {
@@ -153,13 +156,17 @@ export default function TestFormPage() {
 	);
 
 	return (
-		<div className="wrapper">
-			<AppContainer>
-				<div className="test-block">
-					{form}
-					<TestCurrency currency="USD" baseCurrency="RUB"></TestCurrency>
-				</div>
-			</AppContainer>
-		</div>
+		<>
+			<section className="wrapper">
+				<AppContainer>
+					<div className="test-block">
+						{form}
+						<TestCurrency currency="USD" baseCurrency="RUB"></TestCurrency>
+					</div>
+				</AppContainer>
+			</section>
+			<SecondTestSection/>
+			<ThirdTestSection/>
+		</>
 	);
 }

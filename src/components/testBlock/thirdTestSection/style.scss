@@ -1,0 +1,13 @@
+section.third-section {
+    height: 200px;
+
+    .third-section {
+        &__title {
+            color: rgb(var(--red-200));
+        }
+
+        &__text-block {
+            color: rgb(var(--black-700));
+        }
+    }
+}
