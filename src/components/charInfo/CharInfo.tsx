@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 
 import useMarvelService from "../../services/MarvelService";
@@ -15,37 +15,35 @@ type charInfoProps = {
     charId: number | null
 }
 
-function CharInfo(props: charInfoProps) {
+function CharInfo({charId}: charInfoProps) {
 	const [char, setChar] = useState<character | null>(null);
 
-	const {getCharacterById, clearError, process, setProcess, processNames} = useMarvelService();
+	const {getCharacterById, clearError, process, processNames} = useMarvelService();
 
-	useEffect(() => {
-		updateChar();
-	}, [props.charId]);
-
-	const updateChar = () => {
-		const {charId} = props;
-
-		if (!charId) {
-			return;
-		}
-
-		clearError();
-
-		getCharacterById(charId)
-			.then(onCharLoaded)
-			.then(() => setProcess("confirmed"));
-	}
-
-	const onCharLoaded = (char: Awaited<ReturnType<typeof getCharacterById>>) => {
+	const onCharLoaded = useCallback((char: Awaited<ReturnType<typeof getCharacterById>>) => {
 		if (char) {
 			setChar(char);
 		}
 		else {
 			throw new Error("Undefined character");
 		}
-	}
+	}, []);
+
+	useEffect(() => {
+		const updateChar = async () => {
+			if (!charId) {
+				return;
+			}
+	
+			clearError();
+	
+			const res = await getCharacterById(charId);
+	
+			onCharLoaded(res);
+		}
+
+		updateChar();
+	}, [charId, clearError, getCharacterById, onCharLoaded]);
 
 	const setContent = () => {
 		switch (process) {

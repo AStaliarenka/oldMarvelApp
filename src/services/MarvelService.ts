@@ -1,12 +1,9 @@
 import { marvelAPI } from "./marvelApi";
-
 import { useHttp } from "../hooks/http.hook";
-
 import { Character} from "marvel-ts/dist/types";
-
 import { character as myCharacter } from "../components/interfaces/character";
-
 import { ComicParameters, CharacterParameters, Comic } from "marvel-ts/dist/types";
+import { useCallback } from "react";
 
 // import { Comic } from "marvel-ts/dist/types";
 
@@ -32,7 +29,7 @@ let _comicsTotal: number | undefined = 0;
 const useMarvelService = () => {
 	const {loading, requestFunc, error, clearError, process, setProcess, processNames} = useHttp();
 
-	const getCharacters = async (offset: number = 210, limit?: number) => {
+	const getCharacters = useCallback(async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getCharacters;
 
 		const params: CharacterParameters = {offset, limit: limit ? limit : 9};
@@ -51,7 +48,7 @@ const useMarvelService = () => {
 				};
 			});
 		} else return null;
-	}
+	}, [requestFunc]);
 
 	function transformComicData(comic: Comic) {
 		return {
@@ -65,7 +62,7 @@ const useMarvelService = () => {
 		};
 	}
 
-	const getComicById = async (comicId: number) => {
+	const getComicById = useCallback(async (comicId: number) => {
 		const func = marvelAPI.getComicById;
 
 		const res = await requestFunc(func.bind(marvelAPI), comicId);
@@ -73,9 +70,9 @@ const useMarvelService = () => {
 		if (res?.code === 200 && res.data?.results) {
 			return transformComicData(res.data?.results[0]);
 		} else return null;
-	}
+	}, [requestFunc]);
 
-	const getComics = async (offset: number = 210, limit?: number) => {
+	const getComics = useCallback(async (offset: number = 210, limit?: number) => {
 		const func = marvelAPI.getComics;
 
 		const comicsLimit = 8;
@@ -95,7 +92,7 @@ const useMarvelService = () => {
 
 			return resultArr;
 		} else return null;
-	}
+	}, [requestFunc]);
 
 	const transformCharacterData = (character: Character): myCharacter => {
 		return {
@@ -116,7 +113,7 @@ const useMarvelService = () => {
 		return _comicsTotal ? _comicsTotal : 0;
 	}
 
-	const getCharacterById = async (id: number) => {
+	const getCharacterById = useCallback(async (id: number) => {
 		const func = marvelAPI.getCharacterById;
 
 		const res = await requestFunc(func.bind(marvelAPI), id);
@@ -126,7 +123,7 @@ const useMarvelService = () => {
 			return transformCharacterData(res.data.results[0]);
 		}
 		else return null;
-	}
+	}, [requestFunc]);
 
 	return {
 		loading,
