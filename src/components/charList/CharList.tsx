@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
+import { useDidMount } from "../../helpers/common";
 
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
@@ -77,8 +78,17 @@ function CharList(props: charListProps) {
 		);
 	}
 
-	const loadCharacters = useCallback(async (isNotFirstLoad?: boolean) => {
-		const onCharactersLoaded = (newCharacters: Exclude<typeof characters, null>) => {
+	const loadCharacters = async (isNotFirstLoad?: boolean) => {
+		if (isNotFirstLoad) {
+			setIsNewItemsLoading(true);
+			setIsCharsEnded(
+				!((Number(_charactersTotal) - _countOfCharactersPack) > offset)
+			)
+		}
+
+		const newCharacters = await getCharacters(offset, _countOfCharactersPack);
+
+		if (newCharacters) {
 			setCharacters(characters
 				? [
 					...characters,
@@ -88,22 +98,9 @@ function CharList(props: charListProps) {
 			setOffset(offset + _countOfCharactersPack);
 			setIsNewItemsLoading(false);
 		}
+	};
 
-		if (isNotFirstLoad) {
-			setIsNewItemsLoading(true);
-			setIsCharsEnded(
-				!((Number(_charactersTotal) - _countOfCharactersPack) > offset)
-			)
-		}
-
-		const characters = await getCharacters(offset, _countOfCharactersPack);
-
-		if (characters) {
-			onCharactersLoaded(characters);
-		}
-	}, [getCharacters, offset]);
-
-	useEffect(() => {
+	useDidMount(() => {
 		const getCharacters = async () => {
 			await loadCharacters();
 			_charactersTotal = getCharactersTotalCount();
@@ -111,11 +108,10 @@ function CharList(props: charListProps) {
 			if (offset === (_charactersTotal - _countOfCharactersPack)) {
 				setIsCharsEnded(true);
 			}
-
 		}
 
 		getCharacters();
-	}, [getCharactersTotalCount, loadCharacters, offset]);
+	});
 
 	const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
 	const charList = (characters && !error) ? generateCharGrid(characters) : null;
