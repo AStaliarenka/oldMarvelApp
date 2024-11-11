@@ -1,8 +1,7 @@
 import { marvelAPI } from "./marvelApi";
 import { useHttp } from "../hooks/http.hook";
-import { Character} from "marvel-ts/dist/types";
 import { character as myCharacter } from "../components/interfaces/character";
-import { ComicParameters, CharacterParameters, Comic } from "marvel-ts/dist/types";
+import { ComicParameters, CharacterParameters, Character, Comic } from "marvel-ts/dist/types";
 import { useCallback } from "react";
 
 // import { Comic } from "marvel-ts/dist/types";
@@ -24,6 +23,7 @@ export type ModifiedComic = {
 }
 
 type identCharacter = Character & {id: number}; /* id: number | undefined => number after filter*/
+type identComic = Comic & {id: number}; /* id: number | undefined => number after filter*/
 
 let _charactersTotal: number | undefined = 0;
 let _comicsTotal: number | undefined = 0;
@@ -52,9 +52,9 @@ const useMarvelService = () => {
 		} else return null;
 	}, [requestFunc]);
 
-	function transformComicData(comic: Comic) {
+	function transformComicData(comic: identComic) {
 		return {
-			id: comic.id || 0,
+			id: comic.id,
 			title: comic.title || "unknown",
 			thumbnail: comic.thumbnail ? `${comic.thumbnail.path}.${comic.thumbnail.extension}` : "",
 			language: (comic.textObjects?.length && comic.textObjects[0].language) ? comic.textObjects[0].language : "unknown", /* TODO: lang list*/
@@ -69,8 +69,8 @@ const useMarvelService = () => {
 
 		const res = await requestFunc(func.bind(marvelAPI), comicId);
 
-		if (res?.code === 200 && res.data?.results) {
-			return transformComicData(res.data?.results[0]);
+		if (res?.code === 200 && res.data?.results?.[0].id) {
+			return transformComicData(res.data?.results[0] as identComic);
 		} else return null;
 	}, [requestFunc]);
 
@@ -88,11 +88,8 @@ const useMarvelService = () => {
 				_comicsTotal = res.data.total;
 			}
 
-			const resultArr: ModifiedComic[] = res.data.results.map(comic => {
-				return transformComicData(comic);
-			});
+			return (res.data.results.filter(comic => comic.id) as identComic[]).map(comic => transformComicData(comic))
 
-			return resultArr;
 		} else return null;
 	}, [requestFunc]);
 
