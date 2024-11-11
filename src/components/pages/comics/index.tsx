@@ -1,7 +1,9 @@
 import {Helmet} from "react-helmet";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useDidMount } from "../../../helpers/common";
+import { useAppSelector, useAppDispatch } from "../../../hooks/redux.hooks";
+import { setStartComicsPack } from "../../../app/reducers/marvel";
 
 import useMarvelService from "../../../services/MarvelService";
 
@@ -19,19 +21,25 @@ const ComicsPage = () => {
 	const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
 	const [isComicsEnded, setIsComicsEnded] = useState(false);
 
+	const dispatch = useAppDispatch();
+	const startComicsPack = useAppSelector((state) => state.marvel.comics);
+
 	const {getComics, getComicsTotalCount, error, loading} = useMarvelService();
 
-	const loadComics = useCallback(async (isNotFirstLoad?: boolean) => {
+	const loadComics = async (isNotFirstLoad?: boolean) => {
+		const newComics = await getComics(offset, _countOfComicsPack);
+
 		if (isNotFirstLoad) {
 			setIsNewItemsLoading(true);
 			setIsComicsEnded(
 				!((Number(_comicsTotal) - _countOfComicsPack) > offset)
 			)
 		}
+		else if (!startComicsPack && newComics) {
+			dispatch(setStartComicsPack(newComics))
+		}
 
 		// TODO: scroll down after loading
-
-		const newComics = await getComics(offset, _countOfComicsPack);
 
 		if (newComics) {
 			setComics(comics
@@ -42,16 +50,20 @@ const ComicsPage = () => {
 				: newComics);
 			setOffset(offset + _countOfComicsPack);
 			setIsNewItemsLoading(false);
-		}}, [getComics, offset, comics])
+		}
+	}
 
 	useDidMount(() => {
 		const loadComicsFunc = async () => {
-			await loadComics();
-			_comicsTotal = getComicsTotalCount();
-  
-			if (offset === (_comicsTotal - _countOfComicsPack)) {
-				setIsComicsEnded(true);
+			if (startComicsPack) {
+				setComics(startComicsPack);
+				setOffset(offset + _countOfComicsPack);
 			}
+			else {
+				await loadComics();
+			}
+
+			_comicsTotal = getComicsTotalCount();
 		}
 
 		loadComicsFunc();
