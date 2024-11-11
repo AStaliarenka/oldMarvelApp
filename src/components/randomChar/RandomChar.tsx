@@ -2,8 +2,8 @@ import { useState } from "react";
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
-import { character as myCharacter } from "../interfaces/character";
 import { useDidMount } from "../../helpers/common";
+import { ModifiedCharacterDescription } from "../../services/MarvelService";
 
 import "./randomChar.scss";
 
@@ -87,7 +87,7 @@ function RandomChar() {
 	)
 }
 
-const View = ({char}: {char: myCharacter}) => {
+const View = ({char}: {char: ModifiedCharacterDescription}) => {
 	const {name, description, thumbnail, homepage, wiki} = char;
 
 	let imgStyle: React.CSSProperties = {objectFit : "cover"};

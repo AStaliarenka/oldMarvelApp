@@ -7,7 +7,7 @@ import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
 import Sceleton from "../skeleton/Skeleton";
 
-import { character } from "../interfaces/character";
+import { ModifiedCharacterDescription } from "../../services/MarvelService";
 
 import "./charInfo.scss";
 
@@ -16,7 +16,7 @@ type charInfoProps = {
 }
 
 function CharInfo({charId}: charInfoProps) {
-	const [char, setChar] = useState<character | null>(null);
+	const [char, setChar] = useState<ModifiedCharacterDescription | null>(null);
 
 	const {getCharacterById, clearError, process, processNames} = useMarvelService();
 
@@ -77,7 +77,7 @@ function CharInfo({charId}: charInfoProps) {
 	);
 }
 
-const View = ({char}: {char: character}) => {
+const View = ({char}: {char: ModifiedCharacterDescription}) => {
 	const {name, description, thumbnail, homepage, wiki, comics} = char;
 
 	let imgStyle: React.CSSProperties = {objectFit : "cover"};
