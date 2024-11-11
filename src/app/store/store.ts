@@ -2,12 +2,14 @@ import { configureStore} from "@reduxjs/toolkit";
 
 import authReducer from "../reducers/auth";
 import themeReducer from "../../components/theme/slice";
+import marvereducer from "../reducers/marvel";
 
 
 const store = configureStore({
 	reducer: {
 		auth: authReducer,
-		theme: themeReducer
+		theme: themeReducer,
+		marvel: marvereducer
 	},
 });
 
