@@ -1,7 +1,6 @@
 import { marvelAPI } from "./marvelApi";
 import { useHttp } from "../hooks/http.hook";
-import { character as myCharacter } from "../components/interfaces/character";
-import { ComicParameters, CharacterParameters, Character, Comic } from "marvel-ts/dist/types";
+import { ComicParameters, CharacterParameters, Character, Comic, ComicList } from "marvel-ts/dist/types";
 import { useCallback } from "react";
 
 // import { Comic } from "marvel-ts/dist/types";
@@ -15,11 +14,26 @@ import { useCallback } from "react";
 export type ModifiedComic = {
 	id: number;
 	title: string;
+	thumbnail: string;
 	language: string;
 	description: string;
 	price: string;
 	pageCount: number | string;
+}
+
+export type ModifiedCharacter = {
+	id: number,
+	name: string | undefined,
+	thumbnail: string
+}
+
+export type ModifiedCharacterDescription = {
+	name: string;
+    description: string;
+	homepage: string;
+	wiki: string;
 	thumbnail: string;
+	comics: ComicList | undefined
 }
 
 type identCharacter = Character & {id: number}; /* id: number | undefined => number after filter*/
@@ -47,12 +61,12 @@ const useMarvelService = () => {
 					id: character.id,
 					name: character.name,
 					thumbnail: character.thumbnail ? `${character.thumbnail.path}.${character.thumbnail.extension}` : "",
-				};
+				} as ModifiedCharacter;
 			});
 		} else return null;
 	}, [requestFunc]);
 
-	function transformComicData(comic: identComic) {
+	function transformComicData(comic: identComic): ModifiedComic {
 		return {
 			id: comic.id,
 			title: comic.title || "unknown",
@@ -93,7 +107,7 @@ const useMarvelService = () => {
 		} else return null;
 	}, [requestFunc]);
 
-	const transformCharacterData = (character: Character): myCharacter => {
+	const transformCharacterData = (character: Character): ModifiedCharacterDescription => {
 		return {
 			name: character.name || "Unknown hero",
 			description: character.description || "no description about character",

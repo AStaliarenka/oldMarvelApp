@@ -21,7 +21,7 @@ const authSlice = createSlice({
 			state.error = null;
 			state.userId = userId;
 		},
-		userLoggedOut(state, action: PayloadAction<void>) {
+		userLoggedOut(state) {
 			state.isSignedIn = false;
 			state.error = null;
 			state.userId = null;
