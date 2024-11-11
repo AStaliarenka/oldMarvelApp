@@ -1,5 +1,7 @@
 import { useState, useRef } from "react";
 import { useDidMount } from "../../helpers/common";
+import { setStartCharactersPack } from "../../app/reducers/marvel";
+import { useAppSelector, useAppDispatch } from "../../hooks/redux.hooks";
 
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
@@ -25,6 +27,9 @@ function CharList(props: charListProps) {
 	const [offset, setOffset] = useState(210);
 	const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
 	const [isCharsEnded, setIsCharsEnded] = useState(false);
+
+	const startCharactersPack = useAppSelector(((state) => state.marvel.characters));
+	const dispatch = useAppDispatch();
 
 	const {loading, getCharacters, getCharactersTotalCount, error} = useMarvelService();
 
@@ -79,14 +84,17 @@ function CharList(props: charListProps) {
 	}
 
 	const loadCharacters = async (isNotFirstLoad?: boolean) => {
+		const newCharacters = await getCharacters(offset, _countOfCharactersPack);
+
 		if (isNotFirstLoad) {
 			setIsNewItemsLoading(true);
 			setIsCharsEnded(
 				!((Number(_charactersTotal) - _countOfCharactersPack) > offset)
 			)
 		}
-
-		const newCharacters = await getCharacters(offset, _countOfCharactersPack);
+		else if (!startCharactersPack && newCharacters) {
+			dispatch(setStartCharactersPack(newCharacters))
+		}
 
 		if (newCharacters) {
 			setCharacters(characters
@@ -102,7 +110,15 @@ function CharList(props: charListProps) {
 
 	useDidMount(() => {
 		const getCharacters = async () => {
-			await loadCharacters();
+
+			if (startCharactersPack) {
+				setCharacters(startCharactersPack);
+				setOffset(offset + _countOfCharactersPack);
+			}
+			else {
+				await loadCharacters();
+			}
+
 			_charactersTotal = getCharactersTotalCount();
 
 			if (offset === (_charactersTotal - _countOfCharactersPack)) {
@@ -118,8 +134,8 @@ function CharList(props: charListProps) {
 
 	return (
 		<div className="char__list">
-			{spinner}
 			{charList}
+			{spinner}
 			<button
 				className="button button__main button__long"
 				disabled={isNewItemsLoading}
