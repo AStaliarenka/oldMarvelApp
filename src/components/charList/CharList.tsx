@@ -78,17 +78,15 @@ function CharList(props: charListProps) {
 	}
 
 	const loadCharacters = useCallback(async (isNotFirstLoad?: boolean) => {
-		const onCharactersLoaded = (newCharacters: Awaited<ReturnType<typeof getCharacters>>) => {
-			if (newCharacters) {
-				setCharacters(characters
-					? [
-						...characters,
-						...newCharacters
-					]
-					: newCharacters);
-				setOffset(offset + _countOfCharactersPack);
-				setIsNewItemsLoading(false);
-			}
+		const onCharactersLoaded = (newCharacters: Exclude<typeof characters, null>) => {
+			setCharacters(characters
+				? [
+					...characters,
+					...newCharacters
+				]
+				: newCharacters);
+			setOffset(offset + _countOfCharactersPack);
+			setIsNewItemsLoading(false);
 		}
 
 		if (isNotFirstLoad) {
@@ -100,7 +98,9 @@ function CharList(props: charListProps) {
 
 		const characters = await getCharacters(offset, _countOfCharactersPack);
 
-		onCharactersLoaded(characters);
+		if (characters) {
+			onCharactersLoaded(characters);
+		}
 	}, [getCharacters, offset]);
 
 	useEffect(() => {
