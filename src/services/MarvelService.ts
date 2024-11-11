@@ -23,6 +23,8 @@ export type ModifiedComic = {
 	thumbnail: string;
 }
 
+type identCharacter = Character & {id: number}; /* id: number | undefined => number after filter*/
+
 let _charactersTotal: number | undefined = 0;
 let _comicsTotal: number | undefined = 0;
 
@@ -40,7 +42,7 @@ const useMarvelService = () => {
 				_charactersTotal = res.data.total;
 			}
 
-			return res.data.results.map(character => {
+			return (res.data.results.filter(character => character.id) as identCharacter[]).map(character => {
 				return {
 					id: character.id,
 					name: character.name,

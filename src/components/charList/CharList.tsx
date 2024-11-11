@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 import useMarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
@@ -8,8 +8,8 @@ import abyss from "../../resources/img/abyss.jpg";
 
 interface characterInfo {
     thumbnail: string;
-    name: string;
-    id: number;
+    name: string | undefined;
+    id: number; /* after filter on getCharacters */
 }
 
 type charListProps = {
@@ -20,7 +20,7 @@ const _countOfCharactersPack = 9;
 let _charactersTotal = 0;
 
 function CharList(props: charListProps) {
-	const [characters, setCharacters] = useState(null);
+	const [characters, setCharacters] = useState<Awaited<ReturnType<typeof getCharacters>>>(null);
 	const [offset, setOffset] = useState(210);
 	const [isNewItemsLoading, setIsNewItemsLoading] = useState(false);
 	const [isCharsEnded, setIsCharsEnded] = useState(false);
@@ -77,18 +77,20 @@ function CharList(props: charListProps) {
 		);
 	}
 
-	const onCharactersLoaded = (newCharacters: any) => {
-		setCharacters(characters
-			? [
-				...characters,
-				...newCharacters
-			]
-			: newCharacters);
-		setOffset(offset + _countOfCharactersPack);
-		setIsNewItemsLoading(false);
-	}
+	const loadCharacters = useCallback(async (isNotFirstLoad?: boolean) => {
+		const onCharactersLoaded = (newCharacters: Awaited<ReturnType<typeof getCharacters>>) => {
+			if (newCharacters) {
+				setCharacters(characters
+					? [
+						...characters,
+						...newCharacters
+					]
+					: newCharacters);
+				setOffset(offset + _countOfCharactersPack);
+				setIsNewItemsLoading(false);
+			}
+		}
 
-	const loadCharacters = async (isNotFirstLoad?: boolean) => {
 		if (isNotFirstLoad) {
 			setIsNewItemsLoading(true);
 			setIsCharsEnded(
@@ -96,12 +98,13 @@ function CharList(props: charListProps) {
 			)
 		}
 
-		return getCharacters(offset, _countOfCharactersPack)
-			.then(onCharactersLoaded);
-	}
+		const characters = await getCharacters(offset, _countOfCharactersPack);
+
+		onCharactersLoaded(characters);
+	}, [getCharacters, offset]);
 
 	useEffect(() => {
-		(async () => {
+		const getCharacters = async () => {
 			await loadCharacters();
 			_charactersTotal = getCharactersTotalCount();
 
@@ -109,8 +112,10 @@ function CharList(props: charListProps) {
 				setIsCharsEnded(true);
 			}
 
-		})();
-	}, []);
+		}
+
+		getCharacters();
+	}, [getCharactersTotalCount, loadCharacters, offset]);
 
 	const spinner = (loading && !isNewItemsLoading) ? <Spinner/> : null;
 	const charList = (characters && !error) ? generateCharGrid(characters) : null;
