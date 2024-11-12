@@ -19,29 +19,25 @@ function SingleComicPage() {
 	const {getComicById, loading, error, clearError} = useMarvelService();
 	const currentLocation = useLocation();
 
-	const updateComic = () => {
-		if (!comicId) {
-			return;
-		} 
-
-		clearError();
-
-		// TODO: validate comicId
-		getComicById(Number(comicId))
-			.then((comic) => {
-				if (comic) {
-					onComicLoaded(comic);
-				}
-			});
-	}
-
 	const onComicLoaded = (comic: ModifiedComic) => {
 		setComic(comic);
 	}
 
 	useEffect(() => {
+		const updateComic = async () => {
+			if (comicId) {
+				clearError();
+	
+				const newComic = await getComicById(Number(comicId))
+	
+				if (newComic) {
+					onComicLoaded(newComic);
+				}
+			}		
+		}
+
 		updateComic();
-	}, [comicId]);
+	}, [comicId, clearError, getComicById]);
 
     type viewProps = {
         comicInfo: ModifiedComic

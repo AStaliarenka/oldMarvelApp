@@ -77,6 +77,7 @@ export default function TestFormPage() {
 		}
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const onInvalidSubmit = (...arrM: any[]) => {
 		console.log("arrM", arrM);
 	}

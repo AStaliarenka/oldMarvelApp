@@ -7,7 +7,7 @@ type State = {
 
 type Props = {
 	fallback?: JSX.Element;
-	children: any
+	children: JSX.Element;
 }
 
 class ErrorBoundary extends Component<Props, State> {
@@ -15,6 +15,7 @@ class ErrorBoundary extends Component<Props, State> {
 		hasError: false
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
 		console.log("error", error);
 	}
