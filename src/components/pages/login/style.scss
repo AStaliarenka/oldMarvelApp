@@ -1,0 +1,34 @@
+.login-form {
+    input {
+        width: 30vw;
+        height: 5vh;
+        font-size: 3vh;
+    }
+
+    [aria-invalid=true] {
+        color: rgb(var(--white));
+        background-color: rgb(var(--red-200));
+
+        &::placeholder {
+            color: rgb(var(--white));
+        }
+    }
+
+    .themeToggle__label {
+        color: rgb(var(--black-700));
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+
+        .button {
+            width: 10vw;
+        }
+    }
+}
+
+.formWrapper {
+    display: flex;
+    justify-content: center;
+}

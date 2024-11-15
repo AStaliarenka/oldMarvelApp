@@ -15,7 +15,32 @@
     
             .mainHeader__topRow {
                 display: flex;
-                justify-content: end;              
+                flex-direction: row;
+                justify-content: space-between;
+
+                .topRow {
+                    &__username {
+                        color: rgb(var((--main-header-text-secondary)));
+                        font-size: 34px;
+                        line-height: 34px;
+                    }
+
+                    &__right-block {
+                        display: flex;
+                        flex-direction: row;
+    
+                        .login-link {
+                            margin-left: 30px;
+        
+                            button {
+                                width: 100px;
+                                height: 100%;
+                                font-size: 24px;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                }    
             }
         }    
     }

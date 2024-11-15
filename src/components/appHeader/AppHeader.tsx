@@ -8,12 +8,31 @@ import AppContainer from "../appContainer";
 
 const AppHeader = () => {
 	const toggleActive = ({isActive}: {isActive: boolean}) => isActive ? "active" : "";
+	// active class is being added from NavLink, TODO: delete
+
+	const isTestLogin = process.env.REACT_APP_TEST_LOGIN;
+
+	const testLoginButton = isTestLogin ? (
+		<NavLink to="/login" className="login-link">
+			<button className="login-link__button">LOGIN</button>
+		</NavLink>
+	) : null;
+
+	const userLabel = isTestLogin ? (
+		<span className="topRow__username">ALEKSEI STOLIARENKO</span>
+	) : null;
+
+	console.log(isTestLogin);
 
 	return (
 		<header className="app__header mainHeader">
 			<AppContainer>
-				<div className='mainHeader__topRow'>
-					<Theme/>
+				<div className='mainHeader__topRow topRow'>
+					{userLabel}
+					<div className="topRow__right-block">
+						<Theme/>
+						{testLoginButton}
+					</div>
 				</div>
 				<div className="mainHeader__bottomRow">
 					<h1 className="app__title">
