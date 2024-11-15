@@ -1,17 +1,32 @@
+import { MouseEventHandler } from "react";
+import { Objectvalues } from "../../helpers/common";
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const buttonTypes = {
+	button: "button",
+	submit: "submit",
+	reset: "reset"
+} as const
+
+type ButtonType = Objectvalues<typeof buttonTypes>
+
 type ButtonProps = {
-    // type: React.ButtonHTMLAttributes<HTMLButtonElement>.type,
-    type: "button" | "submit" | "reset";
-    onClickHandler(): void;
+    type: ButtonType;
+    onClickHandler?: MouseEventHandler<HTMLButtonElement>;
     buttonStyle: "main" | "secondary";
     text: string
 }
 
-export default function MarvelButton(props: ButtonProps) {
+export default function MarvelButton({buttonStyle, type, onClickHandler, text}: ButtonProps) {
 	return (
-		<button className={`button button__${props.buttonStyle}`} type={props.type} onClick={() => {props.onClickHandler()}}>
+		<button
+			className={`button button__${buttonStyle}`}
+			type={type}
+			onClick={onClickHandler ? onClickHandler : undefined}
+		>
 			<div className="inner">
-				{props.text}
+				{text}
 			</div>
 		</button>
-	);
+	)
 }

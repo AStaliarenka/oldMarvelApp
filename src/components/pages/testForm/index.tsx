@@ -148,7 +148,7 @@ export default function TestFormPage() {
 				/>
 				<MarvelButton
 					buttonStyle="secondary"
-					onClickHandler={clearErrors}
+					onClickHandler={() => {clearErrors()}}
 					text="CLEAR errors"
 					type="button"
 				/>
