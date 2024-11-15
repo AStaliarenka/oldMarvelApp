@@ -5,6 +5,7 @@
 
 export type AuthState = {
     isSignedIn: boolean;
+    username: string | null;
     userId: null | number;
     error: null | string;
 };

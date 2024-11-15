@@ -4,8 +4,6 @@ import {get as getDataFromLs} from "local-storage";
 import AppContainer from "../../appContainer";
 import MarvelButton from "../../marvelButton";
 import TestCurrency from "../../testCurrency";
-import { useAppDispatch } from "../../../hooks/redux.hooks";
-import { userLoggedOut, userLoggedIn } from "../../../app/reducers/auth";
 import store from "../../../app/store/store";
 
 import SecondTestSection from "../../testBlock/secondTestSection";
@@ -48,8 +46,6 @@ export default function TestFormPage() {
 			[TestFormInputNames.aboutYou]: "genius"
 		}
 	});
-
-	const dispatch = useAppDispatch();
 
 	const userDataFromDB = {
 		firstName: "Alex",
@@ -124,20 +120,6 @@ export default function TestFormPage() {
 					buttonStyle="main"
 					onClickHandler={onTestButtonClick}
 					text="Test BUTTON"
-					type="button"
-				/>
-				<MarvelButton
-					buttonStyle="main"
-					// onClickHandler={() => store.dispatch({type: "auth/userLoggedIn", payload: 16})} /* TODO: */
-					onClickHandler={() => dispatch(userLoggedIn(16))}
-					text="Fake login"
-					type="button"
-				/>
-				<MarvelButton
-					buttonStyle="main"
-					// onClickHandler={() => store.dispatch({type: "auth/userLoggedOut"})} /* TODO: */
-					onClickHandler={() => dispatch(userLoggedOut())}
-					text="Fake logout"
 					type="button"
 				/>
 				<MarvelButton
