@@ -3,6 +3,13 @@
 // TODO: split into 2 files
 
 [data-theme='light'] {
+    // default colors
+    --default-text-primary: var(--red-500);
+    --default-text-secondary: var(--black-999);
+
+    // main
+    --main-background-color: var(--white);
+
     // main-header
     --main-header-text-primary: var(--red-500);
     --main-header-text-hover: var(--red-500);
@@ -10,14 +17,43 @@
     --main-header-text-secondary: var(--black-999);
 
     --main-header-background: var(--white);
+
+    // main-footer
+    --main-footer-text-primary: var(--black-999);
+    --main-footer-background: var(--white);
+
+    // randomchar
+    --randomchar-background-color: var(--white);
+
+    // character info
+    --char-info-background-color: var(--white);
 }
 
 [data-theme='dark'] {
+    // default colors
+    --default-text-primary: var(--red-200);
+    --default-text-secondary: var(--white);
+
+    // main
+    --main-background-color: var(--black-600);
+
     // main-header
     --main-header-text-primary: var(--red-200);
     --main-header-text-hover: var(--black-999);
 
     --main-header-text-secondary: var(--white);
 
-    --main-header-background: var(--black-600);
+    --main-header-background: var(--black-700);
+
+    // main-footer
+    --main-footer-text-primary: var(--white);
+    --main-footer-background: var(--black-700);
+
+    --main-background-color: var(--black-600);
+
+    // randomchar
+    --randomchar-background-color: var(--gray-100);
+
+    // character info
+    --char-info-background-color: var(--gray-100);
 }

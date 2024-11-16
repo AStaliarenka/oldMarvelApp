@@ -1,6 +1,7 @@
 .comics {
     &__list {
         margin-top: 45px;
+        color: rgb(var(--default-text-secondary));
     }
     &__grid {
         display: grid;
@@ -27,7 +28,7 @@
             font-weight: bold;
             font-size: 14px;
             line-height: 18px;
-            color: rgba(0, 0, 0, 0.6);
+            color: rgb(var(--default-text-secondary));
             text-transform: uppercase;
         }
         &:hover {

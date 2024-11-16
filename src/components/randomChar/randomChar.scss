@@ -8,6 +8,7 @@
         display: grid;
         grid-template-columns: 180px auto;
         column-gap: 30px;
+        background-color: rgb(var(--randomchar-background-color));
     }
     &__img {
         width: 180px;

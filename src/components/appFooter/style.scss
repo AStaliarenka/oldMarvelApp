@@ -1,11 +1,11 @@
 footer.app-footer {
-    background-color: rgb(var(--black-600));
+    background-color: rgb(var(--main-footer-background));
 
     flex: 0 0 auto;
 
     .app-footer {
         &__title {
-            color: rgb(var(--white));
+            color: rgb(var(--main-footer-text-primary));
         }
     }
 }
