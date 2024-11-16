@@ -7,7 +7,7 @@ import Spinner from "../spinner/Spinner";
 
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
-import { MainPage, ComicsPage, TestFormPage } from "../pages";
+import { MainPage, ComicsPage, TestFormPage, TestLoginPage } from "../pages";
 
 import AppContainer from "../appContainer";
 
@@ -53,6 +53,12 @@ const App  = () => {
 							<Route path='testForm' element={
 								<ErrorBoundary fallback={errFallback}>
 									<TestFormPage/>
+								</ErrorBoundary>
+							}>
+							</Route>
+							<Route path='login' element={
+								<ErrorBoundary fallback={errFallback}>
+									<TestLoginPage/>
 								</ErrorBoundary>
 							}>
 							</Route>

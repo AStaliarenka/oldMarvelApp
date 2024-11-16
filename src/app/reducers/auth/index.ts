@@ -6,25 +6,33 @@ import { AuthState } from "./@types";
 
 const initialState: AuthState = {
 	isSignedIn: false,
-	userId: null,
+	roleId: null,
+	username: null,
 	error: null,
 };
+
+type UserData = {
+	userId: number;
+	username: string;
+}
 
 const authSlice = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
-		userLoggedIn(state, action: PayloadAction<number>) {
-			const userId = action.payload;
-            
+		userLoggedIn(state, action: PayloadAction<UserData>) {           
 			state.isSignedIn = true;
 			state.error = null;
-			state.userId = userId;
+
+			state.roleId = action.payload.userId; /* TODO: delete */
+			state.username = action.payload.username;
 		},
 		userLoggedOut(state) {
 			state.isSignedIn = false;
 			state.error = null;
-			state.userId = null;
+
+			state.roleId = null;
+			state.username = null;
 		}
 	}
 });
