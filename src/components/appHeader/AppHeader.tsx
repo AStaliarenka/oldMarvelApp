@@ -6,23 +6,42 @@ import { NavLink } from "react-router-dom";
 
 import AppContainer from "../appContainer";
 
+import { useAppSelector, useAppDispatch } from "../../hooks/redux.hooks";
+
+import { userLoggedOut } from "../../app/reducers/auth";
+
 const AppHeader = () => {
 	const toggleActive = ({isActive}: {isActive: boolean}) => isActive ? "active" : "";
 	// active class is being added from NavLink, TODO: delete
 
 	const isTestLogin = process.env.REACT_APP_TEST_LOGIN;
 
+	const userName = useAppSelector((state) => state.auth.username);
+	const isLoggedIn = useAppSelector((state) => state.auth.isSignedIn);
+
+	const dispatch = useAppDispatch()
+
+	function logoutHandler() {
+		dispatch(userLoggedOut())
+	}
+
 	const testLoginButton = isTestLogin ? (
-		<NavLink to="/login" className="login-link">
-			<button className="login-link__button">LOGIN</button>
-		</NavLink>
-	) : null;
+		isLoggedIn ? (
+			<NavLink to="/" className="login-link">
+				<button className="login-link__button" onClick={logoutHandler}>LOGOUT</button>
+			</NavLink>
+		)
+			: (
+				<NavLink to="/login" className="login-link">
+					<button className="login-link__button">LOGIN</button>
+				</NavLink>
+			)
+	)
+		: null
 
 	const userLabel = isTestLogin ? (
-		<span className="topRow__username">ALEKSEI STOLIARENKO</span>
+		<span className="topRow__username">{userName}</span>
 	) : null;
-
-	console.log(isTestLogin);
 
 	return (
 		<header className="app__header mainHeader">

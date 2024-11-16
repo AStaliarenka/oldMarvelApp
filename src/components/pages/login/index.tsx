@@ -2,6 +2,10 @@ import {useForm} from "react-hook-form"
 import AppContainer from "../../appContainer"
 import MarvelButton from "../../marvelButton"
 import { getBemElementClass } from "../../../helpers/common"
+import { useAppDispatch } from "../../../hooks/redux.hooks"
+import { userLoggedIn } from "../../../app/reducers/auth"
+
+import { useNavigate } from "react-router-dom"
 
 import { LoginForm } from "./@types"
 
@@ -33,6 +37,10 @@ const Testlogin = () => {
 		defaultValues: {}
 	})
 
+	const dispatch = useAppDispatch()
+
+	const navigate = useNavigate()
+
 	const onValidSubmit = async (formData: LoginForm) => {
 		console.log("onValidSubmit, data=", formData)
 		const URL = "http://localhost:3500/auth/login"
@@ -58,6 +66,13 @@ const Testlogin = () => {
 
 			if (res.ok && data) {
 				console.log(data.message)
+				dispatch(userLoggedIn({
+					userId: data.userInfo.roleId,
+					username: data.userInfo.username
+				}))
+
+				navigate("/")
+				// TODO: to prev page
 			}
 			else {
 				if (data.field &&

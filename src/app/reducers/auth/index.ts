@@ -6,7 +6,7 @@ import { AuthState } from "./@types";
 
 const initialState: AuthState = {
 	isSignedIn: false,
-	userId: null,
+	roleId: null,
 	username: null,
 	error: null,
 };
@@ -24,14 +24,14 @@ const authSlice = createSlice({
 			state.isSignedIn = true;
 			state.error = null;
 
-			state.userId = action.payload.userId; /* TODO: delete */
+			state.roleId = action.payload.userId; /* TODO: delete */
 			state.username = action.payload.username;
 		},
 		userLoggedOut(state) {
 			state.isSignedIn = false;
 			state.error = null;
 
-			state.userId = null;
+			state.roleId = null;
 			state.username = null;
 		}
 	}
