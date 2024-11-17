@@ -15,7 +15,8 @@ const cssClassNames = {
 	form: {
 		name: "login-form",
 		elements: {
-			buttons: "buttons"
+			buttons: "buttons",
+			textInputsBlock: "text-inputs-block"
 		}
 	}
 }
@@ -99,36 +100,38 @@ const Testlogin = () => {
 			className={`testForm ${cssClassNames.form.name}`}
 			onSubmit={handleSubmit(onValidSubmit, onInvalidSubmit)}
 		>
-			<input
-				{...register(formInputNames.username, { maxLength: 20 })}
-				placeholder="Enter username"
-				aria-invalid={errors.username ? "true" : "false"}
-			/>
-			{
-				errors.username && errors.username.type === "maxLength" && (
-					<span role="alert">Max length exceeded</span>
-				)
-			}
-			{
-				errors.username && errors.username?.message && (
-					<span role="alert">{errors.username.message}</span>
-				)
-			}
-			<input
-				{...register(formInputNames.password, { maxLength: 20 })}
-				placeholder="Enter password"
-				aria-invalid={errors.password ? "true" : "false"}
-			/>
-			{
-				errors.password && errors.password.type === "maxLength" && (
-					<span role="alert">Max length exceeded</span>
-				)
-			}
-			{
-				errors.password && errors.password?.message && (
-					<span role="alert">{errors.password.message}</span>
-				)
-			}
+			<div className={getBemElementClass(cssClassNames.form.name, cssClassNames.form.elements.textInputsBlock)}>
+				<input
+					{...register(formInputNames.username, { maxLength: 20 })}
+					placeholder="Enter username"
+					aria-invalid={errors.username ? "true" : "false"}
+				/>
+				{
+					errors.username && errors.username.type === "maxLength" && (
+						<span role="alert">Max length exceeded</span>
+					)
+				}
+				{
+					errors.username && errors.username?.message && (
+						<span role="alert">{errors.username.message}</span>
+					)
+				}
+				<input
+					{...register(formInputNames.password, { maxLength: 20 })}
+					placeholder="Enter password"
+					aria-invalid={errors.password ? "true" : "false"}
+				/>
+				{
+					errors.password && errors.password.type === "maxLength" && (
+						<span role="alert">Max length exceeded</span>
+					)
+				}
+				{
+					errors.password && errors.password?.message && (
+						<span role="alert">{errors.password.message}</span>
+					)
+				}
+			</div>
 			{/* TODO: themeToggle is a component */}
 			<div className='themeToggle'>
 				<span className='themeToggle__label'>Remember</span>
