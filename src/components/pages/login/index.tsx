@@ -7,7 +7,7 @@ import { userLoggedIn } from "../../../app/reducers/auth"
 
 import { useNavigate } from "react-router-dom"
 
-import { LoginForm } from "./@types"
+import { LoginForm, ServerLoginDataWithMessage } from "./@types"
 
 import "./style.scss"
 
@@ -49,8 +49,6 @@ const Testlogin = () => {
 			[loginBodyFields.password]: formData.password,
 			[loginBodyFields.isRemember]: formData.isRemember
 		}
-
-		// clearErrors();
 	
 		try {
 			const res = await fetch(URL, {
@@ -61,25 +59,29 @@ const Testlogin = () => {
 				mode: "cors",
 				body: JSON.stringify(userCredentials)
 			})
+
+			if (res.ok) {
+				const data = await res.json() as unknown as ServerLoginDataWithMessage<true>
+
+				if (data) {
+					const {roleId, username} = data.userInfo
+
+					dispatch(userLoggedIn({
+						userId: roleId,
+						username
+					}))
 	
-			const data = await res.json()
-
-			if (res.ok && data) {
-				console.log(data.message)
-				dispatch(userLoggedIn({
-					userId: data.userInfo.roleId,
-					username: data.userInfo.username
-				}))
-
-				navigate("/")
-				// TODO: to prev page
+					navigate("/")
+					// TODO: to prev page
+				}
 			}
 			else {
-				if (data.field &&
-					(data.field === formInputNames.password || data.field === formInputNames.username)
-				) {
-					setError(data.field, {message: data.message})
-					console.log("error:", data.message)
+				const data = await res.json() as unknown as ServerLoginDataWithMessage<false>
+
+				if (data) {
+					const {field: errorField, message} = data
+
+					setError(errorField, {message: message})
 				}
 			}
 		} catch(error) {
@@ -93,7 +95,10 @@ const Testlogin = () => {
 	}
 
 	const form = (
-		<form className={`testForm ${cssClassNames.form.name}`} onSubmit={handleSubmit(onValidSubmit, onInvalidSubmit)}>
+		<form
+			className={`testForm ${cssClassNames.form.name}`}
+			onSubmit={handleSubmit(onValidSubmit, onInvalidSubmit)}
+		>
 			<input
 				{...register(formInputNames.username, { maxLength: 20 })}
 				placeholder="Enter username"
@@ -104,6 +109,11 @@ const Testlogin = () => {
 					<span role="alert">Max length exceeded</span>
 				)
 			}
+			{
+				errors.username && errors.username?.message && (
+					<span role="alert">{errors.username.message}</span>
+				)
+			}
 			<input
 				{...register(formInputNames.password, { maxLength: 20 })}
 				placeholder="Enter password"
@@ -112,6 +122,11 @@ const Testlogin = () => {
 			{
 				errors.password && errors.password.type === "maxLength" && (
 					<span role="alert">Max length exceeded</span>
+				)
+			}
+			{
+				errors.password && errors.password?.message && (
+					<span role="alert">{errors.password.message}</span>
 				)
 			}
 			{/* TODO: themeToggle is a component */}
