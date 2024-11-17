@@ -3,13 +3,6 @@
 }
 
 .login-form {
-    input {
-        @include formInputsWidth;
-        height: 5vh;
-        font-size: 3vh;
-        margin-bottom: 20px;
-    }
-
     span[role="alert"] {
         margin-bottom: 20px;
         line-height: 2vh;
@@ -48,6 +41,13 @@
         display: flex;
         flex-direction: column;
         height: 20vh;
+
+        input {
+            @include formInputsWidth;
+            height: 5vh;
+            font-size: 3vh;
+            margin-bottom: 20px;
+        }
     }
 }
 
