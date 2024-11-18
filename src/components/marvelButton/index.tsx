@@ -12,17 +12,19 @@ type ButtonType = Objectvalues<typeof buttonTypes>
 
 type ButtonProps = {
     type: ButtonType;
+	disabled?: boolean;
     onClickHandler?: MouseEventHandler<HTMLButtonElement>;
     buttonStyle: "main" | "secondary";
     text: string
 }
 
-export default function MarvelButton({buttonStyle, type, onClickHandler, text}: ButtonProps) {
+export default function MarvelButton({buttonStyle, type, onClickHandler, text, disabled}: ButtonProps) {
 	return (
 		<button
 			className={`button button__${buttonStyle}`}
 			type={type}
 			onClick={onClickHandler ? onClickHandler : undefined}
+			disabled={disabled ? disabled : undefined}
 		>
 			<div className="inner">
 				{text}

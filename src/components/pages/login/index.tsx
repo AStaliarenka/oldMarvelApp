@@ -34,7 +34,7 @@ const loginBodyFields = {
 } as const
 
 const Testlogin = () => {
-	const { register, handleSubmit, formState: {errors}, setError } = useForm<LoginForm>({
+	const { register, handleSubmit, formState: {errors, isSubmitting}, setError } = useForm<LoginForm>({
 		defaultValues: {}
 	})
 
@@ -85,9 +85,13 @@ const Testlogin = () => {
 					setError(errorField, {message: message})
 				}
 			}
+			else {
+				setError("root", {message: "Something went wrong"})
+			}
 			// TODO: handle rest statuses
 		} catch(error) {
 			console.log("error:", error)
+			setError("root", {message: "Something went wrong"})
 		}
 	};
 	
@@ -113,7 +117,7 @@ const Testlogin = () => {
 					)
 				}
 				{
-					errors.username && errors.username?.message && (
+					errors.username && errors.username.message && (
 						<span role="alert">{errors.username.message}</span>
 					)
 				}
@@ -128,7 +132,7 @@ const Testlogin = () => {
 					)
 				}
 				{
-					errors.password && errors.password?.message && (
+					errors.password && errors.password.message && (
 						<span role="alert">{errors.password.message}</span>
 					)
 				}
@@ -145,10 +149,16 @@ const Testlogin = () => {
 					<span className="slider round"></span>
 				</label>
 			</div>
+			{
+				errors.root?.message && (
+					<span role="alert">{errors.root.message}</span>
+				)
+			}
 			<div className={getBemElementClass(cssClassNames.form.name, cssClassNames.form.elements.buttons)}>
 				<MarvelButton
+					disabled={isSubmitting}
 					buttonStyle="main"
-					text="Login"
+					text={isSubmitting ? "..." : "Login"}
 					type="submit"
 				/>
 			</div>
