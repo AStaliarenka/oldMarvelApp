@@ -1,7 +1,9 @@
+import { formInputNames } from "./constants"
+
 export type LoginForm = {
-	username: string
-	password: string
-	isRemember: boolean
+	[formInputNames.username]: string
+	[formInputNames.password]: string
+	[formInputNames.isRemember]: boolean
 }
 
 type ServerDataMessage = {

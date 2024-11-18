@@ -4,34 +4,13 @@ import MarvelButton from "../../marvelButton"
 import { getBemElementClass } from "../../../helpers/common"
 import { useAppDispatch } from "../../../hooks/redux.hooks"
 import { userLoggedIn } from "../../../app/reducers/auth"
+import { cssClassNames, loginBodyFields, formInputNames } from "./constants"
 
 import { useNavigate } from "react-router-dom"
 
 import { LoginForm, ServerLoginDataWithMessage } from "./@types"
 
 import "./style.scss"
-
-const cssClassNames = {
-	form: {
-		name: "login-form",
-		elements: {
-			buttons: "buttons",
-			textInputsBlock: "text-inputs-block"
-		}
-	}
-}
-
-const formInputNames = {
-	username: "username",
-	password: "password",
-	isRemember: "isRemember"
-} as const
-
-const loginBodyFields = {
-	username: "username",
-	password: "password",
-	isRemember: "isRemember"
-} as const
 
 const Testlogin = () => {
 	const { register, handleSubmit, formState: {errors, isSubmitting}, setError } = useForm<LoginForm>({
