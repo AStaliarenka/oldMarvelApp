@@ -76,7 +76,7 @@ const Testlogin = () => {
 					// TODO: to prev page
 				}
 			}
-			else {
+			else if (res.status === 422) {
 				const data = await res.json() as unknown as ServerLoginDataWithMessage<false>
 
 				if (data) {
@@ -85,6 +85,7 @@ const Testlogin = () => {
 					setError(errorField, {message: message})
 				}
 			}
+			// TODO: handle rest statuses
 		} catch(error) {
 			console.log("error:", error)
 		}
