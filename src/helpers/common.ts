@@ -6,7 +6,18 @@ const useDidMount = (func: React.EffectCallback) => {
 }
 
 const getBemElementClass = (blockClass: string, elementsClass: string ) => {
+	if (!blockClass || !elementsClass) {
+		return undefined
+	}
 	return `${blockClass}__${elementsClass}`
+}
+
+const generateComplicatedClassName = (...cssClassNames: string[]) => {
+	if (cssClassNames.filter(className => (className === "" || className === undefined)).length) {
+		return undefined
+	}
+
+	return cssClassNames.join(" ")
 }
 
 const getBemModificatorClass = (
@@ -14,6 +25,9 @@ const getBemModificatorClass = (
 	elementsClass: string,
 	modificatorClass: string
 ) => {
+	if (!blockClass || !elementsClass || !modificatorClass) {
+		return undefined
+	}
 	return `${blockClass}__${elementsClass}--${modificatorClass}`
 }
 
@@ -22,5 +36,6 @@ export type Objectvalues<T> = T[keyof T];
 export {
 	useDidMount,
 	getBemElementClass,
-	getBemModificatorClass
+	getBemModificatorClass,
+	generateComplicatedClassName
 };
