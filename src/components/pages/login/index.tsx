@@ -22,7 +22,6 @@ const Testlogin = () => {
 	const navigate = useNavigate()
 
 	const onValidSubmit = async (formData: LoginForm) => {
-		console.log("onValidSubmit, data=", formData)
 		const URL = "http://localhost:3500/auth/login"
 		const userCredentials = {
 			[loginBodyFields.username]: formData.username,
