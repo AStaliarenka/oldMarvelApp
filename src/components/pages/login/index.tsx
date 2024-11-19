@@ -55,7 +55,7 @@ const Testlogin = () => {
 					// TODO: to prev page
 				}
 			}
-			else if (res.status === 422) {
+			else if (res.status === 422 || res.status === 404) {
 				const data = await res.json() as unknown as ServerLoginDataWithMessage<false>
 
 				if (data) {
