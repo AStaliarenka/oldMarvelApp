@@ -50,7 +50,7 @@ const AppHeader = () => {
 			<AppContainer>
 				<div className='mainHeader__topRow topRow'>
 					{userLabel}
-					<div className="topRow__right-block">
+					<div className="topRow__end-block">
 						<TextDirectionToggle/>
 						<Theme/>
 						{testLoginButton}

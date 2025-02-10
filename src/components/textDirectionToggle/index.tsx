@@ -3,8 +3,6 @@ import { useEffect } from "react"
 import { setTextDirection } from "./slice"
 import { TEXT_DIRECTION_VALUES } from "./slice/@types"
 
-import "./style.scss"
-
 // TODO: to select other toggle style
 const TextDirectionToggle = () => {
 	const textDirection = useAppSelector((state) => state.textDirection)

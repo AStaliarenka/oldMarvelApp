@@ -25,13 +25,15 @@
                         line-height: 34px;
                     }
 
-                    &__right-block {
+                    &__end-block {
                         display: flex;
                         flex-direction: row;
+
+                        &>div {
+                            margin-inline-end: 20px;
+                        }
     
                         .login-link {
-                            margin-left: 30px;
-        
                             button {
                                 width: 100px;
                                 height: 100%;
