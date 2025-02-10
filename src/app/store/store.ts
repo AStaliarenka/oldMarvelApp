@@ -3,13 +3,14 @@ import { configureStore} from "@reduxjs/toolkit";
 import authReducer from "../reducers/auth";
 import themeReducer from "../../components/theme/slice";
 import marvelReducer from "../reducers/marvel";
-
+import textDirectionReducer from "../../components/textDirectionToggle/slice";
 
 const store = configureStore({
 	reducer: {
 		auth: authReducer,
 		theme: themeReducer,
-		marvel: marvelReducer
+		marvel: marvelReducer,
+		textDirection: textDirectionReducer
 	},
 });
 

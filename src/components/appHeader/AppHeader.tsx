@@ -2,6 +2,8 @@ import "./appHeader.scss";
 
 import Theme from "../theme";
 
+import TextDirectionToggle from "../textDirectionToggle";
+
 import { NavLink } from "react-router-dom";
 
 import AppContainer from "../appContainer";
@@ -49,6 +51,7 @@ const AppHeader = () => {
 				<div className='mainHeader__topRow topRow'>
 					{userLabel}
 					<div className="topRow__right-block">
+						<TextDirectionToggle/>
 						<Theme/>
 						{testLoginButton}
 					</div>
