@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "../../hooks/redux.hooks"
+import { useEffect } from "react"
 import { setTextDirection } from "./slice"
 import { TEXT_DIRECTION_VALUES } from "./slice/@types"
 
@@ -10,10 +11,16 @@ const TextDirectionToggle = () => {
 
 	const dispatch = useAppDispatch()
 
+	useEffect(() => {
+		document.querySelector("html")?.setAttribute("dir", textDirection)
+
+		// localStorage.setItem("textDirection", textDirection);
+	}, [ textDirection ]);
+
 	const handleChange = () => {
-		const next = textDirection === TEXT_DIRECTION_VALUES.ltr
-			? TEXT_DIRECTION_VALUES.rtl
-			: TEXT_DIRECTION_VALUES.ltr
+		const next = textDirection === TEXT_DIRECTION_VALUES.leftToRight
+			? TEXT_DIRECTION_VALUES.rightToLeft
+			: TEXT_DIRECTION_VALUES.leftToRight
 
 		dispatch(setTextDirection(next))
 	}
@@ -24,7 +31,7 @@ const TextDirectionToggle = () => {
 	// eslint-disable-next-line prefer-const
 	checkboxValue = true
 	
-	if (textDirection === TEXT_DIRECTION_VALUES.rtl) {
+	if (textDirection === TEXT_DIRECTION_VALUES.rightToLeft) {
 		toggleLabelValue = "RTL"
 		// checkboxValue = true
 	}

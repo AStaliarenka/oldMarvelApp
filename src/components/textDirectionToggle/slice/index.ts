@@ -5,7 +5,7 @@ import { textDirectionState } from "./@types"
 
 const getTextDirection = ():textDirectionState  => {
 	// TODO: get from localstorage
-	return "leftToRight"
+	return "ltr"
 }
 
 const initialState: textDirectionState = getTextDirection()

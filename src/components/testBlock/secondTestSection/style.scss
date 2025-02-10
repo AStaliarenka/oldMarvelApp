@@ -11,4 +11,46 @@ section.second-section {
             color: rgb(var(--white));
         }
     }
+
+    .marvelCards {
+        margin-top: 20px;
+
+        .card {
+            margin: 20px 0;
+            padding: 10px;
+
+            display: flex;
+            flex-direction: row;
+
+            background-color: #9e8f8f; /* TODO */
+
+            &__img {
+                height: 200px;
+                width: 200px;
+                margin-inline-end: 20px;
+            }
+
+            &__textBlock {
+                width: 100%;
+            }
+
+            &__title {
+                font-size: 36px;
+                color: rgb(var(--white));
+            }
+
+            &__text {
+                font-size: 24px;
+                color: rgb(var(--white));
+            }
+
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }       
+    }
 }
