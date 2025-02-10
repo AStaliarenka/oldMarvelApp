@@ -41,7 +41,7 @@ const SecondTestSection = () => {
 		for (let i=0; i<numberOfCards; i++) {
 			cards.push(
 				<div className="marvelCards__card card">
-					<img className="card__img" src={deadpoolIcon}></img>
+					<img className="card__img" src={deadpoolIcon} alt="deadpool"></img>
 					<div className="card__textBlock">
 						<h6 className="card__title">{cardTitle}</h6>
 						<span className="card__text">{cardText}</span>
