@@ -62,12 +62,12 @@ const AppHeader = () => {
 							<span>Marvel</span> information portal
 						</a>
 					</h1>
-					<nav className="app__menu">
+					<nav className="app__menu appMenu">
 						<ul>
 							<li><NavLink to="/" className={toggleActive}>Characters</NavLink></li>
-                            /
+                        	<span className="appMenu__separator">/</span>
 							<li><NavLink to="/comics" className={toggleActive}>Comics</NavLink></li>
-                            /
+                        	<span className="appMenu__separator">/</span>
 							<li><NavLink to="/testForm" className={toggleActive}>Test Form</NavLink></li>
 						</ul>
 					</nav>

@@ -74,6 +74,10 @@
                 }
             }
         }
+
+        .appMenu__separator {
+            color: rgb(var((--main-header-text-secondary)));
+        }
     }
 }
 
